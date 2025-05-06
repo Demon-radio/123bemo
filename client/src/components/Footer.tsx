@@ -1,6 +1,6 @@
 import { RobotLogo } from "@/components/RobotLogo";
 import { Link } from "wouter";
-import { FaXTwitter, FaFacebookF, FaWhatsapp, FaYoutube } from "react-icons/fa6";
+import { FaXTwitter, FaFacebookF, FaWhatsapp, FaYoutube, FaLinkedin } from "react-icons/fa6";
 import { Heart } from "lucide-react";
 
 export function Footer() {
@@ -70,7 +70,15 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} BEMORA. All rights reserved.</p>
           <p className="mt-2">
-            Designed with <Heart className="inline h-4 w-4 text-secondary" /> for content creators
+            Designed with <Heart className="inline h-4 w-4 text-secondary" /> by{" "}
+            <a 
+              href="https://www.linkedin.com/in/mostafa-mohamed-409540336/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:text-secondary transition-colors"
+            >
+              Mostafa
+            </a>
           </p>
         </div>
       </div>
