@@ -11,6 +11,7 @@ export function CatchBemoGame() {
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameActive, setGameActive] = useState(false);
   const [robotPosition, setRobotPosition] = useState({ x: 50, y: 50 });
+  const [startButtonDisabled, setStartButtonDisabled] = useState(false);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const gameTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const moveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -20,6 +21,7 @@ export function CatchBemoGame() {
     setScore(0);
     setTimeLeft(30);
     setGameActive(false);
+    setStartButtonDisabled(false);
     if (gameTimerRef.current) clearInterval(gameTimerRef.current);
     if (moveTimerRef.current) clearInterval(moveTimerRef.current);
   };
@@ -29,8 +31,11 @@ export function CatchBemoGame() {
     if (!gameAreaRef.current) return;
     
     const gameArea = gameAreaRef.current.getBoundingClientRect();
-    const maxX = Math.max(10, gameArea.width - 80); // Robot width with padding
-    const maxY = Math.max(10, gameArea.height - 80); // Robot height with padding
+    const robotSize = 70; // Robot width/height with some padding
+    
+    // Make sure we don't exceed the game area bounds
+    const maxX = Math.max(0, gameArea.width - robotSize);
+    const maxY = Math.max(0, gameArea.height - robotSize);
     
     const newX = Math.floor(Math.random() * maxX);
     const newY = Math.floor(Math.random() * maxY);
@@ -47,8 +52,19 @@ export function CatchBemoGame() {
 
   // Start game
   const startGame = () => {
-    resetGame();
+    // Prevent double-clicking the start button
+    if (startButtonDisabled) return;
+    
+    setStartButtonDisabled(true);
+    
+    // Reset game state
+    setScore(0);
+    setTimeLeft(30);
     setGameActive(true);
+    
+    // Clear any existing intervals
+    if (gameTimerRef.current) clearInterval(gameTimerRef.current);
+    if (moveTimerRef.current) clearInterval(moveTimerRef.current);
     
     // Start game timer
     gameTimerRef.current = setInterval(() => {
@@ -57,6 +73,7 @@ export function CatchBemoGame() {
           if (gameTimerRef.current) clearInterval(gameTimerRef.current);
           if (moveTimerRef.current) clearInterval(moveTimerRef.current);
           setGameActive(false);
+          setStartButtonDisabled(false);
           return 0;
         }
         return prev - 1;
@@ -64,12 +81,14 @@ export function CatchBemoGame() {
     }, 1000);
 
     // Ensure game area is properly referenced before starting movements
+    console.log("Starting game, placing robot...");
+    
+    // Initial robot placement with a delay to ensure DOM is ready
     setTimeout(() => {
-      // Initial robot placement
       moveRobot();
       // Start periodic movements
       moveTimerRef.current = setInterval(moveRobot, 1500);
-    }, 100);
+    }, 300);
   };
 
   // Cleanup on unmount
@@ -131,8 +150,13 @@ export function CatchBemoGame() {
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4">
                 <h3 className="text-xl font-bold">Catch as many <span className="text-primary">BEMORA</span> logos as you can!</h3>
                 <p className="text-muted-foreground mb-4">Click on the logo quickly before it escapes. You only have 30 seconds!</p>
-                <Button onClick={startGame} className="bg-primary hover:bg-primary/90">
-                  Start Game!
+                <Button 
+                  onClick={startGame} 
+                  disabled={startButtonDisabled}
+                  className="bg-primary hover:bg-primary/90 relative overflow-hidden group"
+                >
+                  <span className="relative z-10">Start Game!</span>
+                  <span className="absolute inset-0 bg-secondary scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
                 </Button>
               </div>
             )}
@@ -148,8 +172,13 @@ export function CatchBemoGame() {
                    "Incredible! You're a true champion!"}
                 </p>
                 <div className="flex gap-2">
-                  <Button onClick={startGame} className="bg-primary hover:bg-primary/90">
-                    Play Again
+                  <Button 
+                    onClick={startGame} 
+                    disabled={startButtonDisabled}
+                    className="bg-primary hover:bg-primary/90 relative overflow-hidden group"
+                  >
+                    <span className="relative z-10">Play Again</span>
+                    <span className="absolute inset-0 bg-secondary scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
                   </Button>
                 </div>
               </div>
