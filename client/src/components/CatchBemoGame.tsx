@@ -1,128 +1,113 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { X, Gamepad } from "lucide-react";
 import { RobotLogo } from "@/components/RobotLogo";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export function CatchBemoGame() {
+  // Game state
   const [isOpen, setIsOpen] = useState(false);
   const [score, setScore] = useState(0);
-  const scoreRef = useRef(0); // Use ref to track current score reliably
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameActive, setGameActive] = useState(false);
-  const [robotPosition, setRobotPosition] = useState({ x: 50, y: 50 });
-  const [startButtonDisabled, setStartButtonDisabled] = useState(false);
-  const gameAreaRef = useRef<HTMLDivElement>(null);
-  const gameTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const moveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [robotPosition, setRobotPosition] = useState({ x: 100, y: 100 });
+  const [gameAreaSize, setGameAreaSize] = useState({ width: 400, height: 400 });
 
-  // Reset game state
-  const resetGame = () => {
-    setScore(0);
-    scoreRef.current = 0; // Reset score ref too
-    setTimeLeft(30);
-    setGameActive(false);
-    setStartButtonDisabled(false);
-    if (gameTimerRef.current) clearInterval(gameTimerRef.current);
-    if (moveTimerRef.current) clearInterval(moveTimerRef.current);
-  };
+  // Handle dialog open/close
+  useEffect(() => {
+    if (!isOpen) {
+      // Reset game when dialog closes
+      setScore(0);
+      setTimeLeft(30);
+      setGameActive(false);
+    }
+  }, [isOpen]);
 
-  // Move robot randomly - defined with useCallback to avoid recreation
-  const moveRobot = useCallback(() => {
-    if (!gameAreaRef.current) return;
-    
-    const gameArea = gameAreaRef.current.getBoundingClientRect();
-    const robotSize = 60; // Robot size
-    
-    // Make sure we don't exceed the game area bounds
-    const maxX = Math.max(0, gameArea.width - robotSize);
-    const maxY = Math.max(0, gameArea.height - robotSize);
-    
-    const newX = Math.floor(Math.random() * maxX);
-    const newY = Math.floor(Math.random() * maxY);
-    
-    console.log("Moving robot to:", newX, newY, "game area:", gameArea.width, gameArea.height);
-    setRobotPosition({ x: newX, y: newY });
-  }, []);
-
-  // Handle robot click - Using direct event handling for better click response
-  const catchRobot = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event bubbling
-    e.preventDefault(); // Prevent default behavior
-    
-    console.log("Robot clicked! Game active:", gameActive);
+  // Handle game timer
+  useEffect(() => {
+    // Only run if game is active
     if (!gameActive) return;
     
-    // Increment score using both state and ref for reliability
-    scoreRef.current += 1;
-    setScore(scoreRef.current);
-    console.log("Score updated to:", scoreRef.current);
-    
-    // Move robot to a new position after a brief delay
-    setTimeout(() => {
-      moveRobot();
-    }, 100);
-  };
-
-  // Start game
-  const startGame = () => {
-    // Prevent double-clicking the start button
-    if (startButtonDisabled) return;
-    
-    setStartButtonDisabled(true);
-    
-    // Reset game state
-    scoreRef.current = 0;
-    setScore(0);
-    setTimeLeft(30);
-    setGameActive(true);
-    
-    // Clear any existing intervals
-    if (gameTimerRef.current) clearInterval(gameTimerRef.current);
-    if (moveTimerRef.current) clearInterval(moveTimerRef.current);
-    
-    // Start game timer
-    gameTimerRef.current = setInterval(() => {
-      setTimeLeft(prev => {
+    // Start the timer
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        // When timer reaches 0, end game
         if (prev <= 1) {
-          if (gameTimerRef.current) clearInterval(gameTimerRef.current);
-          if (moveTimerRef.current) clearInterval(moveTimerRef.current);
+          clearInterval(timer);
           setGameActive(false);
-          setStartButtonDisabled(false);
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-
-    // Ensure game area is properly referenced before starting movements
-    console.log("Starting game, placing robot...");
     
-    // Initial robot placement with a delay to ensure DOM is ready
+    // Cleanup timer on unmount or when game status changes
+    return () => clearInterval(timer);
+  }, [gameActive]);
+  
+  // Handle robot movement
+  useEffect(() => {
+    // Only run if game is active
+    if (!gameActive) return;
+    
+    // Move robot initially
+    moveRobot();
+    
+    // Set up interval for movement
+    const moveInterval = setInterval(moveRobot, 1500);
+    
+    // Cleanup on unmount or when game status changes
+    return () => clearInterval(moveInterval);
+  }, [gameActive, gameAreaSize]);
+  
+  // Start game function
+  const startGame = () => {
+    setScore(0);
+    setTimeLeft(30);
+    setGameActive(true);
+    
+    // Measure game area after a small delay to ensure DOM is ready
     setTimeout(() => {
-      moveRobot();
-      // Start periodic movements
-      moveTimerRef.current = setInterval(moveRobot, 1500);
-    }, 300);
+      const gameArea = document.getElementById('game-area');
+      if (gameArea) {
+        const rect = gameArea.getBoundingClientRect();
+        setGameAreaSize({
+          width: rect.width,
+          height: rect.height
+        });
+      }
+    }, 100);
   };
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (gameTimerRef.current) clearInterval(gameTimerRef.current);
-      if (moveTimerRef.current) clearInterval(moveTimerRef.current);
-    };
-  }, []);
-
-  // Cleanup when dialog closes
-  useEffect(() => {
-    if (!isOpen) {
-      resetGame();
-    }
-  }, [isOpen]);
+  
+  // Move robot to random position
+  const moveRobot = () => {
+    const robotSize = 60;
+    const maxX = Math.max(0, gameAreaSize.width - robotSize - 20);
+    const maxY = Math.max(0, gameAreaSize.height - robotSize - 20);
+    
+    // Ensure we have valid dimensions
+    if (maxX <= 0 || maxY <= 0) return;
+    
+    const newX = Math.floor(Math.random() * maxX);
+    const newY = Math.floor(Math.random() * maxY);
+    
+    setRobotPosition({ x: newX, y: newY });
+  };
+  
+  // Handle robot click
+  const catchRobot = () => {
+    if (!gameActive) return;
+    
+    // Increment score
+    setScore(prev => prev + 1);
+    
+    // Move robot to new position
+    moveRobot();
+  };
 
   return (
     <>
+      {/* Game button in hero section */}
       <Button 
         onClick={() => setIsOpen(true)}
         variant="outline"
@@ -132,12 +117,15 @@ export function CatchBemoGame() {
         <span className="font-semibold">Play with BEMORA</span>
       </Button>
 
+      {/* Game dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] h-[80vh] max-h-[600px] p-0 gap-0 bg-background/95 backdrop-blur-sm border-primary/20">
           <DialogTitle className="sr-only">Catch BEMORA Game</DialogTitle>
           <DialogDescription className="sr-only">
             Catch the BEMORA logo as many times as you can before the time runs out!
           </DialogDescription>
+          
+          {/* Game header */}
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-4">
               <h2 className="text-xl font-bold">Catch <span className="text-primary">BEMORA</span> Game</h2>
@@ -157,17 +145,18 @@ export function CatchBemoGame() {
             </Button>
           </div>
 
+          {/* Game area */}
           <div 
-            ref={gameAreaRef} 
+            id="game-area"
             className="relative flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,rgba(12,219,219,0.05)_0,transparent_70%)]"
           >
+            {/* Start screen */}
             {!gameActive && timeLeft === 30 && (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4">
                 <h3 className="text-xl font-bold">Catch as many <span className="text-primary">BEMORA</span> logos as you can!</h3>
                 <p className="text-muted-foreground mb-4">Click on the logo quickly before it escapes. You only have 30 seconds!</p>
                 <Button 
                   onClick={startGame} 
-                  disabled={startButtonDisabled}
                   className="bg-primary hover:bg-primary/90 relative overflow-hidden group"
                 >
                   <span className="relative z-10">Start Game!</span>
@@ -176,6 +165,7 @@ export function CatchBemoGame() {
               </div>
             )}
 
+            {/* Game over screen */}
             {!gameActive && timeLeft === 0 && (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4 bg-background/80">
                 <h3 className="text-xl font-bold">Game Over!</h3>
@@ -188,8 +178,7 @@ export function CatchBemoGame() {
                 </p>
                 <div className="flex gap-2">
                   <Button 
-                    onClick={startGame} 
-                    disabled={startButtonDisabled}
+                    onClick={startGame}
                     className="bg-primary hover:bg-primary/90 relative overflow-hidden group"
                   >
                     <span className="relative z-10">Play Again</span>
@@ -199,22 +188,31 @@ export function CatchBemoGame() {
               </div>
             )}
 
+            {/* Active game - the robot logo */}
             {gameActive && (
               <div 
                 style={{
                   position: 'absolute',
                   left: `${robotPosition.x}px`, 
                   top: `${robotPosition.y}px`,
+                  zIndex: 10,
                   cursor: 'pointer',
                   transition: 'all 0.3s ease-out'
                 }}
-                onClick={catchRobot}
               >
-                <RobotLogo size={60} className="text-primary hover:text-secondary transition-colors game-robot" />
+                <button 
+                  onClick={catchRobot}
+                  className="bg-transparent border-0 p-0 m-0 cursor-pointer"
+                >
+                  <RobotLogo 
+                    size={60} 
+                    className="text-primary hover:text-secondary transition-colors game-robot" 
+                  />
+                </button>
               </div>
             )}
 
-            {/* Grid pattern for game area */}
+            {/* Grid pattern */}
             <div className="absolute inset-0 grid-pattern opacity-50"></div>
           </div>
         </DialogContent>
