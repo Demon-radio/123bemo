@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 export function CatchBemoGame() {
   const [isOpen, setIsOpen] = useState(false);
   const [score, setScore] = useState(0);
+  const scoreRef = useRef(0); // Use ref to track current score reliably
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameActive, setGameActive] = useState(false);
   const [robotPosition, setRobotPosition] = useState({ x: 50, y: 50 });
@@ -18,6 +19,7 @@ export function CatchBemoGame() {
   // Reset game state
   const resetGame = () => {
     setScore(0);
+    scoreRef.current = 0; // Reset score ref too
     setTimeLeft(30);
     setGameActive(false);
     setStartButtonDisabled(false);
@@ -44,20 +46,23 @@ export function CatchBemoGame() {
   }, []);
 
   // Handle robot click - Using direct event handling for better click response
-  const catchRobot = useCallback((e: React.MouseEvent) => {
+  const catchRobot = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent event bubbling
+    e.preventDefault(); // Prevent default behavior
     
     console.log("Robot clicked! Game active:", gameActive);
     if (!gameActive) return;
     
-    // Increment score immediately
-    setScore(prevScore => prevScore + 1);
+    // Increment score using both state and ref for reliability
+    scoreRef.current += 1;
+    setScore(scoreRef.current);
+    console.log("Score updated to:", scoreRef.current);
     
     // Move robot to a new position after a brief delay
     setTimeout(() => {
       moveRobot();
     }, 100);
-  }, [gameActive, moveRobot]);
+  };
 
   // Start game
   const startGame = () => {
@@ -67,6 +72,7 @@ export function CatchBemoGame() {
     setStartButtonDisabled(true);
     
     // Reset game state
+    scoreRef.current = 0;
     setScore(0);
     setTimeLeft(30);
     setGameActive(true);
