@@ -2,8 +2,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { RobotLogo } from "@/components/RobotLogo";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Play, X } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { ChevronDown, Play, X, Gamepad2 } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { CatchBemoGame } from "@/components/CatchBemoGame";
 
 export function HeroSection() {
   const [videoOpen, setVideoOpen] = useState(false);
@@ -75,25 +76,45 @@ export function HeroSection() {
             />
           </div>
           
-          {/* Promo Video Button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative mt-4 group"
-          >
-            <button
-              onClick={() => setVideoOpen(true)}
-              className="relative bg-gradient-to-r from-primary to-secondary rounded-xl overflow-hidden shine-effect"
+          {/* Buttons Container */}
+          <div className="flex flex-col gap-4 mt-4">
+            {/* Promo Video Button */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative group"
             >
-              <div className="absolute inset-0.5 bg-background rounded-[0.7rem] z-10"></div>
-              <div className="relative flex items-center gap-2 px-8 py-3 text-white z-20 group-hover:text-white transition-colors">
-                <Play className="h-6 w-6 fill-primary group-hover:fill-white transition-colors" /> 
-                <span className="font-semibold text-primary group-hover:text-white transition-colors">Watch Promo</span>
-              </div>
-            </button>
+              <button
+                onClick={() => setVideoOpen(true)}
+                className="relative bg-gradient-to-r from-primary to-secondary rounded-xl overflow-hidden shine-effect"
+              >
+                <div className="absolute inset-0.5 bg-background rounded-[0.7rem] z-10"></div>
+                <div className="relative flex items-center gap-2 px-8 py-3 text-white z-20 group-hover:text-white transition-colors">
+                  <Play className="h-6 w-6 fill-primary group-hover:fill-white transition-colors" /> 
+                  <span className="font-semibold text-primary group-hover:text-white transition-colors">Watch Promo</span>
+                </div>
+              </button>
+              
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
+            </motion.div>
             
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
-          </motion.div>
+            {/* Game Button */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative group"
+            >
+              <div className="absolute -inset-1 bg-gradient-to-r from-secondary/70 to-primary/70 rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
+              <div className="relative">
+                <CatchBemoGame />
+                
+                {/* NEW badge */}
+                <div className="absolute -top-3 -right-3 bg-secondary text-white text-xs font-bold py-1 px-2 rounded-full animate-bounce">
+                  NEW!
+                </div>
+              </div>
+            </motion.div>
+          </div>
           
           {/* Trending Now Badge */}
           <div className="absolute -top-4 right-0 bg-secondary text-white text-sm font-bold py-1 px-3 rounded-full shadow-lg flex items-center gap-1 pulse-glow">
@@ -124,6 +145,7 @@ export function HeroSection() {
       {/* Video Modal Dialog */}
       <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
         <DialogContent className="max-w-4xl p-0 bg-background/95 backdrop-blur-sm border-primary/20">
+          <DialogTitle className="sr-only">BEMORA Promotional Video</DialogTitle>
           <div className="relative pt-[56.25%] w-full">
             <iframe
               className="absolute top-0 left-0 w-full h-full"
