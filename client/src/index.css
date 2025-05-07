@@ -162,6 +162,16 @@
     );
     animation: shine 4s infinite;
   }
+  
+  /* Game area styles */
+  .game-robot {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .game-robot:hover {
+    transform: scale(1.1);
+  }
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }

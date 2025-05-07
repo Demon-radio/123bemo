@@ -12,8 +12,8 @@ export function CatchBemoGame() {
   const [gameActive, setGameActive] = useState(false);
   const [robotPosition, setRobotPosition] = useState({ x: 50, y: 50 });
   const gameAreaRef = useRef<HTMLDivElement>(null);
-  const gameTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const moveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const gameTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const moveTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Reset game state
   const resetGame = () => {
@@ -24,35 +24,13 @@ export function CatchBemoGame() {
     if (moveTimerRef.current) clearInterval(moveTimerRef.current);
   };
 
-  // Start game
-  const startGame = () => {
-    resetGame();
-    setGameActive(true);
-    
-    // Start game timer
-    gameTimerRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(gameTimerRef.current as NodeJS.Timeout);
-          setGameActive(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    // Start robot movement
-    moveRobot();
-    moveTimerRef.current = setInterval(moveRobot, 1500);
-  };
-
   // Move robot randomly
   const moveRobot = () => {
     if (!gameAreaRef.current) return;
     
     const gameArea = gameAreaRef.current.getBoundingClientRect();
-    const maxX = gameArea.width - 60; // Robot width
-    const maxY = gameArea.height - 60; // Robot height
+    const maxX = Math.max(10, gameArea.width - 80); // Robot width with padding
+    const maxY = Math.max(10, gameArea.height - 80); // Robot height with padding
     
     const newX = Math.floor(Math.random() * maxX);
     const newY = Math.floor(Math.random() * maxY);
@@ -63,8 +41,35 @@ export function CatchBemoGame() {
   // Handle robot click
   const catchRobot = () => {
     if (!gameActive) return;
-    setScore((prev) => prev + 1);
+    setScore(prev => prev + 1);
     moveRobot(); // Move immediately after catch
+  };
+
+  // Start game
+  const startGame = () => {
+    resetGame();
+    setGameActive(true);
+    
+    // Start game timer
+    gameTimerRef.current = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          if (gameTimerRef.current) clearInterval(gameTimerRef.current);
+          if (moveTimerRef.current) clearInterval(moveTimerRef.current);
+          setGameActive(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    // Ensure game area is properly referenced before starting movements
+    setTimeout(() => {
+      // Initial robot placement
+      moveRobot();
+      // Start periodic movements
+      moveTimerRef.current = setInterval(moveRobot, 1500);
+    }, 100);
   };
 
   // Cleanup on unmount
@@ -157,7 +162,7 @@ export function CatchBemoGame() {
                 className="absolute cursor-pointer"
                 onClick={catchRobot}
               >
-                <RobotLogo size={60} className="text-primary hover:text-secondary transition-colors" />
+                <RobotLogo size={60} className="text-primary hover:text-secondary transition-colors game-robot" />
               </motion.div>
             )}
 
