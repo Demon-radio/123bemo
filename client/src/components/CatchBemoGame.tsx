@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { X, Gamepad2 } from "lucide-react";
+import { X, Gamepad } from "lucide-react";
 import { RobotLogo } from "@/components/RobotLogo";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export function CatchBemoGame() {
   const [isOpen, setIsOpen] = useState(false);
@@ -89,23 +89,26 @@ export function CatchBemoGame() {
         variant="outline"
         className="w-full bg-primary/10 border-primary text-primary hover:bg-primary/20 shine-effect flex items-center gap-2 px-8 py-3 justify-center"
       >
-        <Gamepad2 className="h-5 w-5" />
-        <span className="font-semibold">العب مع BEMORA</span>
+        <Gamepad className="h-5 w-5" />
+        <span className="font-semibold">Play with BEMORA</span>
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] h-[80vh] max-h-[600px] p-0 gap-0 bg-background/95 backdrop-blur-sm border-primary/20">
-          <DialogTitle className="sr-only">لعبة اصطياد BEMORA</DialogTitle>
+          <DialogTitle className="sr-only">Catch BEMORA Game</DialogTitle>
+          <DialogDescription className="sr-only">
+            Catch the BEMORA logo as many times as you can before the time runs out!
+          </DialogDescription>
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h2 className="text-xl font-bold">لعبة اصطياد <span className="text-primary">BEMORA</span></h2>
+              <h2 className="text-xl font-bold">Catch <span className="text-primary">BEMORA</span> Game</h2>
               <div className="flex gap-4 text-sm font-mono">
                 <div className="flex items-center gap-1">
-                  <span className="font-bold text-secondary">النقاط:</span>
+                  <span className="font-bold text-secondary">Score:</span>
                   <span className="font-bold">{score}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <span className="font-bold text-primary">الوقت:</span>
+                  <span className="font-bold text-primary">Time:</span>
                   <span className={`font-bold ${timeLeft <= 10 ? "text-red-500" : ""}`}>{timeLeft}s</span>
                 </div>
               </div>
@@ -121,27 +124,27 @@ export function CatchBemoGame() {
           >
             {!gameActive && timeLeft === 30 && (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4">
-                <h3 className="text-xl font-bold">اصطاد أكبر عدد من شعارات <span className="text-primary">BEMORA</span>!</h3>
-                <p className="text-muted-foreground mb-4">انقر على الشعار بسرعة قبل أن يهرب منك. لديك 30 ثانية فقط!</p>
+                <h3 className="text-xl font-bold">Catch as many <span className="text-primary">BEMORA</span> logos as you can!</h3>
+                <p className="text-muted-foreground mb-4">Click on the logo quickly before it escapes. You only have 30 seconds!</p>
                 <Button onClick={startGame} className="bg-primary hover:bg-primary/90">
-                  ابدأ اللعب!
+                  Start Game!
                 </Button>
               </div>
             )}
 
             {!gameActive && timeLeft === 0 && (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4 bg-background/80">
-                <h3 className="text-xl font-bold">انتهت اللعبة!</h3>
-                <p className="text-2xl font-bold mb-2">مجموع نقاطك: <span className="text-primary">{score}</span></p>
+                <h3 className="text-xl font-bold">Game Over!</h3>
+                <p className="text-2xl font-bold mb-2">Your Score: <span className="text-primary">{score}</span></p>
                 <p className="text-muted-foreground mb-4">
-                  {score < 5 ? "حاول مرة أخرى! يمكنك التحسن!" : 
-                   score < 10 ? "جيد! استمر في التحسن!" : 
-                   score < 15 ? "رائع! أنت لاعب ممتاز!" : 
-                   "مذهل! أنت بطل حقيقي!"}
+                  {score < 5 ? "Try again! You can do better!" : 
+                   score < 10 ? "Good job! Keep improving!" : 
+                   score < 15 ? "Amazing! You're a great player!" : 
+                   "Incredible! You're a true champion!"}
                 </p>
                 <div className="flex gap-2">
                   <Button onClick={startGame} className="bg-primary hover:bg-primary/90">
-                    العب مرة أخرى
+                    Play Again
                   </Button>
                 </div>
               </div>

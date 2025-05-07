@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { RobotLogo } from "@/components/RobotLogo";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Play, X, Gamepad2 } from "lucide-react";
+import { ChevronDown, Play, X, Gamepad } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { CatchBemoGame } from "@/components/CatchBemoGame";
 
