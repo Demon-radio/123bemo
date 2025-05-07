@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { X, Gamepad } from "lucide-react";
 import { RobotLogo } from "@/components/RobotLogo";
 import { Button } from "@/components/ui/button";
@@ -26,12 +25,12 @@ export function CatchBemoGame() {
     if (moveTimerRef.current) clearInterval(moveTimerRef.current);
   };
 
-  // Move robot randomly
-  const moveRobot = () => {
+  // Move robot randomly - defined with useCallback to avoid recreation
+  const moveRobot = useCallback(() => {
     if (!gameAreaRef.current) return;
     
     const gameArea = gameAreaRef.current.getBoundingClientRect();
-    const robotSize = 70; // Robot width/height with some padding
+    const robotSize = 60; // Robot size
     
     // Make sure we don't exceed the game area bounds
     const maxX = Math.max(0, gameArea.width - robotSize);
@@ -40,15 +39,25 @@ export function CatchBemoGame() {
     const newX = Math.floor(Math.random() * maxX);
     const newY = Math.floor(Math.random() * maxY);
     
+    console.log("Moving robot to:", newX, newY, "game area:", gameArea.width, gameArea.height);
     setRobotPosition({ x: newX, y: newY });
-  };
+  }, []);
 
-  // Handle robot click
-  const catchRobot = () => {
+  // Handle robot click - Using direct event handling for better click response
+  const catchRobot = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    
+    console.log("Robot clicked! Game active:", gameActive);
     if (!gameActive) return;
-    setScore(prev => prev + 1);
-    moveRobot(); // Move immediately after catch
-  };
+    
+    // Increment score immediately
+    setScore(prevScore => prevScore + 1);
+    
+    // Move robot to a new position after a brief delay
+    setTimeout(() => {
+      moveRobot();
+    }, 100);
+  }, [gameActive, moveRobot]);
 
   // Start game
   const startGame = () => {
@@ -185,14 +194,18 @@ export function CatchBemoGame() {
             )}
 
             {gameActive && (
-              <motion.div
-                animate={{ x: robotPosition.x, y: robotPosition.y }}
-                transition={{ type: "spring", damping: 10, stiffness: 100 }}
-                className="absolute cursor-pointer"
+              <div 
+                style={{
+                  position: 'absolute',
+                  left: `${robotPosition.x}px`, 
+                  top: `${robotPosition.y}px`,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease-out'
+                }}
                 onClick={catchRobot}
               >
                 <RobotLogo size={60} className="text-primary hover:text-secondary transition-colors game-robot" />
-              </motion.div>
+              </div>
             )}
 
             {/* Grid pattern for game area */}
