@@ -52,18 +52,22 @@ export function ContentShowcase() {
   const [activeFilter, setActiveFilter] = useState<ContentType>("all");
   const [filteredContent, setFilteredContent] = useState(contentItems);
 
-  // استخدام useCallback لتجنب إعادة إنشاء الدالة في كل تحديث
-  const filterContent = useCallback((filter: ContentType) => {
-    if (filter === "all") {
-      return contentItems;
+  // دالة تصفية المحتوى بناءً على النوع المحدد
+  const updateFilteredContent = useCallback(() => {
+    console.log("Filtering by:", activeFilter);
+    if (activeFilter === "all") {
+      setFilteredContent([...contentItems]);
+    } else {
+      const filtered = contentItems.filter(item => item.type === activeFilter);
+      console.log("Filtered items:", filtered.length);
+      setFilteredContent(filtered);
     }
-    return contentItems.filter(item => item.type === filter);
-  }, []);
+  }, [activeFilter]);
 
-  // استخدام useEffect لتحديث المحتوى المفلتر عند تغيير عامل التصفية
+  // تنفيذ التصفية عند تغيير النوع المحدد
   useEffect(() => {
-    setFilteredContent(filterContent(activeFilter));
-  }, [activeFilter, filterContent]);
+    updateFilteredContent();
+  }, [activeFilter, updateFilteredContent]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
