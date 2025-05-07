@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -7,11 +7,12 @@ import { FaYoutube, FaFacebookF } from "react-icons/fa6";
 
 type ContentType = "all" | "youtube" | "facebook";
 
+// اضفنا ثلاث عناصر محتوى بدلاً من اثنين فقط
 const contentItems = [
   {
     id: 1,
     type: "youtube",
-    title: "BEMORA YouTube Short",
+    title: "BEMORA YouTube Short #1",
     image: "https://img.youtube.com/vi/B_WnTN1ni3U/maxresdefault.jpg",
     duration: "0:30",
     date: "Featured Short",
@@ -32,16 +33,37 @@ const contentItems = [
       likes: "156",
       comments: "28"
     }
+  },
+  {
+    id: 3,
+    type: "youtube",
+    title: "BEMORA YouTube Short #2",
+    image: "https://img.youtube.com/vi/B_WnTN1ni3U/hqdefault.jpg",
+    duration: "0:45",
+    date: "New Short",
+    url: "https://youtube.com/shorts/B_WnTN1ni3U",
+    stats: {
+      views: "2.5K"
+    }
   }
 ];
 
 export function ContentShowcase() {
   const [activeFilter, setActiveFilter] = useState<ContentType>("all");
+  const [filteredContent, setFilteredContent] = useState(contentItems);
 
-  const filteredContent = contentItems.filter(item => {
-    if (activeFilter === "all") return true;
-    return item.type === activeFilter;
-  });
+  // استخدام useCallback لتجنب إعادة إنشاء الدالة في كل تحديث
+  const filterContent = useCallback((filter: ContentType) => {
+    if (filter === "all") {
+      return contentItems;
+    }
+    return contentItems.filter(item => item.type === filter);
+  }, []);
+
+  // استخدام useEffect لتحديث المحتوى المفلتر عند تغيير عامل التصفية
+  useEffect(() => {
+    setFilteredContent(filterContent(activeFilter));
+  }, [activeFilter, filterContent]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
