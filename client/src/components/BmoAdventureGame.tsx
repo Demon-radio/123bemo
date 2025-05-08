@@ -19,6 +19,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import BMOImage from "@assets/image_1746719364511.png";
+import FinnVictoryImage from "/assets/images/rpg/finn-victory1.svg";
+import FinnJakeVictoryImage from "/assets/images/rpg/finn-jake-victory.svg";
 
 // Game characters and enemies based on Adventure Time
 const PLAYER_CHARACTER = {
@@ -778,24 +780,27 @@ export function BmoAdventureGame() {
                     
                     {/* Level Up Celebration Overlay */}
                     {showCelebration && (
-                      <div className="absolute inset-0 flex items-center justify-center z-10">
+                      <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/30 backdrop-blur-sm">
                         <div className="relative animate-bounce">
-                          {/* For first level, show simple celebration */}
+                          {/* For first level, show just Finn */}
                           {currentLevel <= 2 && (
-                            <div className="text-6xl">
-                              👱‍♀️🐱💪
+                            <div className="relative w-36 h-36">
+                              <img 
+                                src={FinnVictoryImage} 
+                                alt="Finn celebration" 
+                                className="w-full h-full object-contain"
+                              />
                             </div>
                           )}
                           
                           {/* For higher levels, show both Finn and Jake */}
                           {currentLevel > 2 && (
-                            <div className="flex flex-col items-center">
-                              <div className="text-6xl mb-2">
-                                👱‍♀️🐱🎉
-                              </div>
-                              <div className="text-4xl">
-                                🐶🎮
-                              </div>
+                            <div className="relative w-48 h-48">
+                              <img 
+                                src={FinnJakeVictoryImage} 
+                                alt="Finn and Jake celebration" 
+                                className="w-full h-full object-contain"
+                              />
                             </div>
                           )}
                           
