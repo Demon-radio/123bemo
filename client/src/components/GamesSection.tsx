@@ -5,7 +5,8 @@ import { CatchBemoGame } from "./CatchBemoGame";
 import { QuizGame } from "./QuizGame";
 import { BattleGame } from "./BattleGame";
 import { BmoAdventureGame } from "./BmoAdventureGame";
-import { Gamepad2, Brain, Swords, MonitorPlay } from "lucide-react";
+import { BmoRpgGame } from "./BmoRpgGame";
+import { Gamepad2, Brain, Swords, MonitorPlay, Joystick } from "lucide-react";
 
 export function GamesSection() {
   const [activeTab, setActiveTab] = useState("catch-game");
@@ -29,7 +30,7 @@ export function GamesSection() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsList className="grid w-full grid-cols-5 mb-8">
               <TabsTrigger 
                 value="catch-game"
                 className="data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2 justify-center"
@@ -61,6 +62,14 @@ export function GamesSection() {
                 <MonitorPlay className="h-4 w-4" />
                 <span className="hidden sm:inline">BMO Adventure</span>
                 <span className="sm:hidden">BMO</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="rpg-game"
+                className="data-[state=active]:bg-green-600 data-[state=active]:text-white flex items-center gap-2 justify-center"
+              >
+                <Joystick className="h-4 w-4" />
+                <span className="hidden sm:inline">BMO RPG</span>
+                <span className="sm:hidden">RPG</span>
               </TabsTrigger>
             </TabsList>
             
@@ -98,9 +107,19 @@ export function GamesSection() {
               <div className="bg-muted/50 rounded-lg p-6 border border-border text-center">
                 <h3 className="text-xl font-bold mb-4">BMO Adventure</h3>
                 <p className="text-muted-foreground mb-6">
-                  Help Finn and Jake fight evil programs inside BMO's system! Experience the adventure from the "BMO" episode.
+                  Help Fionna and Cake fight evil programs inside BMO's system! Experience the adventure from the "BMO" episode.
                 </p>
                 <BmoAdventureGame />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="rpg-game" className="mt-0">
+              <div className="bg-muted/50 rounded-lg p-6 border border-border text-center">
+                <h3 className="text-xl font-bold mb-4">BMO RPG Adventure</h3>
+                <p className="text-muted-foreground mb-6">
+                  Enter BMO's memory banks and play a retro-style Adventure Time RPG! Explore, battle enemies, and collect items.
+                </p>
+                <BmoRpgGame />
               </div>
             </TabsContent>
           </Tabs>
