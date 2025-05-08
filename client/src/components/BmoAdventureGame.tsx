@@ -1,10 +1,20 @@
 import { useState, useEffect, useRef } from "react";
-import { X, Gamepad2, Heart, Sword, ShieldAlert } from "lucide-react";
+import { 
+  X, 
+  Gamepad2, 
+  Heart, 
+  Sword, 
+  ShieldAlert, 
+  Flame, 
+  ArrowDown, 
+  ShieldCheck
+} from "lucide-react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -411,8 +421,8 @@ export function BmoAdventureGame() {
           {
             type: "weakenAttack",
             value: effect.value,
-            duration: effect.duration,
-            source: enemy.specialAbility
+            duration: effect.duration || 2, // Default to 2 turns if undefined
+            source: enemy.specialAbility || "Enemy Effect"
           }
         ]);
         
@@ -428,8 +438,8 @@ export function BmoAdventureGame() {
           {
             type: "dot",
             value: effect.value,
-            duration: effect.duration,
-            source: enemy.specialAbility
+            duration: effect.duration || 3, // Default to 3 turns if undefined
+            source: enemy.specialAbility || "Enemy Effect"
           }
         ]);
         
