@@ -714,6 +714,9 @@ export function BmoRpgGame() {
     }, 1000);
   };
   
+  // State for level up celebration
+  const [showLevelUpCelebration, setShowLevelUpCelebration] = useState(false);
+  
   // Check if player leveled up
   const checkLevelUp = () => {
     const player = gameStateRef.current.player;
@@ -743,6 +746,14 @@ export function BmoRpgGame() {
       setMana(player.mana);
       setExperience(player.experience);
       setSpecialAttackCharge(gameStateRef.current.specialCharges);
+      
+      // Show level up celebration
+      setShowLevelUpCelebration(true);
+      
+      // Hide celebration after 3 seconds
+      setTimeout(() => {
+        setShowLevelUpCelebration(false);
+      }, 3000);
     }
   };
   
@@ -1907,6 +1918,41 @@ export function BmoRpgGame() {
             {!isOpen && (
               <div className="absolute inset-0 flex items-center justify-center text-white">
                 Loading game...
+              </div>
+            )}
+            
+            {/* Level Up Celebration Overlay */}
+            {showLevelUpCelebration && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="relative">
+                  {/* First we show Finn celebration image for levels 1-3 */}
+                  {level <= 3 && (
+                    <img 
+                      src="/assets/images/rpg/finn-victory1.svg" 
+                      alt="Level Up!" 
+                      className="w-64 h-64 animate-bounce"
+                    />
+                  )}
+                  
+                  {/* For higher levels, show Finn and Jake celebration */}
+                  {level > 3 && (
+                    <img 
+                      src="/assets/images/rpg/finn-jake-victory.svg" 
+                      alt="Level Up!" 
+                      className="w-80 h-80 animate-bounce"
+                    />
+                  )}
+                  
+                  {/* Celebration text */}
+                  <div className="absolute top-0 left-0 right-0 text-center">
+                    <h2 className="text-yellow-300 text-3xl font-bold drop-shadow-lg animate-pulse">
+                      LEVEL UP!
+                    </h2>
+                    <p className="text-white text-xl font-bold mt-1 drop-shadow-lg">
+                      You reached level {level}!
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
           </div>
