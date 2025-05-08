@@ -1,0 +1,58 @@
+Hi, I want to build a modern 2D RPG game based on an episode of "Adventure Time" where Finn and Jake enter BMO and play an old-school video game. The idea is to create a fully updated and reimagined version of that game. Here's what I need:
+
+Theme & Setting: A pixel-art world that resembles the inside of a retro console, filled with glitchy landscapes and cute but dangerous monsters (like a bee, a frog, a rabbit – but redesigned to look more dynamic and expressive).
+
+Characters:
+
+The player controls a custom hero (can resemble Finn, or be fully customizable).
+
+Enemies should include bee, frog, rabbit, and some original enemies inspired by old-school RPGs.
+
+Gameplay Features:
+
+Top-down view, real-time or turn-based combat (you decide what fits best).
+
+Smooth controls (keyboard and mouse support).
+
+Leveling system with XP, health, attack, and defense stats.
+
+Item collection and simple inventory system.
+
+Quest system: basic missions like “defeat boss,” “collect item,” “rescue trapped character.”
+
+Boss fights at the end of each major level.
+
+Art & Sound:
+
+Pixel art graphics, vibrant and colorful.
+
+Background music that feels retro but high-quality (8-bit + synth mix).
+
+Sound effects for hits, jumps, item pickup, and ambient.
+
+Tech Stack:
+
+Use HTML5, CSS3, and JavaScript.
+
+If possible, use a game library like Phaser.js or Kaboom.js for better structure.
+
+Should run in-browser (no need for external installs).
+
+Add a local save/load system using localStorage or similar.
+
+UI & UX:
+
+Easy to use interface (Start Game, Load Game, Options).
+
+Responsive layout for desktop (mobile optional).
+
+Health bars, XP meter, mini-map if possible.
+
+Extra:
+
+Add Easter eggs or small nods to "Adventure Time" fans (like a cameo from BMO, or voice lines if possible).
+
+Modular code structure for future updates (like adding more levels, characters, or multiplayer support).
+
+Please generate a starter version of the game that includes the main character, one level, and basic combat with at least one monster (e.g., the bee). Include comments in the code and folder structure.
+

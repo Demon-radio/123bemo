@@ -631,8 +631,8 @@ export function BmoAdventureGame() {
                   Help Fionna and Cake fight evil programs inside BMO's system! Battle against Ling of Ooo and Sweet Bee to save BMO from corruption.
                 </p>
                 
-                <form className="w-full max-w-md space-y-3 flex-1 flex flex-col">
-                  <div className="grid gap-1">
+                <form className="w-full max-w-md space-y-3 flex flex-col" style={{ minHeight: "400px" }}>
+                  <div>
                     <Label htmlFor="player-name">Your Name or Nickname <span className="text-red-500">*</span></Label>
                     <Input 
                       id="player-name" 
@@ -641,10 +641,11 @@ export function BmoAdventureGame() {
                       onChange={(e) => setPlayerName(e.target.value)} 
                       placeholder="Enter your name"
                       required
+                      className="mt-1"
                     />
                   </div>
                   
-                  <div className="grid gap-1">
+                  <div>
                     <Label htmlFor="player-email">Your Email (optional)</Label>
                     <Input 
                       id="player-email" 
@@ -652,12 +653,13 @@ export function BmoAdventureGame() {
                       value={playerEmail} 
                       onChange={(e) => setPlayerEmail(e.target.value)} 
                       placeholder="your.email@example.com"
+                      className="mt-1"
                     />
-                    <p className="text-xs text-muted-foreground">We'll use this to send you updates about new content.</p>
+                    <p className="text-xs text-muted-foreground mt-1">We'll use this to send you updates about new content.</p>
                   </div>
                   
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-2 rounded-md border border-blue-200 dark:border-blue-800">
-                    <h4 className="font-semibold text-black dark:text-white text-sm mb-1">How to play:</h4>
+                    <h4 className="font-semibold text-black dark:text-white text-sm">How to play:</h4>
                     <div className="grid grid-cols-2 gap-x-2">
                       <ul className="text-xs list-disc pl-4 text-black dark:text-white font-medium">
                         <li>Play as Fionna and Cake inside BMO</li>
@@ -674,11 +676,11 @@ export function BmoAdventureGame() {
                     </div>
                   </div>
                   
-                  <div className="flex-1 flex items-end">
+                  <div className="mt-auto pt-4">
                     <Button 
                       type="button"
                       onClick={startGame} 
-                      className="bg-blue-500 hover:bg-blue-600 w-full"
+                      className="bg-blue-500 hover:bg-blue-600 w-full font-bold text-base"
                       disabled={!playerName.trim()}
                     >
                       Start Adventure
