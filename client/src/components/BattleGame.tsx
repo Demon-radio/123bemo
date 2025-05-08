@@ -10,82 +10,82 @@ import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
-// Battle questions
+// Adventure Time battle questions
 const battleQuestions = [
   {
-    question: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: "Paris"
+    question: "What is the real name of the Lich in Adventure Time?",
+    options: ["Lich King", "Ling of Ooo", "Death", "Golb"],
+    correctAnswer: "Ling of Ooo"
   },
   {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Venus", "Mars", "Jupiter", "Saturn"],
-    correctAnswer: "Mars"
+    question: "Which character was created from the Lich?",
+    options: ["Sweet P", "Sweet Bee", "Fern", "Gumbald"],
+    correctAnswer: "Sweet Bee"
   },
   {
-    question: "Who painted the Mona Lisa?",
-    options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
-    correctAnswer: "Leonardo da Vinci"
+    question: "Who are the gender-swapped versions of Finn and Jake?",
+    options: ["Fionna and Cake", "Bonnie and Neddy", "Susan and Frieda", "Marceline and Bubblegum"],
+    correctAnswer: "Fionna and Cake"
   },
   {
-    question: "What is the largest ocean on Earth?",
-    options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-    correctAnswer: "Pacific Ocean"
+    question: "What is BMO's full name?",
+    options: ["Binary Matrix Operator", "Be MOre", "Beemo", "Basic Memory Organism"],
+    correctAnswer: "Be MOre"
   },
   {
-    question: "Which element has the chemical symbol 'O'?",
-    options: ["Gold", "Oxygen", "Osmium", "Oganesson"],
-    correctAnswer: "Oxygen"
+    question: "What creature is Ice King's companion?",
+    options: ["Gunter", "Flambo", "Shelby", "Peppermint Butler"],
+    correctAnswer: "Gunter"
   },
   {
-    question: "In which year did World War II end?",
-    options: ["1943", "1945", "1947", "1950"],
-    correctAnswer: "1945"
+    question: "Who rules the Candy Kingdom?",
+    options: ["Ice King", "Princess Bubblegum", "Hunson Abadeer", "Flame Princess"],
+    correctAnswer: "Princess Bubblegum"
   },
   {
-    question: "Which animal is known as the 'King of the Jungle'?",
-    options: ["Tiger", "Elephant", "Lion", "Gorilla"],
-    correctAnswer: "Lion"
+    question: "What is Finn's last name?",
+    options: ["The Human", "Mertens", "Adventure", "Campbell"],
+    correctAnswer: "Mertens"
   },
   {
-    question: "What is the hardest natural substance on Earth?",
-    options: ["Gold", "Iron", "Diamond", "Platinum"],
-    correctAnswer: "Diamond"
+    question: "What instrument does Marceline play?",
+    options: ["Guitar", "Drums", "Bass", "Keyboard"],
+    correctAnswer: "Bass"
   },
   {
-    question: "Who wrote 'Romeo and Juliet'?",
-    options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
-    correctAnswer: "William Shakespeare"
+    question: "Which princess was Finn's first crush?",
+    options: ["Princess Bubblegum", "Flame Princess", "Huntress Wizard", "Slime Princess"],
+    correctAnswer: "Princess Bubblegum"
   },
   {
-    question: "What is the smallest prime number?",
-    options: ["0", "1", "2", "3"],
-    correctAnswer: "2"
+    question: "What is the name of Jake and Lady Rainicorn's daughter?",
+    options: ["Charlie", "Viola", "Jake Jr.", "T.V."],
+    correctAnswer: "Charlie"
   },
   {
-    question: "Which of these is NOT a primary color?",
-    options: ["Red", "Blue", "Green", "Yellow"],
-    correctAnswer: "Green"
+    question: "What kingdom does Flame Princess rule?",
+    options: ["Fire Kingdom", "Flame Empire", "Molten Lands", "Cinder Realm"],
+    correctAnswer: "Fire Kingdom"
   },
   {
-    question: "How many sides does a hexagon have?",
-    options: ["5", "6", "7", "8"],
-    correctAnswer: "6"
+    question: "Who is Marceline's father?",
+    options: ["Hunson Abadeer", "The Lich", "Death", "Simon Petrikov"],
+    correctAnswer: "Hunson Abadeer"
   },
   {
-    question: "Which country is home to the kangaroo?",
-    options: ["New Zealand", "South Africa", "Australia", "Brazil"],
-    correctAnswer: "Australia"
+    question: "What is BMO's favorite game?",
+    options: ["Adventure Master", "Kompy's Castle", "Bug Battle", "Football"],
+    correctAnswer: "Football"
   },
   {
-    question: "What is the main ingredient in guacamole?",
-    options: ["Banana", "Avocado", "Cucumber", "Eggplant"],
-    correctAnswer: "Avocado"
+    question: "Who was the Ice King before he found the crown?",
+    options: ["Simon Petrikov", "Gunter", "Evergreen", "Normal Man"],
+    correctAnswer: "Simon Petrikov"
   },
   {
-    question: "Which is the longest river in the world?",
-    options: ["Amazon", "Nile", "Mississippi", "Yangtze"],
-    correctAnswer: "Nile"
+    question: "What is the name of Jake's shape-shifting ability?",
+    options: ["Stretchy Power", "Elastic Magic", "Morphing Mutation", "Dimensional Stretching"],
+    correctAnswer: "Stretchy Power"
   }
 ];
 
@@ -438,9 +438,9 @@ export function BattleGame() {
                       <p className="text-xs text-muted-foreground">We'll use this to send you updates about new content.</p>
                     </div>
                     
-                    <div className="bg-orange-50 dark:bg-orange-950/20 p-4 rounded-md mt-4 border border-orange-200 dark:border-orange-800">
-                      <h4 className="font-semibold text-black dark:text-white text-base mb-2">How to play:</h4>
-                      <ul className="text-sm space-y-1 list-disc pl-4 text-black dark:text-white font-medium">
+                    <div className="bg-orange-50 dark:bg-orange-950/20 p-4 rounded-md mt-4 border-2 border-black dark:border-white">
+                      <h4 className="font-bold text-black dark:text-white text-base mb-2">How to play:</h4>
+                      <ul className="text-sm space-y-1 list-disc pl-4 text-black dark:text-white font-bold">
                         <li>Answer 5 rounds of questions.</li>
                         <li>You have 10 seconds to answer each question.</li>
                         <li>Score a point when you get an answer right and the AI gets it wrong.</li>
