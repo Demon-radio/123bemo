@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import BMOImage from "@assets/image_1746719364511.png";
 import FinnVictoryImage from "/assets/images/rpg/finn-victory1.svg";
 import FinnJakeVictoryImage from "/assets/images/rpg/finn-jake-victory.svg";
+import FinnJakeCelebrationGif from "/assets/images/celebrations/finn-jake-celebration.gif";
 
 // Game characters and enemies based on Adventure Time
 const PLAYER_CHARACTER = {
@@ -28,7 +29,7 @@ const PLAYER_CHARACTER = {
   health: 100,
   attack: 15,
   defense: 10,
-  sprite: "👱‍♀️🐱"
+  sprite: "👧🐈"
 };
 
 // Define enemy types with special abilities
@@ -780,29 +781,16 @@ export function BmoAdventureGame() {
                     
                     {/* Level Up Celebration Overlay */}
                     {showCelebration && (
-                      <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/30 backdrop-blur-sm">
-                        <div className="relative animate-bounce">
-                          {/* For first level, show just Finn */}
-                          {currentLevel <= 2 && (
-                            <div className="relative w-36 h-36">
-                              <img 
-                                src={FinnVictoryImage} 
-                                alt="Finn celebration" 
-                                className="w-full h-full object-contain"
-                              />
-                            </div>
-                          )}
-                          
-                          {/* For higher levels, show both Finn and Jake */}
-                          {currentLevel > 2 && (
-                            <div className="relative w-48 h-48">
-                              <img 
-                                src={FinnJakeVictoryImage} 
-                                alt="Finn and Jake celebration" 
-                                className="w-full h-full object-contain"
-                              />
-                            </div>
-                          )}
+                      <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/50 backdrop-blur-sm">
+                        <div className="relative">
+                          {/* Use Finn and Jake celebration GIF for all levels */}
+                          <div className="relative w-64 h-64 flex justify-center">
+                            <img 
+                              src={FinnJakeCelebrationGif} 
+                              alt="Finn and Jake celebration" 
+                              className="object-contain rounded-lg"
+                            />
+                          </div>
                           
                           {/* Celebration text */}
                           <div className="absolute top-full left-0 right-0 text-center mt-4">
