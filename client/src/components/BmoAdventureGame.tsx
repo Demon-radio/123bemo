@@ -583,7 +583,7 @@ export function BmoAdventureGame() {
 
       {/* Game dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] h-[80vh] max-h-[600px] p-0 gap-0 bg-background/95 backdrop-blur-sm border-blue-500/20">
+        <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] max-h-[95vh] p-0 gap-0 bg-background/95 backdrop-blur-sm border-blue-500/20">
           <DialogTitle className="sr-only">BMO Adventure Game</DialogTitle>
           <DialogDescription className="sr-only">
             Help Fionna and Cake fight evil programs inside BMO!
@@ -656,27 +656,33 @@ export function BmoAdventureGame() {
                     <p className="text-xs text-muted-foreground">We'll use this to send you updates about new content.</p>
                   </div>
                   
-                  <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-md mt-4 border border-blue-200 dark:border-blue-800">
-                    <h4 className="font-semibold text-black dark:text-white text-base mb-2">How to play:</h4>
-                    <ul className="text-sm space-y-1 list-disc pl-4 text-black dark:text-white font-medium">
-                      <li>Play as Fionna and Cake inside BMO's system</li>
-                      <li>Battle against Ling of Ooo, Sweet Bee and other enemies</li>
-                      <li>Use Attack, Defend, and Heal basic abilities</li>
-                      <li>Unleash special abilities: Adventure Call (damage) and Friendship Power (heal + defense)</li>
-                      <li>Watch out for enemy special abilities like Swarm, Mind Control, and Infect</li>
-                      <li>Track status effects that persist across turns</li>
-                      <li>Manage cooldowns on your special abilities</li>
-                      <li>Defeat all enemies to win the game!</li>
-                    </ul>
+                  <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md mt-2 border border-blue-200 dark:border-blue-800">
+                    <h4 className="font-semibold text-black dark:text-white text-base mb-1">How to play:</h4>
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-0">
+                      <ul className="text-xs list-disc pl-4 text-black dark:text-white font-medium">
+                        <li>Play as Fionna and Cake inside BMO</li>
+                        <li>Battle against Ling of Ooo & others</li>
+                        <li>Use basic Attack, Defend, and Heal</li>
+                        <li>Use Special Abilities for big effects</li>
+                      </ul>
+                      <ul className="text-xs list-disc pl-4 text-black dark:text-white font-medium">
+                        <li>Watch for enemy special abilities</li>
+                        <li>Track status effects across turns</li>
+                        <li>Manage ability cooldowns</li>
+                        <li>Defeat all enemies to win!</li>
+                      </ul>
+                    </div>
                   </div>
                   
-                  <Button 
-                    onClick={startGame} 
-                    className="bg-blue-500 hover:bg-blue-600 w-full mt-4"
-                    disabled={!playerName.trim()}
-                  >
-                    Start Adventure
-                  </Button>
+                  <div className="sticky bottom-0 bg-gradient-to-t from-background to-transparent py-2 mt-2">
+                    <Button 
+                      onClick={startGame} 
+                      className="bg-blue-500 hover:bg-blue-600 w-full"
+                      disabled={!playerName.trim()}
+                    >
+                      Start Adventure
+                    </Button>
+                  </div>
                 </div>
               </motion.div>
             )}
