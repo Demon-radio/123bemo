@@ -10,21 +10,21 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import BMOImage from "@assets/image_1746719364511.png";
 
-// Game characters and enemies
+// Game characters and enemies based on Adventure Time
 const PLAYER_CHARACTER = {
-  name: "Finn & Jake",
+  name: "Fionna and Cake",
   health: 100,
   attack: 15,
   defense: 10,
-  sprite: "👦👱‍♂️"
+  sprite: "👱‍♀️🐱"
 };
 
 const ENEMIES = [
   { name: "Evil Bug", health: 50, attack: 10, defense: 5, sprite: "🐞" },
   { name: "Memory Thief", health: 70, attack: 12, defense: 8, sprite: "👾" },
   { name: "Virus Monster", health: 90, attack: 15, defense: 10, sprite: "🦠" },
-  { name: "Corrupt Data", health: 40, attack: 18, defense: 3, sprite: "⚡" },
-  { name: "Final Boss", health: 150, attack: 20, defense: 15, sprite: "🐉" }
+  { name: "Ling of Ooo", health: 120, attack: 18, defense: 12, sprite: "💀" },
+  { name: "Sweet Bee", health: 150, attack: 20, defense: 15, sprite: "🐝" }
 ];
 
 export function BmoAdventureGame() {
@@ -99,7 +99,7 @@ export function BmoAdventureGame() {
     setBattleLog([
       "BMO: Welcome to my internal system!",
       "BMO: Oh no! Evil programs are attacking!",
-      "BMO: Help me fight them off, Finn and Jake!",
+      "BMO: Help me fight them off, Fionna and Cake!",
       `BMO: You're facing a ${ENEMIES[0].name}! What will you do?`
     ]);
   };
@@ -122,7 +122,7 @@ export function BmoAdventureGame() {
     const newEnemyHealth = Math.max(0, enemy.health - damage);
     setEnemy({ ...enemy, health: newEnemyHealth });
     
-    const newBattleLog = [...battleLog, `${playerName}'s Finn & Jake attack for ${damage} damage!`];
+    const newBattleLog = [...battleLog, `${playerName}'s Fionna & Cake attack for ${damage} damage!`];
     setBattleLog(newBattleLog);
     
     // Check if enemy is defeated
@@ -144,7 +144,7 @@ export function BmoAdventureGame() {
     const defenseBoost = Math.round(player.defense * 0.5);
     setPlayer({ ...player, defense: player.defense + defenseBoost });
     
-    const newBattleLog = [...battleLog, `${playerName}'s Finn & Jake prepare to defend! Defense +${defenseBoost}!`];
+    const newBattleLog = [...battleLog, `${playerName}'s Fionna & Cake prepare to defend! Defense +${defenseBoost}!`];
     setBattleLog(newBattleLog);
     
     setIsPlayerTurn(false);
@@ -161,7 +161,7 @@ export function BmoAdventureGame() {
     const newHealth = Math.min(PLAYER_CHARACTER.health, player.health + healAmount);
     setPlayer({ ...player, health: newHealth });
     
-    const newBattleLog = [...battleLog, `${playerName}'s Finn & Jake heal for ${healAmount} health!`];
+    const newBattleLog = [...battleLog, `${playerName}'s Fionna & Cake heal for ${healAmount} health!`];
     setBattleLog(newBattleLog);
     
     setIsPlayerTurn(false);
@@ -206,7 +206,7 @@ export function BmoAdventureGame() {
     
     // Check if this was the final enemy
     if (currentLevel >= ENEMIES.length) {
-      setBattleLog([...newBattleLog, "BMO: You defeated all the evil programs! My system is safe now!", "BMO: Thank you, Finn and Jake!"]);
+      setBattleLog([...newBattleLog, "BMO: You defeated all the evil programs! My system is safe now!", "BMO: Thank you, Fionna and Cake!"]);
       setGameState("victory");
     } else {
       // Next enemy
@@ -338,7 +338,7 @@ export function BmoAdventureGame() {
               
                 <h3 className="text-xl font-bold">BMO Adventure Game</h3>
                 <p className="text-muted-foreground mb-4 max-w-md">
-                  Help Finn and Jake fight evil programs inside BMO's system! Fight through multiple enemies and save BMO from corruption.
+                  Help Fionna and Cake fight evil programs inside BMO's system! Battle against Ling of Ooo and Sweet Bee to save BMO from corruption.
                 </p>
                 
                 <div className="w-full max-w-md space-y-4">
@@ -369,8 +369,8 @@ export function BmoAdventureGame() {
                   <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-md mt-4 border border-blue-200 dark:border-blue-800">
                     <h4 className="font-semibold text-black dark:text-white text-base mb-2">How to play:</h4>
                     <ul className="text-sm space-y-1 list-disc pl-4 text-black dark:text-white font-medium">
-                      <li>Play as Finn and Jake inside BMO's system</li>
-                      <li>Fight different enemies over 5 levels</li>
+                      <li>Play as Fionna and Cake inside BMO's system</li>
+                      <li>Battle against Ling of Ooo, Sweet Bee and other enemies</li>
                       <li>Use Attack, Defend, and Heal abilities strategically</li>
                       <li>Defeat all enemies to win!</li>
                       <li>Your score increases based on the levels completed</li>
@@ -397,7 +397,7 @@ export function BmoAdventureGame() {
                     {/* Player stats */}
                     <div className="w-1/2 pr-2">
                       <div className="flex justify-between items-center mb-1">
-                        <h3 className="text-sm font-bold">Finn & Jake</h3>
+                        <h3 className="text-sm font-bold">Fionna & Cake</h3>
                         <div className="flex items-center">
                           <Heart className="w-4 h-4 text-red-500 mr-1" />
                           <span className="text-sm">{player.health}/{PLAYER_CHARACTER.health}</span>
@@ -528,7 +528,7 @@ export function BmoAdventureGame() {
                 
                 <h3 className="text-xl font-bold text-red-500">Game Over!</h3>
                 <p className="mb-2">
-                  Finn and Jake were defeated by the evil programs.
+                  Fionna and Cake were defeated by the evil programs.
                 </p>
                 <p className="text-2xl font-bold mb-6">
                   Your score: <span className="text-blue-500">{score}</span>
