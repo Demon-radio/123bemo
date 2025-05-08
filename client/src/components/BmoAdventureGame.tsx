@@ -23,8 +23,8 @@ const ENEMIES = [
   { name: "Evil Bug", health: 50, attack: 10, defense: 5, sprite: "🐞" },
   { name: "Memory Thief", health: 70, attack: 12, defense: 8, sprite: "👾" },
   { name: "Virus Monster", health: 90, attack: 15, defense: 10, sprite: "🦠" },
-  { name: "Ling of Ooo", health: 120, attack: 18, defense: 12, sprite: "💀" },
-  { name: "Sweet Bee", health: 150, attack: 20, defense: 15, sprite: "🐝" }
+  { name: "Ling of Ooo", health: 120, attack: 18, defense: 12, sprite: "👨‍🦰" }, // Yellow man
+  { name: "Sweet Bee", health: 150, attack: 20, defense: 15, sprite: "👦" }  // Older boy
 ];
 
 export function BmoAdventureGame() {
@@ -296,7 +296,7 @@ export function BmoAdventureGame() {
         <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] h-[80vh] max-h-[600px] p-0 gap-0 bg-background/95 backdrop-blur-sm border-blue-500/20">
           <DialogTitle className="sr-only">BMO Adventure Game</DialogTitle>
           <DialogDescription className="sr-only">
-            Help Finn and Jake fight evil programs inside BMO!
+            Help Fionna and Cake fight evil programs inside BMO!
           </DialogDescription>
           
           {/* Game header */}
@@ -573,7 +573,7 @@ export function BmoAdventureGame() {
                 
                 <h3 className="text-xl font-bold text-green-500">Victory!</h3>
                 <p className="mb-2">
-                  Finn and Jake successfully defeated all the evil programs inside BMO!
+                  Fionna and Cake successfully defeated all the evil programs inside BMO!
                 </p>
                 <p className="text-2xl font-bold mb-6">
                   Your score: <span className="text-blue-500">{score}</span>
