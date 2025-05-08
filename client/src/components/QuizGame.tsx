@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
 
 // Import Adventure Time character images
 import BMO from "@assets/image_1746719364511.png";
@@ -316,6 +317,10 @@ export function QuizGame() {
     }
     
     setGameState("question");
+    
+    // Track game start with quiz type
+    trackGameStart(`Adventure Time Quiz (${quizType === "website" ? "Website" : "Characters"})`);
+    trackEvent("quiz_started", "games", `Quiz Started: ${quizType}`, questions.length);
   };
 
   // Check answer and move to next question
@@ -323,12 +328,29 @@ export function QuizGame() {
     if (!selectedAnswer) return;
 
     const isCorrect = selectedAnswer === questions[currentQuestion].correctAnswer;
+    const currentQ = questions[currentQuestion];
     
     if (isCorrect) {
       setScore(score + 1);
       setAnswerFeedback("correct");
+      
+      // Track correct answer
+      trackEvent(
+        "quiz_correct_answer", 
+        "games", 
+        `Quiz ${quizType} Q${currentQuestion+1}`, 
+        1
+      );
     } else {
       setAnswerFeedback("incorrect");
+      
+      // Track incorrect answer with details
+      trackEvent(
+        "quiz_incorrect_answer", 
+        "games", 
+        `Quiz ${quizType} Q${currentQuestion+1}`, 
+        0
+      );
     }
     
     setGameState("feedback");
@@ -345,6 +367,17 @@ export function QuizGame() {
     } else {
       setGameState("result");
       
+      // Track game completion with final score and quiz type
+      trackGameComplete(`Adventure Time Quiz (${quizType === "website" ? "Website" : "Characters"})`, score);
+      
+      // Track additional data about completion
+      trackEvent(
+        "quiz_completed", 
+        "games", 
+        `Quiz Completed: ${quizType}`, 
+        score
+      );
+      
       // Log game completion
       console.log("Game completed", {
         name: playerName,
@@ -359,6 +392,9 @@ export function QuizGame() {
   const handleQuizTypeChange = (type: "website" | "adventure") => {
     setQuizType(type);
     resetGame();
+    
+    // Track quiz type selection
+    trackEvent("quiz_type_selected", "games", `Quiz Type: ${type === "website" ? "Website" : "Characters"}`);
   };
 
   return (
