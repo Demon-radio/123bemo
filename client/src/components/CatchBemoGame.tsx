@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
 
 export function CatchBemoGame() {
   // Game state
@@ -46,6 +47,9 @@ export function CatchBemoGame() {
             height: rect.height
           });
           setGameActive(true);
+          
+          // Track game start event
+          trackGameStart("Catch BEMORA");
         }
       }, 100);
     }
@@ -61,6 +65,10 @@ export function CatchBemoGame() {
           clearInterval(timer);
           setGameActive(false);
           setGameState("gameover");
+          
+          // Track game complete event with score
+          trackGameComplete("Catch BEMORA", score);
+          
           return 0;
         }
         return prev - 1;
@@ -68,7 +76,7 @@ export function CatchBemoGame() {
     }, 1000);
     
     return () => clearInterval(timer);
-  }, [gameActive]);
+  }, [gameActive, score]);
   
   // Handle robot movement
   useEffect(() => {
