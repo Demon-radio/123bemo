@@ -123,6 +123,7 @@ export function BmoAdventureGame() {
   const [specialAbilityAnimation, setSpecialAbilityAnimation] = useState(false);
   const [statusEffects, setStatusEffects] = useState<StatusEffect[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   
   // Special abilities for the player
   const [specialAbilities, setSpecialAbilities] = useState<PlayerSpecialAbility[]>([
@@ -494,6 +495,10 @@ export function BmoAdventureGame() {
       `You earned ${enemyPoints} points!`
     ];
     
+    // Show celebration animation
+    setShowCelebration(true);
+    setTimeout(() => setShowCelebration(false), 3000);
+    
     // Check if this was the final enemy
     if (currentLevel >= ENEMIES.length) {
       setBattleLog([...newBattleLog, "BMO: You defeated all the evil programs! My system is safe now!", "BMO: Thank you, Fionna and Cake!"]);
@@ -770,6 +775,42 @@ export function BmoAdventureGame() {
                     >
                       {enemy.sprite}
                     </motion.div>
+                    
+                    {/* Level Up Celebration Overlay */}
+                    {showCelebration && (
+                      <div className="absolute inset-0 flex items-center justify-center z-10">
+                        <div className="relative animate-bounce">
+                          {/* For first level, show simple celebration */}
+                          {currentLevel <= 2 && (
+                            <div className="text-6xl">
+                              👱‍♀️🐱💪
+                            </div>
+                          )}
+                          
+                          {/* For higher levels, show both Finn and Jake */}
+                          {currentLevel > 2 && (
+                            <div className="flex flex-col items-center">
+                              <div className="text-6xl mb-2">
+                                👱‍♀️🐱🎉
+                              </div>
+                              <div className="text-4xl">
+                                🐶🎮
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Celebration text */}
+                          <div className="absolute top-full left-0 right-0 text-center mt-4">
+                            <h2 className="text-yellow-400 text-2xl font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] animate-pulse">
+                              MATHEMATICAL!
+                            </h2>
+                            <p className="text-white text-lg font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                              Level {currentLevel} cleared!
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   {/* Battle log */}
