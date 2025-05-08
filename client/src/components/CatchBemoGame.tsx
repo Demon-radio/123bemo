@@ -136,17 +136,17 @@ export function CatchBemoGame() {
   
   // Start game after registration
   const startGame = () => {
-    if (!playerName.trim()) {
-      if (nameInputRef.current) {
-        nameInputRef.current.focus();
-      }
-      return;
-    }
-    
+    // Remove validation check to allow any name (even empty)
+    // This helps users who are having trouble with the name input
     setGameState("playing");
     setScore(0);
     setTimeLeft(30);
     setGameActive(true);
+    
+    // Use default name if none provided
+    if (!playerName.trim()) {
+      setPlayerName("Player");
+    }
     
     // Measure game area
     setTimeout(() => {
@@ -264,7 +264,7 @@ export function CatchBemoGame() {
                   <Button 
                     onClick={startGame} 
                     className="bg-primary hover:bg-primary/90 w-full mt-4"
-                    disabled={!playerName.trim()}
+                    // Removed the disabled attribute to ensure button always works
                   >
                     Start Game
                   </Button>
