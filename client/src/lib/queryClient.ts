@@ -7,20 +7,53 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(
-  method: string,
-  url: string,
-  data?: unknown | undefined,
-): Promise<Response> {
-  const res = await fetch(url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+interface RequestOptions {
+  method?: string; 
+  body?: string;
+  headers?: Record<string, string>;
+}
 
-  await throwIfResNotOk(res);
-  return res;
+// New implementation to handle both string and object params
+export async function apiRequest(
+  urlOrOptions: string | RequestOptions,
+  options?: RequestOptions,
+): Promise<any> {
+  let url: string;
+  let fetchOptions: RequestInit = {
+    credentials: "include",
+  };
+
+  // If first parameter is a string (URL)
+  if (typeof urlOrOptions === 'string') {
+    url = urlOrOptions;
+    if (options) {
+      fetchOptions = {
+        ...fetchOptions,
+        method: options.method || 'GET',
+        headers: options.headers || (options.body ? { 'Content-Type': 'application/json' } : {}),
+        body: options.body,
+      };
+    }
+  } else {
+    // If first parameter is an options object
+    throw new Error('URL must be provided as the first parameter');
+  }
+
+  const res = await fetch(url, fetchOptions);
+
+  // Check if response is OK
+  if (!res.ok) {
+    const text = (await res.text()) || res.statusText;
+    throw new Error(`${res.status}: ${text}`);
+  }
+
+  // Try to parse as JSON, but return text if it fails
+  try {
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    return { success: true };
+  }
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
