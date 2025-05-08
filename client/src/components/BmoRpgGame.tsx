@@ -233,7 +233,7 @@ export function BmoRpgGame() {
     wave: 1,
     enemiesDefeated: 0,
     specialCharges: 3,
-    showTutorial: true,
+    showTutorial: false, // Changed to false to avoid showing tutorial on start
     showMinimap: false,
     debug: false
   });
@@ -1914,7 +1914,20 @@ export function BmoRpgGame() {
               <h2 className="text-xl font-bold"><span className="text-green-500">BMO</span> RPG Adventure</h2>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={() => setShowTutorial(!showTutorial)}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default button behavior
+                  e.stopPropagation(); // Stop event propagation to parent elements
+                  
+                  // Update state to toggle tutorial display
+                  setShowTutorial((prev) => !prev);
+                  
+                  // Also update the game state reference directly
+                  gameStateRef.current.showTutorial = !gameStateRef.current.showTutorial;
+                }}
+              >
                 <Info className="h-4 w-4 mr-1" />
                 Help
               </Button>
