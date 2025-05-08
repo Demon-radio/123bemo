@@ -66,7 +66,7 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(gamePlayers)
       .where(eq(gamePlayers.game_type, gameType))
-      .orderBy(gamePlayers.score)
+      .orderBy(desc(gamePlayers.score))
       .limit(limit);
   }
 }

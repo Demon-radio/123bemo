@@ -1,72 +1,154 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X, Gamepad } from "lucide-react";
 import { RobotLogo } from "@/components/RobotLogo";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export function CatchBemoGame() {
   // Game state
   const [isOpen, setIsOpen] = useState(false);
+  const [gameState, setGameState] = useState<"register" | "playing" | "gameover">("register");
+  const [playerName, setPlayerName] = useState("");
+  const [playerEmail, setPlayerEmail] = useState("");
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameActive, setGameActive] = useState(false);
   const [robotPosition, setRobotPosition] = useState({ x: 100, y: 100 });
   const [gameAreaSize, setGameAreaSize] = useState({ width: 400, height: 400 });
+  const [topPlayers, setTopPlayers] = useState<Array<{name: string, score: number}>>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
-  // Handle dialog open/close
+  // Reset game when dialog closes
   useEffect(() => {
     if (!isOpen) {
-      // Reset game when dialog closes
       setScore(0);
       setTimeLeft(30);
       setGameActive(false);
+      setGameState("register");
     }
   }, [isOpen]);
 
   // Handle game timer
   useEffect(() => {
-    // Only run if game is active
     if (!gameActive) return;
     
-    // Start the timer
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
-        // When timer reaches 0, end game
         if (prev <= 1) {
           clearInterval(timer);
           setGameActive(false);
+          setGameState("gameover");
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
     
-    // Cleanup timer on unmount or when game status changes
     return () => clearInterval(timer);
   }, [gameActive]);
   
   // Handle robot movement
   useEffect(() => {
-    // Only run if game is active
     if (!gameActive) return;
     
-    // Move robot initially
     moveRobot();
     
-    // Set up interval for movement
     const moveInterval = setInterval(moveRobot, 1500);
     
-    // Cleanup on unmount or when game status changes
     return () => clearInterval(moveInterval);
   }, [gameActive, gameAreaSize]);
   
+  // Fetch top players
+  useEffect(() => {
+    if (gameState === "gameover") {
+      fetchTopPlayers();
+    }
+  }, [gameState]);
+  
+  // Fetch top players function
+  const fetchTopPlayers = async () => {
+    try {
+      const response = await apiRequest(`/api/games/top-players/catch?limit=5`, {
+        method: 'GET'
+      });
+      
+      if (response.success) {
+        setTopPlayers(response.players);
+      }
+    } catch (error) {
+      console.error('Failed to fetch top players:', error);
+    }
+  };
+  
+  // Submit score function
+  const submitScore = async () => {
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      const response = await apiRequest('/api/games/submit-score', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: playerName,
+          email: playerEmail || null,
+          game_type: 'catch',
+          score: score
+        })
+      });
+      
+      if (response.success) {
+        toast({
+          title: "Score submitted!",
+          description: "Your score has been saved.",
+        });
+        fetchTopPlayers();
+      }
+    } catch (error) {
+      console.error('Failed to submit score:', error);
+      toast({
+        title: "Failed to submit score",
+        description: "Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
   // Start game function
+  const startRegistration = () => {
+    setGameState("register");
+    
+    // Focus the name input
+    setTimeout(() => {
+      if (nameInputRef.current) {
+        nameInputRef.current.focus();
+      }
+    }, 100);
+  };
+  
+  // Start game after registration
   const startGame = () => {
+    if (!playerName.trim()) {
+      if (nameInputRef.current) {
+        nameInputRef.current.focus();
+      }
+      return;
+    }
+    
+    setGameState("playing");
     setScore(0);
     setTimeLeft(30);
     setGameActive(true);
     
-    // Measure game area after a small delay to ensure DOM is ready
+    // Measure game area
     setTimeout(() => {
       const gameArea = document.getElementById('game-area');
       if (gameArea) {
@@ -85,7 +167,6 @@ export function CatchBemoGame() {
     const maxX = Math.max(0, gameAreaSize.width - robotSize - 20);
     const maxY = Math.max(0, gameAreaSize.height - robotSize - 20);
     
-    // Ensure we have valid dimensions
     if (maxX <= 0 || maxY <= 0) return;
     
     const newX = Math.floor(Math.random() * maxX);
@@ -98,16 +179,13 @@ export function CatchBemoGame() {
   const catchRobot = () => {
     if (!gameActive) return;
     
-    // Increment score
     setScore(prev => prev + 1);
-    
-    // Move robot to new position
     moveRobot();
   };
 
   return (
     <>
-      {/* Game button in hero section */}
+      {/* Game button */}
       <Button 
         onClick={() => setIsOpen(true)}
         variant="outline"
@@ -129,16 +207,18 @@ export function CatchBemoGame() {
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-4">
               <h2 className="text-xl font-bold">Catch <span className="text-primary">BEMORA</span> Game</h2>
-              <div className="flex gap-4 text-sm font-mono">
-                <div className="flex items-center gap-1">
-                  <span className="font-bold text-secondary">Score:</span>
-                  <span className="font-bold">{score}</span>
+              {gameState === "playing" && (
+                <div className="flex gap-4 text-sm font-mono">
+                  <div className="flex items-center gap-1">
+                    <span className="font-bold text-secondary">Score:</span>
+                    <span className="font-bold">{score}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="font-bold text-primary">Time:</span>
+                    <span className={`font-bold ${timeLeft <= 10 ? "text-red-500" : ""}`}>{timeLeft}s</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  <span className="font-bold text-primary">Time:</span>
-                  <span className={`font-bold ${timeLeft <= 10 ? "text-red-500" : ""}`}>{timeLeft}s</span>
-                </div>
-              </div>
+              )}
             </div>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
               <X className="h-4 w-4" />
@@ -150,65 +230,136 @@ export function CatchBemoGame() {
             id="game-area"
             className="relative flex-1 overflow-hidden bg-[radial-gradient(circle_at_center,rgba(12,219,219,0.05)_0,transparent_70%)]"
           >
-            {/* Start screen */}
-            {!gameActive && timeLeft === 30 && (
+            {/* Registration screen */}
+            {gameState === "register" && (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4">
-                <h3 className="text-xl font-bold">Catch as many <span className="text-primary">BEMORA</span> logos as you can!</h3>
-                <p className="text-muted-foreground mb-4">Click on the logo quickly before it escapes. You only have 30 seconds!</p>
-                <Button 
-                  onClick={startGame} 
-                  className="bg-primary hover:bg-primary/90 relative overflow-hidden group"
-                >
-                  <span className="relative z-10">Start Game!</span>
-                  <span className="absolute inset-0 bg-secondary scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
-                </Button>
+                <h3 className="text-xl font-bold">Catch <span className="text-primary">BEMORA</span> Game</h3>
+                <p className="text-muted-foreground mb-4">Enter your details to start playing!</p>
+                
+                <div className="w-full max-w-md space-y-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="player-name">Your Name or Nickname <span className="text-red-500">*</span></Label>
+                    <Input 
+                      id="player-name" 
+                      ref={nameInputRef}
+                      value={playerName} 
+                      onChange={(e) => setPlayerName(e.target.value)} 
+                      placeholder="Enter your name"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="grid gap-2">
+                    <Label htmlFor="player-email">Your Email (optional)</Label>
+                    <Input 
+                      id="player-email" 
+                      type="email"
+                      value={playerEmail} 
+                      onChange={(e) => setPlayerEmail(e.target.value)} 
+                      placeholder="your.email@example.com"
+                    />
+                    <p className="text-xs text-muted-foreground">We'll use this to send you updates about new content.</p>
+                  </div>
+                  
+                  <Button 
+                    onClick={startGame} 
+                    className="bg-primary hover:bg-primary/90 w-full mt-4"
+                    disabled={!playerName.trim()}
+                  >
+                    Start Game
+                  </Button>
+                </div>
               </div>
             )}
 
+            {/* Playing state */}
+            {gameState === "playing" && (
+              <>
+                {/* Active game - the robot logo */}
+                {gameActive && (
+                  <div 
+                    style={{
+                      position: 'absolute',
+                      left: `${robotPosition.x}px`, 
+                      top: `${robotPosition.y}px`,
+                      zIndex: 10,
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease-out'
+                    }}
+                  >
+                    <button 
+                      onClick={catchRobot}
+                      className="bg-transparent border-0 p-0 m-0 cursor-pointer"
+                    >
+                      <RobotLogo 
+                        size={60} 
+                        className="text-primary hover:text-secondary transition-colors game-robot" 
+                      />
+                    </button>
+                  </div>
+                )}
+
+                {/* Game instructions */}
+                {gameActive && timeLeft >= 28 && (
+                  <div className="absolute top-4 left-0 right-0 text-center">
+                    <p className="bg-background/80 mx-auto inline-block px-4 py-2 rounded-full text-sm">
+                      Click on the BEMORA logo as fast as you can!
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+
             {/* Game over screen */}
-            {!gameActive && timeLeft === 0 && (
+            {gameState === "gameover" && (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center gap-4 bg-background/80">
                 <h3 className="text-xl font-bold">Game Over!</h3>
-                <p className="text-2xl font-bold mb-2">Your Score: <span className="text-primary">{score}</span></p>
+                <p className="text-2xl font-bold mb-2">
+                  {playerName}, your score: <span className="text-primary">{score}</span>
+                </p>
                 <p className="text-muted-foreground mb-4">
                   {score < 5 ? "Try again! You can do better!" : 
                    score < 10 ? "Good job! Keep improving!" : 
                    score < 15 ? "Amazing! You're a great player!" : 
                    "Incredible! You're a true champion!"}
                 </p>
+                
+                {/* Leaderboard */}
+                {topPlayers.length > 0 && (
+                  <div className="w-full max-w-md mb-4">
+                    <h4 className="font-bold mb-2">Top Players</h4>
+                    <div className="bg-muted p-3 rounded-md">
+                      <div className="grid grid-cols-4 text-sm font-medium pb-2 border-b border-border">
+                        <div className="col-span-1 text-left">Rank</div>
+                        <div className="col-span-2 text-left">Player</div>
+                        <div className="col-span-1 text-right">Score</div>
+                      </div>
+                      {topPlayers.map((player, index) => (
+                        <div key={index} className="grid grid-cols-4 text-sm py-2 border-b border-border/50 last:border-0">
+                          <div className="col-span-1 text-left">{index + 1}</div>
+                          <div className="col-span-2 text-left">{player.name}</div>
+                          <div className="col-span-1 text-right">{player.score}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 <div className="flex gap-2">
                   <Button 
-                    onClick={startGame}
-                    className="bg-primary hover:bg-primary/90 relative overflow-hidden group"
+                    onClick={submitScore}
+                    className="bg-secondary hover:bg-secondary/90"
+                    disabled={isSubmitting}
                   >
-                    <span className="relative z-10">Play Again</span>
-                    <span className="absolute inset-0 bg-secondary scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
+                    {isSubmitting ? "Saving..." : "Save Score"}
+                  </Button>
+                  <Button 
+                    onClick={startGame}
+                    className="bg-primary hover:bg-primary/90"
+                  >
+                    Play Again
                   </Button>
                 </div>
-              </div>
-            )}
-
-            {/* Active game - the robot logo */}
-            {gameActive && (
-              <div 
-                style={{
-                  position: 'absolute',
-                  left: `${robotPosition.x}px`, 
-                  top: `${robotPosition.y}px`,
-                  zIndex: 10,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease-out'
-                }}
-              >
-                <button 
-                  onClick={catchRobot}
-                  className="bg-transparent border-0 p-0 m-0 cursor-pointer"
-                >
-                  <RobotLogo 
-                    size={60} 
-                    className="text-primary hover:text-secondary transition-colors game-robot" 
-                  />
-                </button>
               </div>
             )}
 
