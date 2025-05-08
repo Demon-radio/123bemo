@@ -1584,6 +1584,10 @@ export function BmoRpgGame() {
     
     if (!canvas) return;
     
+    // Create a semi-transparent background for the UI
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+    ctx.fillRect(10, 10, 200, 200);
+    
     // Draw health bar
     const healthBarWidth = 150;
     const healthBarHeight = 15;
@@ -1596,8 +1600,9 @@ export function BmoRpgGame() {
                     healthPercent > 0.25 ? '#ffff00' : '#ff0000';
     ctx.fillRect(20, 20, healthBarWidth * healthPercent, healthBarHeight);
     
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '12px Arial';
+    // Black text for better visibility
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 12px Arial';
     ctx.fillText(`HP: ${Math.floor(player.health)}/${player.maxHealth}`, 25, 32);
     
     // Draw mana bar
@@ -1611,8 +1616,8 @@ export function BmoRpgGame() {
     ctx.fillStyle = '#4facfe';
     ctx.fillRect(20, 40, manaBarWidth * manaPercent, manaBarHeight);
     
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '10px Arial';
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 11px Arial';
     ctx.fillText(`MP: ${Math.floor(player.mana)}/${player.maxMana}`, 25, 48);
     
     // Draw experience bar
@@ -1628,56 +1633,59 @@ export function BmoRpgGame() {
     ctx.fillRect(20, 55, expBarWidth * expPercent, expBarHeight);
     
     // Draw level indicator
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '16px Arial';
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 16px Arial';
     ctx.fillText(`Level: ${player.level}`, 20, 75);
     
     // Draw score
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '16px Arial';
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 16px Arial';
     ctx.fillText(`Score: ${gameStateRef.current.score}`, 20, 95);
     
     // Draw wave indicator
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '16px Arial';
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 16px Arial';
     ctx.fillText(`Wave: ${gameStateRef.current.wave}/5`, 20, 115);
     
     // Draw enemies defeated
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '14px Arial';
-    ctx.fillText(`Enemies defeated: ${gameStateRef.current.enemiesDefeated}`, 20, 135);
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 14px Arial';
+    ctx.fillText(`Enemies Defeated: ${gameStateRef.current.enemiesDefeated}`, 20, 135);
     
     // Draw special attack charges
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '14px Arial';
-    ctx.fillText(`Special attacks: ${gameStateRef.current.specialCharges}`, 20, 155);
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 14px Arial';
+    ctx.fillText(`Special Attacks: ${gameStateRef.current.specialCharges}/3`, 20, 155);
     
     // Draw attack cooldown indicator
     if (player.attackCooldown > 0) {
-      ctx.fillStyle = '#ff0000';
-      ctx.font = '12px Arial';
+      ctx.fillStyle = '#880000';
+      ctx.font = 'bold 12px Arial';
       ctx.fillText(`Attack: ${player.attackCooldown.toFixed(1)}s`, 20, 175);
     } else {
-      ctx.fillStyle = '#00ff00';
-      ctx.font = '12px Arial';
+      ctx.fillStyle = '#008800';
+      ctx.font = 'bold 12px Arial';
       ctx.fillText(`Attack: Ready`, 20, 175);
     }
     
     // Draw special attack cooldown indicator
     if (player.specialAttackCooldown > 0) {
-      ctx.fillStyle = '#ff0000';
-      ctx.font = '12px Arial';
+      ctx.fillStyle = '#880000';
+      ctx.font = 'bold 12px Arial';
       ctx.fillText(`Special: ${player.specialAttackCooldown.toFixed(1)}s`, 20, 195);
     } else if (gameStateRef.current.specialCharges > 0) {
-      ctx.fillStyle = '#00ff00';
-      ctx.font = '12px Arial';
+      ctx.fillStyle = '#008800';
+      ctx.font = 'bold 12px Arial';
       ctx.fillText(`Special: Ready`, 20, 195);
     }
     
-    // Draw controls reminder
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    ctx.font = '12px Arial';
-    ctx.fillText('ARROWS: Move, SPACE: Attack, SHIFT: Special, H: Help', canvas.width - 350, canvas.height - 10);
+    // Draw controls reminder with better visibility
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+    ctx.fillRect(canvas.width - 400, canvas.height - 30, 390, 20);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 12px Arial';
+    ctx.fillText('Controls: Arrow keys to move, Spacebar to attack, Shift for special, H for help', 
+      canvas.width - 390, canvas.height - 15);
   };
   
   // Render minimap
@@ -1804,21 +1812,26 @@ export function BmoRpgGame() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     
-    // Semi-transparent overlay
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    // Semi-transparent white background for better readability
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // Tutorial title
-    ctx.fillStyle = '#ffffff';
-    ctx.font = '28px Arial';
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 28px Arial';
     ctx.textAlign = 'center';
     ctx.fillText('BMO RPG Adventure - Instructions', canvas.width / 2, 50);
     
+    // Add a colored header for controls
+    ctx.fillStyle = 'rgba(0, 100, 0, 0.15)';
+    ctx.fillRect(canvas.width/2 - 200, 70, 400, 40);
+    
     // Instructions
-    ctx.font = '18px Arial';
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 20px Arial';
     ctx.fillText('Controls:', canvas.width / 2, 100);
     
-    ctx.font = '16px Arial';
+    ctx.font = 'bold 16px Arial';
     ctx.fillText('Arrow keys / WASD: Move character', canvas.width / 2, 130);
     ctx.fillText('Spacebar: Attack enemies', canvas.width / 2, 160);
     ctx.fillText('Shift: Special attack (limited uses)', canvas.width / 2, 190);
@@ -1826,20 +1839,27 @@ export function BmoRpgGame() {
     ctx.fillText('M: Show/hide minimap', canvas.width / 2, 250);
     ctx.fillText('P: Pause game', canvas.width / 2, 280);
     
-    ctx.font = '18px Arial';
+    // Add a colored header for gameplay
+    ctx.fillStyle = 'rgba(0, 100, 0, 0.15)';
+    ctx.fillRect(canvas.width/2 - 200, 300, 400, 40);
+    
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 20px Arial';
     ctx.fillText('Gameplay:', canvas.width / 2, 330);
     
-    ctx.font = '16px Arial';
+    ctx.font = 'bold 16px Arial';
     ctx.fillText('Defeat all enemies to complete a wave', canvas.width / 2, 360);
     ctx.fillText('There are 5 waves in total - survive to win!', canvas.width / 2, 390);
     ctx.fillText('Collect health potions to restore health', canvas.width / 2, 420);
     ctx.fillText('Defeat enemies to gain experience and level up', canvas.width / 2, 450);
     ctx.fillText('Special attacks damage all enemies in range', canvas.width / 2, 480);
     
-    // Continue instructions
-    ctx.fillStyle = '#ffff00';
-    ctx.font = '20px Arial';
-    ctx.fillText('Press H to close this help screen and play', canvas.width / 2, 540);
+    // Continue instructions - make this stand out with a button-like style
+    ctx.fillStyle = 'rgba(0, 150, 0, 1)';
+    ctx.fillRect(canvas.width/2 - 190, 520, 380, 40);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 20px Arial';
+    ctx.fillText('Press H to close this help screen and play', canvas.width / 2, 545);
     
     // Reset text alignment
     ctx.textAlign = 'left';
@@ -1958,19 +1978,19 @@ export function BmoRpgGame() {
           </div>
           
           {/* Game status bar */}
-          <div className="p-3 border-t border-border bg-green-50 dark:bg-green-950/30">
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              <div>
-                <span className="font-semibold">Level: {level}</span> | 
-                <span className="font-semibold ml-2">Score: {score}</span> |
-                <span className="font-semibold ml-2">Wave: {wave}/5</span>
+          <div className="p-3 border-t border-border bg-green-100 dark:bg-green-900">
+            <div className="grid grid-cols-3 gap-2 text-sm">
+              <div className="text-black dark:text-white">
+                <span className="font-bold">Level: {level}</span> | 
+                <span className="font-bold ml-2">Score: {score}</span> |
+                <span className="font-bold ml-2">Wave: {wave}/5</span>
               </div>
-              <div className="text-center">
-                <span className="font-semibold">Controls: Arrow keys to move, Spacebar to attack, Shift for special</span>
+              <div className="text-center text-black dark:text-white">
+                <span className="font-bold">Controls: Arrow keys to move, Spacebar to attack, Shift for special</span>
               </div>
-              <div className="text-right">
-                <span className="font-semibold">Enemies Defeated: {enemiesDefeated}</span> | 
-                <span className="font-semibold ml-2">Special Attacks: {specialAttackCharge}/3</span>
+              <div className="text-right text-black dark:text-white">
+                <span className="font-bold">Enemies Defeated: {enemiesDefeated}</span> | 
+                <span className="font-bold ml-2">Special Attacks: {specialAttackCharge}/3</span>
               </div>
             </div>
           </div>
