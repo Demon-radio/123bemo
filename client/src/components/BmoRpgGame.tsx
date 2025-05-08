@@ -238,9 +238,30 @@ export function BmoRpgGame() {
     debug: false
   });
 
+  // Reference to store the previous game state when closed
+  const previousGameStateRef = useRef<GameState | null>(null);
+  
   // Initialize the game
   useEffect(() => {
+    // If not open or no canvas, return early
     if (!isOpen || !canvasRef.current) return;
+    
+    // Check if we have a previous game state to restore
+    if (previousGameStateRef.current) {
+      // Restore the previous game state instead of resetting
+      gameStateRef.current = { ...previousGameStateRef.current };
+      setScore(gameStateRef.current.score);
+      setHealth(gameStateRef.current.player.health);
+      setMana(gameStateRef.current.player.mana);
+      setLevel(gameStateRef.current.player.level);
+      setExperience(gameStateRef.current.player.experience);
+      setWave(gameStateRef.current.wave);
+      setSpecialAttackCharge(gameStateRef.current.specialCharges);
+      setEnemiesDefeated(gameStateRef.current.enemiesDefeated);
+      
+      console.log("Restored previous game state at level:", gameStateRef.current.player.level);
+      previousGameStateRef.current = null; // Clear reference after restoring
+    }
     
     // Set up canvas
     const canvas = canvasRef.current;
@@ -544,9 +565,16 @@ export function BmoRpgGame() {
     };
   }, [isOpen, gameLoaded, gameOver, gameVictory, showTutorial]);
   
-  // Handle dialog closing
+  // Handle dialog closing 
   useEffect(() => {
     if (!isOpen) {
+      // Save the current game state before closing
+      if (gameStateRef.current && gameStateRef.current.player.level > 0) {
+        console.log("Saving game state at level:", gameStateRef.current.player.level);
+        previousGameStateRef.current = { ...gameStateRef.current };
+      }
+      
+      // Stop the game
       setGameRunning(false);
       if (animationFrameIdRef.current) {
         cancelAnimationFrame(animationFrameIdRef.current);
@@ -577,9 +605,14 @@ export function BmoRpgGame() {
   
   // Player special attack (deals damage to all enemies in range)
   const playerSpecialAttack = () => {
-    if (gameStateRef.current.specialCharges <= 0) return;
-    
+    // Get the current player state
     const player = gameStateRef.current.player;
+    
+    // Check if we have special attack charges
+    if (gameStateRef.current.specialCharges <= 0) {
+      console.log("No special charges left");
+      return;
+    }
     
     // Use a special charge
     gameStateRef.current.specialCharges--;
@@ -1931,7 +1964,15 @@ export function BmoRpgGame() {
                 <Info className="h-4 w-4 mr-1" />
                 Help
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsOpen(false);
+                }}
+              >
                 <X className="h-4 w-4" />
               </Button>
             </div>

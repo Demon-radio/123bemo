@@ -362,46 +362,41 @@ export function CatchBemoGame() {
                   </div>
                 )}
                 
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={() => {
-                      // Direct function code without async/await to avoid errors
-                      setIsSubmitting(true);
+                {/* Simplified button layout with <a> tags which are more reliable */}
+                <div className="flex justify-center w-full gap-4 mt-4">
+                  <a 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // Simple feedback for save
                       toast({
-                        title: "Score recorded!",
-                        description: "Your score has been saved.",
+                        title: "Score saved!",
+                        description: "Your score has been recorded.",
                       });
-                      setTimeout(() => setIsSubmitting(false), 500);
                     }}
-                    className="bg-secondary hover:bg-secondary/90"
-                    disabled={isSubmitting}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded text-lg no-underline"
                   >
-                    {isSubmitting ? "Saving..." : "Save Score"}
-                  </Button>
-                  <Button 
-                    onClick={() => {
-                      // Direct game restart without using startGame function
-                      setScore(0);
-                      setTimeLeft(30);
-                      setGameState("playing");
-                      setGameActive(true);
-                      
-                      // Measure game area
+                    Save Score
+                  </a>
+                  
+                  <a 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // Direct restart with reload approach
+                      setIsOpen(false);
                       setTimeout(() => {
-                        const gameArea = document.getElementById('game-area');
-                        if (gameArea) {
-                          const rect = gameArea.getBoundingClientRect();
-                          setGameAreaSize({
-                            width: rect.width,
-                            height: rect.height
-                          });
-                        }
+                        setIsOpen(true);
+                        setScore(0);
+                        setTimeLeft(30);
+                        setGameState("playing");
+                        setGameActive(true);
                       }, 100);
                     }}
-                    className="bg-primary hover:bg-primary/90"
+                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded text-lg no-underline"
                   >
                     Play Again
-                  </Button>
+                  </a>
                 </div>
               </div>
             )}
