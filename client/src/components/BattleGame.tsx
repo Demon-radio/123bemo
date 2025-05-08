@@ -357,21 +357,21 @@ export function BattleGame() {
         className="w-full bg-orange-600/10 border-orange-600 text-orange-600 hover:bg-orange-600/20 shine-effect flex items-center gap-2 px-8 py-3 justify-center"
       >
         <Swords className="h-5 w-5" />
-        <span className="font-semibold">Battle of Knowledge</span>
+        <span className="font-semibold">Adventure Time Trivia</span>
       </Button>
 
       {/* Game dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] max-h-[90vh] overflow-y-auto p-0 gap-0 bg-background/95 backdrop-blur-sm border-orange-600/20">
-          <DialogTitle className="sr-only">BEMORA Battle Game</DialogTitle>
+          <DialogTitle className="sr-only">Adventure Time Trivia Battle</DialogTitle>
           <DialogDescription className="sr-only">
-            Test your knowledge in a battle against AI!
+            Test your Adventure Time knowledge against BMO's AI! Answer questions about Fionna, Cake, Ling of Ooo, and Sweet Bee!
           </DialogDescription>
           
           {/* Game header */}
           <div className="p-4 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h2 className="text-xl font-bold"><span className="text-orange-600">Knowledge</span> Battle</h2>
+              <h2 className="text-xl font-bold"><span className="text-orange-600">Adventure Time</span> Trivia</h2>
               {gameState !== "register" && (
                 <div className="flex gap-4 text-sm font-mono">
                   <div className="flex items-center gap-1">
@@ -407,9 +407,9 @@ export function BattleGame() {
                   className="flex flex-col gap-6"
                 >
                   <div className="text-center">
-                    <h3 className="text-xl font-bold mb-2">Battle of <span className="text-orange-600">Knowledge</span></h3>
+                    <h3 className="text-xl font-bold mb-2">Adventure Time <span className="text-orange-600">Trivia Battle</span></h3>
                     <p className="text-muted-foreground mb-6">
-                      Challenge the AI in a battle of knowledge! Answer questions faster and more accurately than the AI to win.
+                      Test your Adventure Time knowledge! Answer questions about Fionna, Cake, Ling of Ooo, and Sweet Bee faster and more accurately than BMO's AI to win.
                     </p>
                   </div>
 
