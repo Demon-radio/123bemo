@@ -11,12 +11,12 @@ import { useToast } from "@/hooks/use-toast";
 export function CatchBemoGame() {
   // Game state
   const [isOpen, setIsOpen] = useState(false);
-  const [gameState, setGameState] = useState<"register" | "playing" | "gameover">("register");
-  const [playerName, setPlayerName] = useState("");
+  const [gameState, setGameState] = useState<"register" | "playing" | "gameover">("playing"); // Start directly in playing mode
+  const [playerName, setPlayerName] = useState("Player");  // Default name
   const [playerEmail, setPlayerEmail] = useState("");
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
-  const [gameActive, setGameActive] = useState(false);
+  const [gameActive, setGameActive] = useState(true); // Start with game active
   const [robotPosition, setRobotPosition] = useState({ x: 100, y: 100 });
   const [gameAreaSize, setGameAreaSize] = useState({ width: 400, height: 400 });
   const [topPlayers, setTopPlayers] = useState<Array<{name: string, score: number}>>([]);
@@ -30,9 +30,26 @@ export function CatchBemoGame() {
       setScore(0);
       setTimeLeft(30);
       setGameActive(false);
-      setGameState("register");
+      setGameState("playing");
     }
   }, [isOpen]);
+  
+  // Initialize game area measurement when the game opens
+  useEffect(() => {
+    if (isOpen && gameState === "playing") {
+      setTimeout(() => {
+        const gameArea = document.getElementById('game-area');
+        if (gameArea) {
+          const rect = gameArea.getBoundingClientRect();
+          setGameAreaSize({
+            width: rect.width,
+            height: rect.height
+          });
+          setGameActive(true);
+        }
+      }, 100);
+    }
+  }, [isOpen, gameState]);
 
   // Handle game timer
   useEffect(() => {
