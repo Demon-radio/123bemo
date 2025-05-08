@@ -18,6 +18,7 @@ export function Footer() {
   const navItems = [
     { name: "Home", href: "#home" },
     { name: "Content", href: "#content" },
+    { name: "Games", href: "#games" },
     { name: "Social", href: "#social" },
     { name: "About", href: "#about" },
     { name: "Connect", href: "#connect" },
@@ -27,7 +28,7 @@ export function Footer() {
     { icon: FaXTwitter, href: "https://x.com/Bemora_BEMO" },
     { icon: FaFacebookF, href: "https://www.facebook.com/share/12LQYx45ZEV/" },
     { icon: FaWhatsapp, href: "https://chat.whatsapp.com/CmQ8KDLZtmz0BmOKoHCzZh" },
-    { icon: FaYoutube, href: "https://www.youtube.com/channel/UCFWrMkQr-siukGZ3gS3dMUA" },
+    { icon: FaYoutube, href: "https://www.youtube.com/@Bemora-site" },
   ];
 
   return (
@@ -72,7 +73,7 @@ export function Footer() {
           <p className="mt-2">
             Designed with <Heart className="inline h-4 w-4 text-secondary" /> by{" "}
             <a 
-              href="https://www.linkedin.com/in/mostafa-mohamed-409540336/" 
+              href="tel:+201500302461" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-primary hover:text-secondary transition-colors"

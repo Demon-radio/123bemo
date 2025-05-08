@@ -40,6 +40,21 @@ export const insertContentSchema = createInsertSchema(content).omit({
   id: true,
 });
 
+// Game Players schema
+export const gamePlayers = pgTable("game_players", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email"),
+  game_type: text("game_type").notNull(), // "catch" or "quiz"
+  score: integer("score").notNull(),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
+export const insertGamePlayerSchema = createInsertSchema(gamePlayers).omit({
+  id: true,
+  created_at: true,
+});
+
 // Define types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -49,3 +64,6 @@ export type Subscriber = typeof subscribers.$inferSelect;
 
 export type InsertContent = z.infer<typeof insertContentSchema>;
 export type Content = typeof content.$inferSelect;
+
+export type InsertGamePlayer = z.infer<typeof insertGamePlayerSchema>;
+export type GamePlayer = typeof gamePlayers.$inferSelect;

@@ -29,6 +29,7 @@ export function NavBar() {
   const navItems = [
     { name: "Home", href: "#home" },
     { name: "Content", href: "#content" },
+    { name: "Games", href: "#games" },
     { name: "About", href: "#about" },
     { name: "Connect", href: "#connect" },
   ];
