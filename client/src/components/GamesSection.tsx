@@ -4,7 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CatchBemoGame } from "./CatchBemoGame";
 import { QuizGame } from "./QuizGame";
 import { BattleGame } from "./BattleGame";
-import { Gamepad2, Brain, Swords } from "lucide-react";
+import { BmoAdventureGame } from "./BmoAdventureGame";
+import { Gamepad2, Brain, Swords, MonitorPlay } from "lucide-react";
 
 export function GamesSection() {
   const [activeTab, setActiveTab] = useState("catch-game");
@@ -28,7 +29,7 @@ export function GamesSection() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsList className="grid w-full grid-cols-4 mb-8">
               <TabsTrigger 
                 value="catch-game"
                 className="data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2 justify-center"
@@ -52,6 +53,14 @@ export function GamesSection() {
                 <Swords className="h-4 w-4" />
                 <span className="hidden sm:inline">Knowledge Battle</span>
                 <span className="sm:hidden">Battle</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="bmo-game"
+                className="data-[state=active]:bg-blue-500 data-[state=active]:text-white flex items-center gap-2 justify-center"
+              >
+                <MonitorPlay className="h-4 w-4" />
+                <span className="hidden sm:inline">BMO Adventure</span>
+                <span className="sm:hidden">BMO</span>
               </TabsTrigger>
             </TabsList>
             
@@ -82,6 +91,16 @@ export function GamesSection() {
                   Challenge the AI in a battle of knowledge! Answer questions faster and more accurately than the AI to win.
                 </p>
                 <BattleGame />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="bmo-game" className="mt-0">
+              <div className="bg-muted/50 rounded-lg p-6 border border-border text-center">
+                <h3 className="text-xl font-bold mb-4">BMO Adventure</h3>
+                <p className="text-muted-foreground mb-6">
+                  Help Finn and Jake fight evil programs inside BMO's system! Experience the adventure from the "BMO" episode.
+                </p>
+                <BmoAdventureGame />
               </div>
             </TabsContent>
           </Tabs>

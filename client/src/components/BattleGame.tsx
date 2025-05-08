@@ -439,8 +439,8 @@ export function BattleGame() {
                     </div>
                     
                     <div className="bg-orange-50 dark:bg-orange-950/20 p-4 rounded-md mt-4 border border-orange-200 dark:border-orange-800">
-                      <h4 className="font-semibold text-sm mb-2">How to play:</h4>
-                      <ul className="text-sm space-y-1 list-disc pl-4">
+                      <h4 className="font-semibold text-black dark:text-white text-base mb-2">How to play:</h4>
+                      <ul className="text-sm space-y-1 list-disc pl-4 text-black dark:text-white font-medium">
                         <li>Answer 5 rounds of questions.</li>
                         <li>You have 10 seconds to answer each question.</li>
                         <li>Score a point when you get an answer right and the AI gets it wrong.</li>
