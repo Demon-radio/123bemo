@@ -583,7 +583,7 @@ export function BmoAdventureGame() {
 
       {/* Game dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] max-h-[95vh] p-0 gap-0 bg-background/95 backdrop-blur-sm border-blue-500/20">
+        <DialogContent className="sm:max-w-md md:max-w-2xl w-[90vw] h-auto max-h-[95vh] p-0 gap-0 bg-background/95 backdrop-blur-sm border-blue-500/20 overflow-hidden">
           <DialogTitle className="sr-only">BMO Adventure Game</DialogTitle>
           <DialogDescription className="sr-only">
             Help Fionna and Cake fight evil programs inside BMO!
@@ -620,19 +620,19 @@ export function BmoAdventureGame() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="flex flex-col items-center justify-center p-6 text-center gap-4 h-full"
+                className="flex flex-col items-center p-6 gap-4 h-full overflow-y-auto"
               >
-                <div className="w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/30 p-2 mb-4">
+                <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 p-2 mb-2">
                   <img src={BMOImage} alt="BMO" className="w-full h-full object-contain" />
                 </div>
               
                 <h3 className="text-xl font-bold">BMO Adventure Game</h3>
-                <p className="text-muted-foreground mb-4 max-w-md">
+                <p className="text-muted-foreground mb-1 max-w-md text-center">
                   Help Fionna and Cake fight evil programs inside BMO's system! Battle against Ling of Ooo and Sweet Bee to save BMO from corruption.
                 </p>
                 
-                <div className="w-full max-w-md space-y-4">
-                  <div className="grid gap-2">
+                <form className="w-full max-w-md space-y-3 flex-1 flex flex-col">
+                  <div className="grid gap-1">
                     <Label htmlFor="player-name">Your Name or Nickname <span className="text-red-500">*</span></Label>
                     <Input 
                       id="player-name" 
@@ -644,7 +644,7 @@ export function BmoAdventureGame() {
                     />
                   </div>
                   
-                  <div className="grid gap-2">
+                  <div className="grid gap-1">
                     <Label htmlFor="player-email">Your Email (optional)</Label>
                     <Input 
                       id="player-email" 
@@ -656,9 +656,9 @@ export function BmoAdventureGame() {
                     <p className="text-xs text-muted-foreground">We'll use this to send you updates about new content.</p>
                   </div>
                   
-                  <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md mt-2 border border-blue-200 dark:border-blue-800">
-                    <h4 className="font-semibold text-black dark:text-white text-base mb-1">How to play:</h4>
-                    <div className="grid grid-cols-2 gap-x-2 gap-y-0">
+                  <div className="bg-blue-50 dark:bg-blue-950/20 p-2 rounded-md border border-blue-200 dark:border-blue-800">
+                    <h4 className="font-semibold text-black dark:text-white text-sm mb-1">How to play:</h4>
+                    <div className="grid grid-cols-2 gap-x-2">
                       <ul className="text-xs list-disc pl-4 text-black dark:text-white font-medium">
                         <li>Play as Fionna and Cake inside BMO</li>
                         <li>Battle against Ling of Ooo & others</li>
@@ -674,8 +674,9 @@ export function BmoAdventureGame() {
                     </div>
                   </div>
                   
-                  <div className="sticky bottom-0 bg-gradient-to-t from-background to-transparent py-2 mt-2">
+                  <div className="flex-1 flex items-end">
                     <Button 
+                      type="button"
                       onClick={startGame} 
                       className="bg-blue-500 hover:bg-blue-600 w-full"
                       disabled={!playerName.trim()}
@@ -683,7 +684,7 @@ export function BmoAdventureGame() {
                       Start Adventure
                     </Button>
                   </div>
-                </div>
+                </form>
               </motion.div>
             )}
 
