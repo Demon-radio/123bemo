@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { X, Gamepad2, Info } from "lucide-react";
 import BMOImage from "@assets/image_1746719364511.png";
+import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
 
 // Adventure Time RPG Game
 // -----------------------
@@ -330,6 +331,9 @@ export function BmoRpgGame() {
         setGameLoaded(true);
         setGameRunning(true);
         
+        // Track game start event
+        trackGameStart("BMO RPG Adventure");
+        
       } catch (error) {
         console.error("Failed to load game assets:", error);
       }
@@ -464,11 +468,18 @@ export function BmoRpgGame() {
         if (gameStateRef.current.gameOver && !gameOver) {
           setGameOver(true);
           setGameRunning(false);
+          
+          // Track game completion with final score
+          trackGameComplete("BMO RPG Adventure", gameStateRef.current.score);
         }
         
         if (gameStateRef.current.victory && !gameVictory) {
           setGameVictory(true);
           setGameRunning(false);
+          
+          // Track successful game completion with final score
+          trackGameComplete("BMO RPG Adventure", gameStateRef.current.score);
+          trackEvent("game_victory", "games", "RPG Adventure Victory", gameStateRef.current.score);
         }
       }
       

@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
 import BMOImage from "@assets/image_1746719364511.png";
 import FinnVictoryImage from "/assets/images/rpg/finn-victory1.svg";
 import FinnJakeVictoryImage from "/assets/images/rpg/finn-jake-victory.svg";
@@ -323,6 +324,9 @@ export function BmoAdventureGame() {
       "BMO: Help me fight them off, Fionna and Cake!",
       `BMO: You're facing a ${ENEMIES[0].name}! What will you do?`
     ]);
+    
+    // Track game start
+    trackGameStart("BMO Adventure Game");
   };
 
   // Calculate damage with randomness
@@ -507,6 +511,10 @@ export function BmoAdventureGame() {
     if (currentLevel >= ENEMIES.length) {
       setBattleLog([...newBattleLog, "BMO: You defeated all the evil programs! My system is safe now!", "BMO: Thank you, Fionna and Cake!"]);
       setGameState("victory");
+      
+      // Track game victory with final score
+      trackGameComplete("BMO Adventure Game", newScore);
+      trackEvent("game_victory", "games", "BMO Adventure Victory", newScore);
     } else {
       // Next enemy
       const nextLevel = currentLevel + 1;
@@ -536,6 +544,9 @@ export function BmoAdventureGame() {
   const handleGameOver = () => {
     setBattleLog([...battleLog, "BMO: Oh no! You were defeated!", "BMO: Game over!"]);
     setGameState("gameover");
+    
+    // Track game completion with final score
+    trackGameComplete("BMO Adventure Game", score);
   };
 
   // Submit score
