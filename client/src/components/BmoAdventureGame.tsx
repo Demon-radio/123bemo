@@ -19,13 +19,80 @@ const PLAYER_CHARACTER = {
   sprite: "👱‍♀️🐱"
 };
 
+// Define enemy types with special abilities
 const ENEMIES = [
-  { name: "Evil Bug", health: 50, attack: 10, defense: 5, sprite: "🐞" },
-  { name: "Memory Thief", health: 70, attack: 12, defense: 8, sprite: "👾" },
-  { name: "Virus Monster", health: 90, attack: 15, defense: 10, sprite: "🦠" },
-  { name: "Ling of Ooo", health: 120, attack: 18, defense: 12, sprite: "👨‍🦰" }, // Yellow man
-  { name: "Sweet Bee", health: 150, attack: 20, defense: 15, sprite: "👦" }  // Older boy
+  { 
+    name: "Evil Bug", 
+    health: 50, 
+    attack: 10, 
+    defense: 5, 
+    sprite: "🐞",
+    specialAbility: "Swarm",
+    specialAbilityDescription: "Summons tiny bugs that deal additional damage",
+    specialAbilityChance: 0.3,
+    specialAbilityEffect: { type: "damage", value: 5 }
+  },
+  { 
+    name: "Memory Thief", 
+    health: 70, 
+    attack: 12, 
+    defense: 8, 
+    sprite: "👾",
+    specialAbility: "Memory Drain",
+    specialAbilityDescription: "Steals attack power temporarily",
+    specialAbilityChance: 0.25,
+    specialAbilityEffect: { type: "weakenAttack", value: 3, duration: 2 }
+  },
+  { 
+    name: "Virus Monster", 
+    health: 90, 
+    attack: 15, 
+    defense: 10, 
+    sprite: "🦠",
+    specialAbility: "Infect",
+    specialAbilityDescription: "Causes damage over time",
+    specialAbilityChance: 0.2,
+    specialAbilityEffect: { type: "dot", value: 3, duration: 3 }
+  },
+  { 
+    name: "Ling of Ooo", 
+    health: 120, 
+    attack: 18, 
+    defense: 12, 
+    sprite: "👨‍🦰", // Yellow man
+    specialAbility: "Dark Magic",
+    specialAbilityDescription: "High chance of a powerful magic attack",
+    specialAbilityChance: 0.4,
+    specialAbilityEffect: { type: "damage", value: 15 }
+  },
+  { 
+    name: "Sweet Bee", 
+    health: 150, 
+    attack: 20, 
+    defense: 15, 
+    sprite: "👦", // Older boy
+    specialAbility: "Mind Control",
+    specialAbilityDescription: "Makes you attack yourself",
+    specialAbilityChance: 0.3,
+    specialAbilityEffect: { type: "selfDamage", value: 0.5 } // 50% of your own attack
+  }
 ];
+
+// Define types for status effects and player special abilities
+type StatusEffect = {
+  type: string;
+  value: number;
+  duration: number;
+  source: string;
+};
+
+type PlayerSpecialAbility = {
+  name: string;
+  description: string;
+  cooldown: number;
+  currentCooldown: number;
+  effect: any;
+};
 
 export function BmoAdventureGame() {
   // Game state
@@ -43,7 +110,28 @@ export function BmoAdventureGame() {
   const [defendAnimation, setDefendAnimation] = useState(false);
   const [healAnimation, setHealAnimation] = useState(false);
   const [enemyAttackAnimation, setEnemyAttackAnimation] = useState(false);
+  const [specialAbilityAnimation, setSpecialAbilityAnimation] = useState(false);
+  const [statusEffects, setStatusEffects] = useState<StatusEffect[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Special abilities for the player
+  const [specialAbilities, setSpecialAbilities] = useState<PlayerSpecialAbility[]>([
+    {
+      name: "Adventure Call",
+      description: "Deal high damage with a powerful attack",
+      cooldown: 3,
+      currentCooldown: 0,
+      effect: { type: "damage", value: 25 }
+    },
+    {
+      name: "Friendship Power",
+      description: "Heal a large amount and gain a defense boost",
+      cooldown: 4,
+      currentCooldown: 0,
+      effect: { type: "heal", value: 30, defenseBuff: 5, duration: 2 }
+    }
+  ]);
+  
   const nameInputRef = useRef<HTMLInputElement>(null);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -82,6 +170,124 @@ export function BmoAdventureGame() {
     setEnemy(ENEMIES[0]);
     setBattleLog([]);
     setIsPlayerTurn(true);
+    setStatusEffects([]);
+    
+    // Reset special abilities cooldowns
+    setSpecialAbilities(abilities => 
+      abilities.map(ability => ({
+        ...ability,
+        currentCooldown: 0
+      }))
+    );
+  };
+  
+  // Process status effects at the start of player's turn
+  const processStatusEffects = () => {
+    if (!isPlayerTurn) return;
+    
+    let newPlayer = { ...player };
+    let newLog = [...battleLog];
+    let newStatusEffects = [...statusEffects];
+    
+    // Apply effects and decrement durations
+    newStatusEffects = newStatusEffects.map(effect => {
+      // Apply effect
+      if (effect.type === "dot") {
+        // Damage over time
+        const damage = effect.value;
+        newPlayer.health = Math.max(0, newPlayer.health - damage);
+        newLog.push(`${effect.source} effect deals ${damage} damage!`);
+      } else if (effect.type === "defenseBuff") {
+        // Defense already applied, just keep track of it
+      }
+      
+      // Decrement duration
+      return {
+        ...effect,
+        duration: effect.duration - 1
+      };
+    }).filter(effect => effect.duration > 0); // Remove expired effects
+    
+    // Apply changes
+    setPlayer(newPlayer);
+    setBattleLog(newLog);
+    setStatusEffects(newStatusEffects);
+    
+    // Check if player was defeated by DOT
+    if (newPlayer.health <= 0) {
+      handleGameOver();
+    }
+  };
+  
+  // Decrement ability cooldowns at the start of player's turn
+  const decrementCooldowns = () => {
+    if (!isPlayerTurn) return;
+    
+    setSpecialAbilities(abilities => 
+      abilities.map(ability => ({
+        ...ability,
+        currentCooldown: Math.max(0, ability.currentCooldown - 1)
+      }))
+    );
+  };
+  
+  // Use a special ability
+  const useSpecialAbility = (index: number) => {
+    if (!isPlayerTurn || gameState !== "playing") return;
+    
+    const ability = specialAbilities[index];
+    if (ability.currentCooldown > 0) return;
+    
+    setSpecialAbilityAnimation(true);
+    setTimeout(() => setSpecialAbilityAnimation(false), 500);
+    
+    let newBattleLog = [...battleLog];
+    let newEnemy = { ...enemy };
+    let newPlayer = { ...player };
+    let newStatusEffects = [...statusEffects];
+    
+    // Apply ability effect
+    if (ability.effect.type === "damage") {
+      // Damage ability
+      const damage = ability.effect.value;
+      newEnemy.health = Math.max(0, newEnemy.health - damage);
+      newBattleLog.push(`${playerName}'s Fionna & Cake use ${ability.name} for ${damage} damage!`);
+    } else if (ability.effect.type === "heal") {
+      // Healing ability
+      const healAmount = ability.effect.value;
+      newPlayer.health = Math.min(PLAYER_CHARACTER.health, newPlayer.health + healAmount);
+      newBattleLog.push(`${playerName}'s Fionna & Cake use ${ability.name} and heal for ${healAmount} health!`);
+      
+      // Add defense buff if present
+      if (ability.effect.defenseBuff) {
+        newStatusEffects.push({
+          type: "defenseBuff",
+          value: ability.effect.defenseBuff,
+          duration: ability.effect.duration,
+          source: ability.name
+        });
+        newPlayer.defense += ability.effect.defenseBuff;
+        newBattleLog.push(`${ability.name} increased defense by ${ability.effect.defenseBuff} for ${ability.effect.duration} turns!`);
+      }
+    }
+    
+    // Set cooldown
+    const newAbilities = [...specialAbilities];
+    newAbilities[index].currentCooldown = newAbilities[index].cooldown;
+    
+    // Apply changes
+    setSpecialAbilities(newAbilities);
+    setEnemy(newEnemy);
+    setPlayer(newPlayer);
+    setStatusEffects(newStatusEffects);
+    setBattleLog(newBattleLog);
+    
+    // Check if enemy is defeated
+    if (newEnemy.health <= 0) {
+      handleEnemyDefeated();
+    } else {
+      setIsPlayerTurn(false);
+    }
   };
 
   // Start game function
@@ -169,26 +375,100 @@ export function BmoAdventureGame() {
 
   // Handle enemy turn
   const handleEnemyTurn = () => {
-    // Reset defense to base after the turn
-    const resetDefense = { ...player, defense: PLAYER_CHARACTER.defense };
+    // Reset defense to base after the turn, but maintain any defense buffs from status effects
+    let baseDefense = PLAYER_CHARACTER.defense;
+    
+    // Add defense from active buffs
+    const defenseBuff = statusEffects
+      .filter(effect => effect.type === "defenseBuff")
+      .reduce((total, effect) => total + effect.value, 0);
+    
+    let resetDefense = { ...player, defense: baseDefense + defenseBuff };
+    
+    // Check if enemy uses a special ability
+    const useSpecial = Math.random() < (enemy.specialAbilityChance || 0);
+    let newBattleLog = [...battleLog];
+    
+    if (useSpecial && enemy.specialAbility) {
+      newBattleLog.push(`${enemy.name} uses ${enemy.specialAbility}!`);
+      
+      const effect = enemy.specialAbilityEffect;
+      if (effect.type === "damage") {
+        // Direct damage special attack
+        setEnemyAttackAnimation(true);
+        setTimeout(() => setEnemyAttackAnimation(false), 500);
+        
+        resetDefense.health = Math.max(0, resetDefense.health - effect.value);
+        newBattleLog.push(`${enemy.specialAbilityDescription}! It deals ${effect.value} damage!`);
+      } else if (effect.type === "weakenAttack") {
+        // Weaken player attack temporarily
+        setEnemyAttackAnimation(true);
+        setTimeout(() => setEnemyAttackAnimation(false), 500);
+        
+        // Add status effect to track the weakened attack
+        setStatusEffects(prev => [
+          ...prev,
+          {
+            type: "weakenAttack",
+            value: effect.value,
+            duration: effect.duration,
+            source: enemy.specialAbility
+          }
+        ]);
+        
+        newBattleLog.push(`${enemy.specialAbilityDescription}! Your attack is decreased by ${effect.value} for ${effect.duration} turns!`);
+      } else if (effect.type === "dot") {
+        // Damage over time effect
+        setEnemyAttackAnimation(true);
+        setTimeout(() => setEnemyAttackAnimation(false), 500);
+        
+        // Add status effect to track DOT
+        setStatusEffects(prev => [
+          ...prev,
+          {
+            type: "dot",
+            value: effect.value,
+            duration: effect.duration,
+            source: enemy.specialAbility
+          }
+        ]);
+        
+        newBattleLog.push(`${enemy.specialAbilityDescription}! You'll take ${effect.value} damage for ${effect.duration} turns!`);
+      } else if (effect.type === "selfDamage") {
+        // Make player attack themselves
+        setEnemyAttackAnimation(true);
+        setTimeout(() => setEnemyAttackAnimation(false), 500);
+        
+        const selfDamage = Math.round(player.attack * effect.value);
+        resetDefense.health = Math.max(0, resetDefense.health - selfDamage);
+        
+        newBattleLog.push(`${enemy.specialAbilityDescription}! You take ${selfDamage} damage from your own attack!`);
+      }
+    } else {
+      // Regular attack
+      setEnemyAttackAnimation(true);
+      setTimeout(() => setEnemyAttackAnimation(false), 500);
+      
+      const damage = calculateDamage(enemy.attack, resetDefense.defense);
+      resetDefense.health = Math.max(0, resetDefense.health - damage);
+      
+      newBattleLog.push(`${enemy.name} attacks for ${damage} damage!`);
+    }
+    
+    // Apply the updated player state
     setPlayer(resetDefense);
-    
-    setEnemyAttackAnimation(true);
-    setTimeout(() => setEnemyAttackAnimation(false), 500);
-    
-    const damage = calculateDamage(enemy.attack, resetDefense.defense);
-    const newPlayerHealth = Math.max(0, resetDefense.health - damage);
-    
-    setPlayer({ ...resetDefense, health: newPlayerHealth });
-    
-    const newBattleLog = [...battleLog, `${enemy.name} attacks for ${damage} damage!`];
     setBattleLog(newBattleLog);
     
     // Check if player is defeated
-    if (newPlayerHealth <= 0) {
+    if (resetDefense.health <= 0) {
       handleGameOver();
     } else {
+      // Process status effects and cooldowns before giving control back to player
       setIsPlayerTurn(true);
+      setTimeout(() => {
+        processStatusEffects();
+        decrementCooldowns();
+      }, 100);
     }
   };
 
@@ -482,12 +762,37 @@ export function BmoAdventureGame() {
                     ))}
                   </div>
                   
+                  {/* Status effects display */}
+                  {statusEffects.length > 0 && (
+                    <div className="mb-3">
+                      <h4 className="text-sm font-semibold mb-1 text-blue-800 dark:text-blue-200">Status Effects:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {statusEffects.map((effect, idx) => (
+                          <Badge 
+                            key={idx} 
+                            variant={
+                              effect.type === "dot" ? "destructive" :
+                              effect.type === "weakenAttack" ? "destructive" :
+                              effect.type === "defenseBuff" ? "outline" : "secondary"
+                            }
+                            className="flex items-center gap-1"
+                          >
+                            {effect.type === "dot" && <Flame className="h-3 w-3" />}
+                            {effect.type === "weakenAttack" && <ArrowDown className="h-3 w-3" />}
+                            {effect.type === "defenseBuff" && <ShieldCheck className="h-3 w-3" />}
+                            {effect.source} ({effect.duration}t)
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
                   {/* Battle controls */}
                   <div className="flex gap-2 justify-center">
                     <Button
                       onClick={handleAttack}
                       disabled={!isPlayerTurn}
-                      className="bg-red-500 hover:bg-red-600 flex items-center gap-1"
+                      className={`bg-red-500 hover:bg-red-600 flex items-center gap-1 ${attackAnimation ? 'animate-bounce' : ''}`}
                     >
                       <Sword className="w-4 h-4" />
                       <span>Attack</span>
@@ -495,7 +800,7 @@ export function BmoAdventureGame() {
                     <Button
                       onClick={handleDefend}
                       disabled={!isPlayerTurn}
-                      className="bg-blue-500 hover:bg-blue-600 flex items-center gap-1"
+                      className={`bg-blue-500 hover:bg-blue-600 flex items-center gap-1 ${defendAnimation ? 'animate-pulse' : ''}`}
                     >
                       <ShieldAlert className="w-4 h-4" />
                       <span>Defend</span>
@@ -503,11 +808,35 @@ export function BmoAdventureGame() {
                     <Button
                       onClick={handleHeal}
                       disabled={!isPlayerTurn || player.health === PLAYER_CHARACTER.health}
-                      className="bg-green-500 hover:bg-green-600 flex items-center gap-1"
+                      className={`bg-green-500 hover:bg-green-600 flex items-center gap-1 ${healAnimation ? 'animate-pulse' : ''}`}
                     >
                       <Heart className="w-4 h-4" />
                       <span>Heal</span>
                     </Button>
+                  </div>
+                  
+                  {/* Special abilities */}
+                  <div className="mt-3">
+                    <h4 className="text-sm font-semibold mb-1 text-blue-800 dark:text-blue-200">Special Abilities:</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {specialAbilities.map((ability, idx) => (
+                        <Button 
+                          key={idx}
+                          onClick={() => useSpecialAbility(idx)}
+                          disabled={!isPlayerTurn || ability.currentCooldown > 0}
+                          className={`bg-purple-500 hover:bg-purple-600 flex-col h-auto py-2 text-xs ${
+                            specialAbilityAnimation ? 'animate-pulse' : ''
+                          }`}
+                        >
+                          <span className="block text-sm font-bold">{ability.name}</span>
+                          {ability.currentCooldown > 0 ? (
+                            <span className="block text-xs opacity-70 mt-1">Cooldown: {ability.currentCooldown}</span>
+                          ) : (
+                            <span className="block text-xs opacity-70 mt-1">{ability.description}</span>
+                          )}
+                        </Button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
