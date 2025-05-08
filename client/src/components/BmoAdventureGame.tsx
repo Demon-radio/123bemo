@@ -661,9 +661,12 @@ export function BmoAdventureGame() {
                     <ul className="text-sm space-y-1 list-disc pl-4 text-black dark:text-white font-medium">
                       <li>Play as Fionna and Cake inside BMO's system</li>
                       <li>Battle against Ling of Ooo, Sweet Bee and other enemies</li>
-                      <li>Use Attack, Defend, and Heal abilities strategically</li>
-                      <li>Defeat all enemies to win!</li>
-                      <li>Your score increases based on the levels completed</li>
+                      <li>Use Attack, Defend, and Heal basic abilities</li>
+                      <li>Unleash special abilities: Adventure Call (damage) and Friendship Power (heal + defense)</li>
+                      <li>Watch out for enemy special abilities like Swarm, Mind Control, and Infect</li>
+                      <li>Track status effects that persist across turns</li>
+                      <li>Manage cooldowns on your special abilities</li>
+                      <li>Defeat all enemies to win the game!</li>
                     </ul>
                   </div>
                   
