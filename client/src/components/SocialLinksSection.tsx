@@ -23,7 +23,7 @@ const socialLinks = [
   {
     platform: "YouTube",
     icon: FaYoutube,
-    url: "https://www.youtube.com/channel/UCFWrMkQr-siukGZ3gS3dMUA",
+    url: "https://www.youtube.com/@Bemora-site",
     username: "BEMORA Channel"
   }
 ];
