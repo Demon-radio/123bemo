@@ -21,7 +21,8 @@ import { useToast } from "@/hooks/use-toast";
 import BMOImage from "@assets/image_1746719364511.png";
 import FinnVictoryImage from "/assets/images/rpg/finn-victory1.svg";
 import FinnJakeVictoryImage from "/assets/images/rpg/finn-jake-victory.svg";
-import FinnJakeCelebrationGif from "/assets/images/celebrations/finn-jake-celebration.gif";
+// Using direct URL for the GIF
+const FinnJakeCelebrationGif = "/assets/images/celebrations/finn-jake-celebration.gif";
 
 // Game characters and enemies based on Adventure Time
 const PLAYER_CHARACTER = {
@@ -500,7 +501,7 @@ export function BmoAdventureGame() {
     
     // Show celebration animation
     setShowCelebration(true);
-    setTimeout(() => setShowCelebration(false), 3000);
+    setTimeout(() => setShowCelebration(false), 5000); // Increased to 5 seconds
     
     // Check if this was the final enemy
     if (currentLevel >= ENEMIES.length) {
