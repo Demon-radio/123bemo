@@ -55,8 +55,16 @@ export function HeroSection() {
             <Button 
               size="lg" 
               variant="outline" 
-              onClick={scrollToSection("connect")}
+              onClick={() => window.open("https://bmo-tools.netlify.app", "_blank")}
               className="border-primary text-primary hover:bg-primary/10 transition-all transform hover:scale-105"
+            >
+              BMO Tools
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={scrollToSection("connect")}
+              className="border-secondary text-secondary hover:bg-secondary/10 transition-all transform hover:scale-105"
             >
               Connect With Me
             </Button>

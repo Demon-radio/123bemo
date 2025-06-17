@@ -33,6 +33,8 @@ export function ConnectSection() {
     { icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/channel/UCFWrMkQr-siukGZ3gS3dMUA" },
   ];
 
+  const contactLink = "https://linktr.ee/Mustafa_Bemo";
+
   return (
     <section id="connect" className="py-16 bg-background">
       <div className="container mx-auto px-4">
@@ -48,9 +50,17 @@ export function ConnectSection() {
               <span className="text-secondary">BEMORA</span>{" "}
               <span className="text-primary">Community</span>
             </h2>
-            <p className="text-lg mb-8">
+            <p className="text-lg mb-4">
               Stay updated with my latest content and connect with me on your favorite platforms.
             </p>
+            <div className="mb-8">
+              <Button 
+                onClick={() => window.open(contactLink, "_blank")}
+                className="bg-secondary hover:bg-secondary/90 text-white font-semibold px-6 py-3"
+              >
+                Contact Me
+              </Button>
+            </div>
           </motion.div>
 
           <motion.div 
