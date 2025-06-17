@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://bemora.vercel.app/sitemap.xml
+
+# SEO Optimization
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+# Disallow admin and private paths (if any exist in future)
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.well-known/
+Disallow: /api/internal/
+
+# Allow important files
+Allow: /favicon.jpg
+Allow: /sitemap.xml
+Allow: /robots.txt
