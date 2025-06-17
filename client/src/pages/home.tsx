@@ -7,10 +7,12 @@ import { AboutSection } from "@/components/AboutSection";
 import { ConnectSection } from "@/components/ConnectSection";
 import { Footer } from "@/components/Footer";
 import { HeaderAd, InContentAd, FooterAd } from "@/components/GoogleAd";
+import { HomePageSEO } from "@/components/SEOHead";
 
 export function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground grid-pattern">
+      <HomePageSEO />
       <NavBar />
       <HeroSection />
       <HeaderAd />
