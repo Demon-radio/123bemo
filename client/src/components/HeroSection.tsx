@@ -55,10 +55,11 @@ export function HeroSection() {
             <Button 
               size="lg" 
               variant="outline" 
-              onClick={() => window.open("https://bmo-tools.netlify.app", "_blank")}
+              onClick={scrollToSection("games")}
               className="border-primary text-primary hover:bg-primary/10 transition-all transform hover:scale-105"
             >
-              BMO Tools
+              <Gamepad className="mr-2 h-5 w-5" />
+              Play Games
             </Button>
             <Button 
               size="lg" 
@@ -114,11 +115,18 @@ export function HeroSection() {
             >
               <div className="absolute -inset-1 bg-gradient-to-r from-secondary/70 to-primary/70 rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
               <div className="relative">
-                <CatchBemoGame />
+                <Button 
+                  onClick={scrollToSection("games")}
+                  variant="outline"
+                  className="w-full bg-primary/10 border-primary text-primary hover:bg-primary/20 shine-effect flex items-center gap-2 px-8 py-3 justify-center"
+                >
+                  <Gamepad className="h-5 w-5" />
+                  <span className="font-semibold">Play All Games</span>
+                </Button>
                 
                 {/* NEW badge */}
                 <div className="absolute -top-3 -right-3 bg-secondary text-white text-xs font-bold py-1 px-2 rounded-full animate-bounce">
-                  NEW!
+                  7 GAMES!
                 </div>
               </div>
             </motion.div>

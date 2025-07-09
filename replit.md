@@ -38,8 +38,9 @@ Preferred communication style: Simple, everyday language.
 - **Quiz Games**: Adventure Time-themed trivia with multiple categories
 - **Battle Game**: Turn-based combat system
 - **BMO Adventure Game**: Full 2D RPG experience
-- **RPG Game**: Advanced role-playing game mechanics
-- **BMO X.O Game**: Tic-Tac-Toe with BMO interface and AI opponent
+- **RPG Game**: Advanced role-playing game mechanics with mobile touch controls
+- **BMO X.O Game**: Tic-Tac-Toe with BMO interface and AI opponent featuring Finn/Jake characters
+- **BMO Maze Game**: 5-level maze escape game with random map generation and mobile support
 
 All games include:
 - Score tracking and leaderboards
@@ -159,3 +160,8 @@ All games include:
 ✓ **Updated Content Video**: Replaced short with new video (920D9DjKgCo) as requested
 ✓ **Mobile RPG Support**: Added touch controls for BMO RPG game on mobile devices
 ✓ **Special Attack Regen**: Fixed special attacks to regenerate over time and on level/wave completion
+✓ **Added BMO Maze Game**: Created new 5-level maze escape game with BMO character
+✓ **Enhanced RPG UI**: Improved close button visibility and escape key functionality
+✓ **Updated Hero Section**: Changed "Catch BEMORA" link to direct to games section
+✓ **Expanded Games Layout**: Now supports 7 games with responsive grid layout
+✓ **Fixed Mobile Touch**: Enhanced mobile controls for all games with better accessibility

@@ -1979,7 +1979,12 @@ export function BmoRpgGame() {
 
       {/* Game dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-4xl md:max-w-5xl w-[90vw] h-auto max-h-[95vh] p-0 gap-0 bg-background/95 backdrop-blur-sm border-green-500/20 overflow-hidden">
+        <DialogContent className="sm:max-w-4xl md:max-w-5xl w-[90vw] h-auto max-h-[95vh] p-0 gap-0 bg-background/95 backdrop-blur-sm border-green-500/20 overflow-hidden"
+          onEscapeKeyDown={(e) => {
+            e.preventDefault();
+            setIsOpen(false);
+          }}
+        >
           <DialogTitle className="sr-only">BMO RPG Adventure</DialogTitle>
           <DialogDescription className="sr-only">
             Enter BMO's memory banks and play a retro-style Adventure Time RPG!
@@ -1988,8 +1993,10 @@ export function BmoRpgGame() {
           {/* Game header */}
           <div className="p-4 border-b border-border flex items-center justify-between bg-green-50 dark:bg-green-950/30">
             <div className="flex items-center gap-4">
-              <img src={BMOImage} alt="BMO" className="w-8 h-8 object-contain" />
-              <h2 className="text-xl font-bold"><span className="text-green-500">BMO</span> RPG Adventure</h2>
+              <img src={BMOImage} alt="BMO" className="w-10 h-10 object-contain" />
+              <h2 className="text-xl md:text-2xl font-bold text-green-600">
+                <span className="text-green-500">BMO</span> RPG Adventure
+              </h2>
             </div>
             <div className="flex items-center gap-2">
               <Button 
@@ -2017,8 +2024,9 @@ export function BmoRpgGame() {
                   e.stopPropagation();
                   setIsOpen(false);
                 }}
+                className="h-10 w-10 bg-red-500/20 hover:bg-red-500/40 border border-red-500/50"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5 text-red-600" />
               </Button>
             </div>
           </div>
