@@ -6,7 +6,8 @@ import { QuizGame } from "./QuizGame";
 import { BattleGame } from "./BattleGame";
 import { BmoAdventureGame } from "./BmoAdventureGame";
 import { BmoRpgGame } from "./BmoRpgGame";
-import { Gamepad2, Brain, Swords, MonitorPlay, Joystick } from "lucide-react";
+import { BmoTicTacToeGame } from "./BmoTicTacToeGame";
+import { Gamepad2, Brain, Swords, MonitorPlay, Joystick, Grid3X3 } from "lucide-react";
 
 export function GamesSection() {
   const [activeTab, setActiveTab] = useState("catch-game");
@@ -30,7 +31,7 @@ export function GamesSection() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-5 mb-8">
+            <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 mb-8">
               <TabsTrigger 
                 value="catch-game"
                 className="data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2 justify-center"
@@ -70,6 +71,14 @@ export function GamesSection() {
                 <Joystick className="h-4 w-4" />
                 <span className="hidden sm:inline">BMO RPG</span>
                 <span className="sm:hidden">RPG</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tictactoe-game"
+                className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white flex items-center gap-2 justify-center"
+              >
+                <Grid3X3 className="h-4 w-4" />
+                <span className="hidden sm:inline">BMO X.O</span>
+                <span className="sm:hidden">X.O</span>
               </TabsTrigger>
             </TabsList>
             
@@ -120,6 +129,16 @@ export function GamesSection() {
                   Enter BMO's memory banks and play a retro-style Adventure Time RPG! Explore, battle enemies, and collect items.
                 </p>
                 <BmoRpgGame />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="tictactoe-game" className="mt-0">
+              <div className="bg-muted/50 rounded-lg p-6 border border-border text-center">
+                <h3 className="text-xl font-bold mb-4">BMO's X.O Game</h3>
+                <p className="text-muted-foreground mb-6">
+                  Play the classic Tic-Tac-Toe game on BMO's screen! Challenge a friend or test your skills against BMO's AI.
+                </p>
+                <BmoTicTacToeGame />
               </div>
             </TabsContent>
           </Tabs>

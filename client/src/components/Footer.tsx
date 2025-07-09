@@ -73,7 +73,7 @@ export function Footer() {
           <p className="mt-2">
             Designed with <Heart className="inline h-4 w-4 text-secondary" /> by{" "}
             <a 
-              href="tel:+201500302461" 
+              href="https://wa.me/201500302461?text=I%20want%20to%20share%20my%20rating%20about%20BMO%20website%20and%20it%27s%205%20stars" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-primary hover:text-secondary transition-colors"
