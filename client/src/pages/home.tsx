@@ -6,6 +6,8 @@ import { GamesSection } from "@/components/GamesSection";
 import { AboutSection } from "@/components/AboutSection";
 import { ConnectSection } from "@/components/ConnectSection";
 import { Footer } from "@/components/Footer";
+import { AchievementSystem } from "@/components/AchievementSystem";
+import { AudioSettings } from "@/components/AudioSettings";
 import { HeaderAd, InContentAd, FooterAd } from "@/components/GoogleAd";
 import { HomePageSEO } from "@/components/SEOHead";
 
@@ -25,6 +27,10 @@ export function Home() {
       <ConnectSection />
       <FooterAd />
       <Footer />
+      
+      {/* Global Components */}
+      <AchievementSystem />
+      <AudioSettings />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { RobotLogo } from "@/components/RobotLogo";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -42,7 +43,7 @@ export function NavBar() {
           <h1 className="text-2xl font-heading text-secondary font-bold">BEMORA</h1>
         </div>
 
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-6">
           {navItems.map((item) => (
             <a
               key={item.name}
@@ -53,9 +54,11 @@ export function NavBar() {
               {item.name}
             </a>
           ))}
+          <LanguageToggle />
         </div>
 
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <LanguageToggle />
           <Button 
             variant="ghost" 
             size="icon" 

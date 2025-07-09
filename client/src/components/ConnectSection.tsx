@@ -30,7 +30,7 @@ export function ConnectSection() {
     { icon: FaXTwitter, label: "Twitter/X", href: "https://x.com/Bemora_BEMO" },
     { icon: FaFacebookF, label: "Facebook", href: "https://www.facebook.com/share/12LQYx45ZEV/" },
     { icon: FaWhatsapp, label: "WhatsApp", href: "https://chat.whatsapp.com/CmQ8KDLZtmz0BmOKoHCzZh" },
-    { icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/channel/UCFWrMkQr-siukGZ3gS3dMUA" },
+    { icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@Bemora-site" },
   ];
 
   const contactLink = "https://linktr.ee/Mustafa_Bemo";

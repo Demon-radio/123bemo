@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MobileGameMenu } from "./MobileGameMenu";
+import { DifficultySelector } from "./DifficultySelector";
 import { CatchBemoGame } from "./CatchBemoGame";
 import { QuizGame } from "./QuizGame";
 import { BattleGame } from "./BattleGame";
@@ -16,9 +18,20 @@ export function GamesSection() {
   return (
     <section id="games" className="py-16 relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-heading text-center mb-12">
-          <span className="gradient-text">BEMORA Games</span>
-        </h2>
+        <div className="flex flex-col md:flex-row items-center justify-between mb-12">
+          <h2 className="text-3xl md:text-4xl font-heading text-center md:text-left mb-4 md:mb-0">
+            <span className="gradient-text">BEMORA Games</span>
+          </h2>
+          <div className="flex items-center gap-4">
+            <DifficultySelector />
+          </div>
+        </div>
+
+        {/* Mobile Game Menu */}
+        <MobileGameMenu 
+          onGameSelect={setActiveTab}
+          activeGame={activeTab}
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
