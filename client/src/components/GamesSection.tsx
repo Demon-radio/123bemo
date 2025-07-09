@@ -36,7 +36,7 @@ export function GamesSection() {
                 value="catch-game"
                 className="data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2 justify-center"
               >
-                <Gamepad2 className="h-4 w-4" />
+                <Gamepad2 className="h-6 w-6" />
                 <span className="hidden sm:inline">Catch BEMORA</span>
                 <span className="sm:hidden">Catch</span>
               </TabsTrigger>
@@ -44,7 +44,7 @@ export function GamesSection() {
                 value="quiz-game"
                 className="data-[state=active]:bg-secondary data-[state=active]:text-white flex items-center gap-2 justify-center"
               >
-                <Brain className="h-4 w-4" />
+                <Brain className="h-6 w-6" />
                 <span className="hidden sm:inline">BEMORA Quiz</span>
                 <span className="sm:hidden">Quiz</span>
               </TabsTrigger>
@@ -52,7 +52,7 @@ export function GamesSection() {
                 value="battle-game"
                 className="data-[state=active]:bg-orange-600 data-[state=active]:text-white flex items-center gap-2 justify-center"
               >
-                <Swords className="h-4 w-4" />
+                <Swords className="h-6 w-6" />
                 <span className="hidden sm:inline">Knowledge Battle</span>
                 <span className="sm:hidden">Battle</span>
               </TabsTrigger>
@@ -60,7 +60,7 @@ export function GamesSection() {
                 value="bmo-game"
                 className="data-[state=active]:bg-blue-500 data-[state=active]:text-white flex items-center gap-2 justify-center"
               >
-                <MonitorPlay className="h-4 w-4" />
+                <MonitorPlay className="h-6 w-6" />
                 <span className="hidden sm:inline">BMO Adventure</span>
                 <span className="sm:hidden">BMO</span>
               </TabsTrigger>
@@ -68,7 +68,7 @@ export function GamesSection() {
                 value="rpg-game"
                 className="data-[state=active]:bg-green-600 data-[state=active]:text-white flex items-center gap-2 justify-center"
               >
-                <Joystick className="h-4 w-4" />
+                <Joystick className="h-6 w-6" />
                 <span className="hidden sm:inline">BMO RPG</span>
                 <span className="sm:hidden">RPG</span>
               </TabsTrigger>
@@ -76,7 +76,7 @@ export function GamesSection() {
                 value="tictactoe-game"
                 className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white flex items-center gap-2 justify-center"
               >
-                <Grid3X3 className="h-4 w-4" />
+                <Grid3X3 className="h-6 w-6" />
                 <span className="hidden sm:inline">BMO X.O</span>
                 <span className="sm:hidden">X.O</span>
               </TabsTrigger>

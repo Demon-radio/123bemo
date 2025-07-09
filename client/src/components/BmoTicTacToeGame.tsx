@@ -289,8 +289,18 @@ export function BmoTicTacToeGame() {
                 <div className="text-center">
                   <h3 className="text-lg font-bold mb-2">Choose Game Mode</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Play the classic X.O game on BMO's screen!
+                    Play the classic X.O game on BMO's screen with Finn and Jake!
                   </p>
+                  <div className="flex justify-center gap-4 mb-4">
+                    <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
+                      <img src="/assets/images/finn.jpg" alt="Finn" className="w-8 h-8 rounded-full" />
+                      <span className="text-sm font-medium">Finn (X)</span>
+                    </div>
+                    <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
+                      <img src="/assets/images/jake.jpg" alt="Jake" className="w-8 h-8 rounded-full" />
+                      <span className="text-sm font-medium">Jake (O)</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-3">
@@ -382,13 +392,25 @@ export function BmoTicTacToeGame() {
                     >
                       <AnimatePresence>
                         {cell && (
-                          <motion.span
+                          <motion.div
                             initial={{ scale: 0, rotate: -180 }}
                             animate={{ scale: 1, rotate: 0 }}
-                            className={cell === "X" ? "text-red-400" : "text-green-400"}
+                            className="w-full h-full flex items-center justify-center"
                           >
-                            {cell}
-                          </motion.span>
+                            {cell === "X" ? (
+                              <img 
+                                src="/assets/images/finn.jpg" 
+                                alt="Finn" 
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            ) : (
+                              <img 
+                                src="/assets/images/jake.jpg" 
+                                alt="Jake" 
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            )}
+                          </motion.div>
                         )}
                       </AnimatePresence>
                     </motion.button>
@@ -397,18 +419,24 @@ export function BmoTicTacToeGame() {
 
                 {/* Score */}
                 <div className="grid grid-cols-3 gap-4 text-center text-sm">
-                  <div>
-                    <div className="font-bold text-red-400">{playerXWins}</div>
-                    <div className="text-muted-foreground">Player X</div>
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 mb-1">
+                      <img src="/assets/images/finn.jpg" alt="Finn" className="w-4 h-4 rounded-full" />
+                      <div className="font-bold text-red-400">{playerXWins}</div>
+                    </div>
+                    <div className="text-xs text-muted-foreground">Finn Wins</div>
                   </div>
-                  <div>
+                  <div className="text-center">
                     <div className="font-bold text-gray-400">{ties}</div>
-                    <div className="text-muted-foreground">Ties</div>
+                    <div className="text-xs text-muted-foreground">Ties</div>
                   </div>
-                  <div>
-                    <div className="font-bold text-green-400">{playerOWins}</div>
-                    <div className="text-muted-foreground">
-                      {gameMode === "bot" ? "BMO" : "Player O"}
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 mb-1">
+                      <img src="/assets/images/jake.jpg" alt="Jake" className="w-4 h-4 rounded-full" />
+                      <div className="font-bold text-green-400">{playerOWins}</div>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {gameMode === "bot" ? "BMO Wins" : "Jake Wins"}
                     </div>
                   </div>
                 </div>

@@ -28,7 +28,7 @@ export function Footer() {
     { icon: FaXTwitter, href: "https://x.com/Bemora_BEMO" },
     { icon: FaFacebookF, href: "https://www.facebook.com/share/12LQYx45ZEV/" },
     { icon: FaWhatsapp, href: "https://chat.whatsapp.com/CmQ8KDLZtmz0BmOKoHCzZh" },
-    { icon: FaYoutube, href: "https://www.youtube.com/@Bemora-site" },
+    { icon: FaYoutube, href: "https://www.youtube.com/@Bemora-site/shorts" },
   ];
 
   return (

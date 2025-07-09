@@ -45,6 +45,18 @@ const contentItems = [
     stats: {
       views: "2.5K"
     }
+  },
+  {
+    id: 4,
+    type: "youtube",
+    title: "BEMORA Latest Short",
+    image: "https://img.youtube.com/vi/Ql7tURnDdzk/maxresdefault.jpg",
+    duration: "0:35",
+    date: "Latest Short",
+    url: "https://youtube.com/shorts/Ql7tURnDdzk?si=CPA3yHralQrUvwRo",
+    stats: {
+      views: "850"
+    }
   }
 ];
 
