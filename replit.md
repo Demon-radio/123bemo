@@ -1,0 +1,141 @@
+# BEMORA Website - Replit Development Guide
+
+## Overview
+
+BEMORA is a professional website for Mustafa Bemo, a content creator and gaming enthusiast. This is a full-stack React application built with TypeScript, featuring interactive games, content showcase, and comprehensive SEO optimization. The website serves as a central hub for BEMORA's social media presence and includes several Adventure Time-themed interactive games.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+- **Framework**: React 18 with TypeScript
+- **Styling**: Tailwind CSS with custom animations and Framer Motion
+- **UI Components**: Radix UI with shadcn/ui component library
+- **Routing**: Wouter for client-side routing
+- **State Management**: TanStack React Query for server state
+- **Build Tool**: Vite with custom configuration
+
+### Backend Architecture
+- **Runtime**: Node.js with Express.js
+- **Language**: TypeScript with ES modules
+- **Database**: PostgreSQL with Drizzle ORM
+- **Database Provider**: Neon (serverless PostgreSQL)
+- **API Pattern**: RESTful endpoints under `/api/*`
+
+### Development Environment
+- **Package Manager**: npm
+- **Bundler**: Vite with React plugin
+- **Database Migrations**: Drizzle Kit
+- **Development Server**: Express with Vite middleware
+
+## Key Components
+
+### 1. Interactive Games System
+- **Catch BEMORA Game**: A simple catching game
+- **Quiz Games**: Adventure Time-themed trivia with multiple categories
+- **Battle Game**: Turn-based combat system
+- **BMO Adventure Game**: Full 2D RPG experience
+- **RPG Game**: Advanced role-playing game mechanics
+
+All games include:
+- Score tracking and leaderboards
+- Player registration system
+- Analytics integration
+- Adventure Time character themes
+
+### 2. Content Management
+- **Content Showcase**: Dynamic filtering for YouTube, Facebook, and all content
+- **Social Links Integration**: Direct links to all social platforms
+- **Contact Integration**: Linktree integration for centralized contact
+
+### 3. SEO and Analytics
+- **Google Analytics**: Comprehensive tracking with custom events
+- **Google Ads**: Pre-configured ad slots with responsive design
+- **Meta Tags**: Complete Open Graph and Twitter Card support
+- **Structured Data**: JSON-LD schema markup
+- **Performance Monitoring**: Core Web Vitals tracking
+
+### 4. UI/UX Components
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Animations**: Framer Motion for smooth transitions
+- **Component Library**: Comprehensive shadcn/ui implementation
+- **Custom Branding**: Robot logo and BEMORA color scheme (turquoise/pink)
+
+## Data Flow
+
+### Database Schema
+```typescript
+// Main entities
+- users: User authentication and profiles
+- subscribers: Email subscription management  
+- content: Content items (YouTube, Facebook, etc.)
+- game_players: Game scores and player data
+```
+
+### API Endpoints
+- `GET /api/content`: Retrieve content items
+- `POST /api/subscribe`: Handle email subscriptions
+- `POST /api/games/submit-score`: Submit game scores
+- `GET /api/games/leaderboard`: Retrieve leaderboards
+
+### State Management
+- React Query for server state caching and synchronization
+- Local state with React hooks for UI interactions
+- Form state with React Hook Form and Zod validation
+
+## External Dependencies
+
+### Core Dependencies
+- **@neondatabase/serverless**: Serverless PostgreSQL client
+- **drizzle-orm**: TypeScript ORM for database operations
+- **@tanstack/react-query**: Server state management
+- **framer-motion**: Animation library
+- **@radix-ui/***: Headless UI components
+- **react-icons**: Icon library for social media icons
+
+### Development Tools
+- **tsx**: TypeScript execution for development
+- **esbuild**: Production bundling for server code
+- **@replit/vite-plugin-runtime-error-modal**: Development error handling
+- **@replit/vite-plugin-cartographer**: Replit-specific tooling
+
+### Analytics and Ads
+- **@vercel/analytics**: Analytics integration
+- **Google Analytics**: GA4 tracking implementation
+- **Google AdSense**: Monetization through ads
+
+## Deployment Strategy
+
+### Production Deployment (Vercel)
+- **Frontend**: Static build deployed to Vercel Edge Network
+- **Backend**: Serverless functions on Vercel
+- **Database**: Neon serverless PostgreSQL
+- **Environment Variables**: DATABASE_URL required for database connection
+
+### Build Process
+1. Frontend build: `vite build` creates optimized static assets
+2. Backend build: `esbuild` bundles server code for serverless deployment
+3. Database migrations: `drizzle-kit push` applies schema changes
+
+### Performance Optimizations
+- Code splitting with Vite
+- Image optimization for game assets
+- Lazy loading for game components
+- Efficient bundle sizes with tree shaking
+
+### Monitoring and Maintenance
+- Core Web Vitals tracking through custom performance monitor
+- Error tracking through Vercel analytics
+- Database performance monitoring through Neon dashboard
+- SEO monitoring through comprehensive meta tag implementation
+
+## Development Notes
+
+- The application uses a monorepo structure with shared TypeScript types in `/shared`
+- Database schema is centralized in `shared/schema.ts` with Zod validation
+- All game assets are stored in `/attached_assets` directory
+- The application is configured for both development and production environments
+- Custom analytics tracking is implemented for all interactive elements
