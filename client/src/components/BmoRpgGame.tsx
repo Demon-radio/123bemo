@@ -378,8 +378,10 @@ export function BmoRpgGame() {
           break;
         case 'z':
         case 'Z':
-          // Secondary action (secondary attack or item use)
+          // Secondary action (use health potion or special item)
           gameStateRef.current.keys.z = true;
+          // Use health potion if available
+          useHealthPotion();
           break;
         case 'p':
         case 'P':
@@ -438,6 +440,28 @@ export function BmoRpgGame() {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     
+    // Use health potion function
+    const useHealthPotion = () => {
+      const player = gameStateRef.current.player;
+      const items = gameStateRef.current.items;
+      
+      // Find nearest health potion that's not collected
+      const nearbyPotions = items.filter(item => 
+        !item.isCollected && 
+        item.effect === 'health' &&
+        Math.abs(item.x - player.x) < 80 &&
+        Math.abs(item.y - player.y) < 80
+      );
+      
+      if (nearbyPotions.length > 0 && player.health < player.maxHealth) {
+        const potion = nearbyPotions[0];
+        player.health = Math.min(player.maxHealth, player.health + potion.value);
+        potion.isCollected = true;
+        potion.respawnTimer = potion.respawnTime;
+        setHealth(player.health);
+      }
+    };
+
     // Start game loop
     const gameLoop = (timestamp: number) => {
       if (!gameLoaded) return;
@@ -1094,6 +1118,16 @@ export function BmoRpgGame() {
     // Mana regeneration
     if (player.mana < player.maxMana) {
       player.mana = Math.min(player.maxMana, player.mana + deltaTime * 5); // 5 mana per second
+    }
+    
+    // Special attack charge regeneration over time
+    if (gameStateRef.current.specialCharges < 3) {
+      // Add one charge every 30 seconds
+      const chargeRegenTime = 30; // seconds
+      if (gameStateRef.current.time % chargeRegenTime < deltaTime) {
+        gameStateRef.current.specialCharges = Math.min(3, gameStateRef.current.specialCharges + 1);
+        setSpecialAttackCharge(gameStateRef.current.specialCharges);
+      }
     }
     
     // Check for game over
@@ -1996,8 +2030,12 @@ export function BmoRpgGame() {
           >
             <canvas 
               ref={canvasRef} 
-              className="max-w-full max-h-full"
-              style={{ imageRendering: 'pixelated' }}
+              className="max-w-full max-h-full touch-none"
+              style={{ 
+                imageRendering: 'pixelated',
+                userSelect: 'none',
+                touchAction: 'none'
+              }}
             />
             
             {!isOpen && (
@@ -2044,19 +2082,83 @@ export function BmoRpgGame() {
           
           {/* Game status bar */}
           <div className="p-3 border-t border-border bg-green-100 dark:bg-green-900">
-            <div className="grid grid-cols-3 gap-2 text-sm">
-              <div className="text-black dark:text-white">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+              <div className="text-center md:text-left text-black dark:text-white">
                 <span className="font-bold">Level: {level}</span> | 
                 <span className="font-bold ml-2">Score: {score}</span> |
                 <span className="font-bold ml-2">Wave: {wave}/5</span>
               </div>
               <div className="text-center text-black dark:text-white">
-                <span className="font-bold">Controls: Arrow keys to move, Spacebar to attack, Shift for special</span>
+                <span className="font-bold">🎮 Arrow keys/WASD: Move | Space: Attack | Shift: Special | Z: Use Potion</span>
               </div>
-              <div className="text-right text-black dark:text-white">
-                <span className="font-bold">Enemies Defeated: {enemiesDefeated}</span> | 
-                <span className="font-bold ml-2">Special Attacks: {specialAttackCharge}/3</span>
+              <div className="text-center md:text-right text-black dark:text-white">
+                <span className="font-bold">💀 Defeated: {enemiesDefeated}</span> | 
+                <span className="font-bold ml-2">⚡ Special: {specialAttackCharge}/3</span>
               </div>
+            </div>
+            
+            {/* Mobile controls */}
+            <div className="md:hidden mt-3 grid grid-cols-4 gap-2">
+              <button 
+                className="bg-blue-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => gameStateRef.current.keys.up = true}
+                onTouchEnd={() => gameStateRef.current.keys.up = false}
+              >
+                ↑
+              </button>
+              <button 
+                className="bg-red-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => {
+                  if (!gameStateRef.current.player.isAttacking && gameStateRef.current.player.attackCooldown <= 0) {
+                    playerAttack();
+                  }
+                }}
+              >
+                ⚔️
+              </button>
+              <button 
+                className="bg-purple-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => {
+                  if (gameStateRef.current.specialCharges > 0 && !gameStateRef.current.player.specialAttack) {
+                    playerSpecialAttack();
+                  }
+                }}
+              >
+                ⚡
+              </button>
+              <button 
+                className="bg-green-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => useHealthPotion()}
+              >
+                🧪
+              </button>
+              <button 
+                className="bg-blue-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => gameStateRef.current.keys.left = true}
+                onTouchEnd={() => gameStateRef.current.keys.left = false}
+              >
+                ←
+              </button>
+              <button 
+                className="bg-blue-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => gameStateRef.current.keys.down = true}
+                onTouchEnd={() => gameStateRef.current.keys.down = false}
+              >
+                ↓
+              </button>
+              <button 
+                className="bg-blue-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => gameStateRef.current.keys.right = true}
+                onTouchEnd={() => gameStateRef.current.keys.right = false}
+              >
+                →
+              </button>
+              <button 
+                className="bg-yellow-500 text-white p-2 rounded touch-manipulation"
+                onTouchStart={() => gameStateRef.current.paused = !gameStateRef.current.paused}
+              >
+                ⏸️
+              </button>
             </div>
           </div>
         </DialogContent>

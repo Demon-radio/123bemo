@@ -13,12 +13,12 @@ const contentItems = [
     id: 1,
     type: "youtube",
     title: "BEMORA YouTube Short #1",
-    image: "https://img.youtube.com/vi/B_WnTN1ni3U/maxresdefault.jpg",
-    duration: "0:30",
+    image: "https://img.youtube.com/vi/920D9DjKgCo/maxresdefault.jpg",
+    duration: "0:32",
     date: "Featured Short",
-    url: "https://youtube.com/shorts/B_WnTN1ni3U",
+    url: "https://youtube.com/shorts/920D9DjKgCo?si=N5bvzyG9IRY3ZFSh",
     stats: {
-      views: "1.2K"
+      views: "1.5K"
     }
   },
   {

@@ -293,11 +293,11 @@ export function BmoTicTacToeGame() {
                   </p>
                   <div className="flex justify-center gap-4 mb-4">
                     <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
-                      <img src="/assets/images/finn.jpg" alt="Finn" className="w-8 h-8 rounded-full" />
+                      <img src="/assets/images/finn.jpg" alt="Finn" className="w-12 h-12 rounded-full object-cover border-2 border-blue-400" />
                       <span className="text-sm font-medium">Finn (X)</span>
                     </div>
                     <div className="flex items-center gap-2 p-2 bg-muted rounded-lg">
-                      <img src="/assets/images/jake.jpg" alt="Jake" className="w-8 h-8 rounded-full" />
+                      <img src="/assets/images/jake.jpg" alt="Jake" className="w-12 h-12 rounded-full object-cover border-2 border-yellow-400" />
                       <span className="text-sm font-medium">Jake (O)</span>
                     </div>
                   </div>
@@ -401,13 +401,13 @@ export function BmoTicTacToeGame() {
                               <img 
                                 src="/assets/images/finn.jpg" 
                                 alt="Finn" 
-                                className="w-8 h-8 rounded-full object-cover"
+                                className="w-12 h-12 rounded-full object-cover border-2 border-blue-400 shadow-lg"
                               />
                             ) : (
                               <img 
                                 src="/assets/images/jake.jpg" 
                                 alt="Jake" 
-                                className="w-8 h-8 rounded-full object-cover"
+                                className="w-12 h-12 rounded-full object-cover border-2 border-yellow-400 shadow-lg"
                               />
                             )}
                           </motion.div>
@@ -421,7 +421,7 @@ export function BmoTicTacToeGame() {
                 <div className="grid grid-cols-3 gap-4 text-center text-sm">
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 mb-1">
-                      <img src="/assets/images/finn.jpg" alt="Finn" className="w-4 h-4 rounded-full" />
+                      <img src="/assets/images/finn.jpg" alt="Finn" className="w-6 h-6 rounded-full border border-blue-400" />
                       <div className="font-bold text-red-400">{playerXWins}</div>
                     </div>
                     <div className="text-xs text-muted-foreground">Finn Wins</div>
@@ -432,7 +432,7 @@ export function BmoTicTacToeGame() {
                   </div>
                   <div className="text-center">
                     <div className="flex items-center justify-center gap-1 mb-1">
-                      <img src="/assets/images/jake.jpg" alt="Jake" className="w-4 h-4 rounded-full" />
+                      <img src="/assets/images/jake.jpg" alt="Jake" className="w-6 h-6 rounded-full border border-yellow-400" />
                       <div className="font-bold text-green-400">{playerOWins}</div>
                     </div>
                     <div className="text-xs text-muted-foreground">

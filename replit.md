@@ -154,3 +154,8 @@ All games include:
 ✓ **Added New Content**: Integrated latest YouTube short (Ql7tURnDdzk) to content showcase
 ✓ **Enlarged Game Icons**: Increased game tab icons from 4x4 to 6x6 for better visibility
 ✓ **Character Integration**: Added character previews and win counters with Finn/Jake avatars
+✓ **Fixed BMO RPG Issues**: Resolved Z key resetting game, fixed special attack regeneration
+✓ **Enhanced Character Images**: Made X.O game character images larger and more visible
+✓ **Updated Content Video**: Replaced short with new video (920D9DjKgCo) as requested
+✓ **Mobile RPG Support**: Added touch controls for BMO RPG game on mobile devices
+✓ **Special Attack Regen**: Fixed special attacks to regenerate over time and on level/wave completion
