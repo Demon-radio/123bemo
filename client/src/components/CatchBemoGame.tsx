@@ -284,7 +284,7 @@ export function CatchBemoGame() {
                   {/* Game Area */}
                   <div 
                     ref={gameAreaRef}
-                    className="relative h-64 bg-gradient-to-b from-blue-400 to-blue-600 rounded-lg border-2 border-primary overflow-hidden cursor-none"
+                    className="relative h-64 bg-gradient-to-b from-gray-800 to-gray-900 rounded-lg border-2 border-primary overflow-hidden cursor-none"
                     onMouseMove={handleMouseMove}
                   >
                     {/* Falling Items */}

@@ -171,19 +171,19 @@ export function BmoMazeGame() {
         switch (e.key.toLowerCase()) {
           case 'arrowup':
           case 'w':
-            newX = Math.max(0, newX - 1);
+            newY = Math.max(0, newY - 1);
             break;
           case 'arrowdown':
           case 's':
-            newX = Math.min(MAZE_SIZE - 1, newX + 1);
+            newY = Math.min(MAZE_SIZE - 1, newY + 1);
             break;
           case 'arrowleft':
           case 'a':
-            newY = Math.max(0, newY - 1);
+            newX = Math.max(0, newX - 1);
             break;
           case 'arrowright':
           case 'd':
-            newY = Math.min(MAZE_SIZE - 1, newY + 1);
+            newX = Math.min(MAZE_SIZE - 1, newX + 1);
             break;
           case 'escape':
             setIsOpen(false);
@@ -191,7 +191,7 @@ export function BmoMazeGame() {
         }
         
         // Check if move is valid (not hitting a wall)
-        if (gameState.currentMaze[newX][newY] === 0) {
+        if (gameState.currentMaze[newY][newX] === 0) {
           audioManager.playSound("mazeMove");
           
           setGameState(prev => {
@@ -293,7 +293,7 @@ export function BmoMazeGame() {
     ctx.fillStyle = '#fbbf24';
     ctx.fillRect(exitX + 2, exitY + 2, CELL_SIZE - 4, CELL_SIZE - 4);
     ctx.fillStyle = '#f59e0b';
-    ctx.font = '12px Arial';
+    ctx.font = 'bold 12px Arial';
     ctx.textAlign = 'center';
     ctx.fillText('🚪', exitX + CELL_SIZE/2, exitY + CELL_SIZE/2 + 4);
     
@@ -308,7 +308,7 @@ export function BmoMazeGame() {
       ctx.fillStyle = '#22d3ee';
       ctx.fillRect(bmoX + 2, bmoY + 2, CELL_SIZE - 4, CELL_SIZE - 4);
       ctx.fillStyle = '#0891b2';
-      ctx.font = '10px Arial';
+      ctx.font = 'bold 10px Arial';
       ctx.textAlign = 'center';
       ctx.fillText('BMO', bmoX + CELL_SIZE/2, bmoY + CELL_SIZE/2 + 3);
     }
@@ -350,21 +350,21 @@ export function BmoMazeGame() {
     
     switch (direction) {
       case 'up':
-        newX = Math.max(0, newX - 1);
-        break;
-      case 'down':
-        newX = Math.min(MAZE_SIZE - 1, newX + 1);
-        break;
-      case 'left':
         newY = Math.max(0, newY - 1);
         break;
-      case 'right':
+      case 'down':
         newY = Math.min(MAZE_SIZE - 1, newY + 1);
+        break;
+      case 'left':
+        newX = Math.max(0, newX - 1);
+        break;
+      case 'right':
+        newX = Math.min(MAZE_SIZE - 1, newX + 1);
         break;
     }
     
     // Check if move is valid
-    if (gameState.currentMaze[newX][newY] === 0) {
+    if (gameState.currentMaze[newY][newX] === 0) {
       setGameState(prev => {
         const newState = {
           ...prev,

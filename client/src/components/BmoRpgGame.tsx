@@ -168,6 +168,12 @@ export function BmoRpgGame() {
   const audioRef = useRef<Record<string, HTMLAudioElement>>({});
   const audioManager = AudioManager.getInstance();
   
+  // Initialize audio when component mounts
+  useEffect(() => {
+    audioManager.enableAudio();
+    audioManager.initSounds();
+  }, []);
+  
   // Game state
   const gameStateRef = useRef<GameState>({
     player: {

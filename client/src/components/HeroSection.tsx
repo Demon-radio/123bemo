@@ -57,7 +57,7 @@ export function HeroSection() {
             <Button 
               size="lg" 
               variant="outline" 
-              onClick={scrollToSection("games")}
+              onClick={() => window.open("https://bmo-tools.netlify.app/", "_blank")}
               className="border-primary text-primary hover:bg-primary/10 transition-all transform hover:scale-105"
             >
               <Gamepad className="mr-2 h-5 w-5" />
