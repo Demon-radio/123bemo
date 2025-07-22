@@ -61,7 +61,7 @@ export function HeroSection() {
               className="border-primary text-primary hover:bg-primary/10 transition-all transform hover:scale-105"
             >
               <Gamepad className="mr-2 h-5 w-5" />
-              {t.playGames}
+              BMO Tools
             </Button>
             <Button 
               size="lg" 
@@ -123,7 +123,7 @@ export function HeroSection() {
                   className="w-full bg-primary/10 border-primary text-primary hover:bg-primary/20 shine-effect flex items-center gap-2 px-8 py-3 justify-center"
                 >
                   <Gamepad className="h-5 w-5" />
-                  <span className="font-semibold">BMO Tools</span>
+                  <span className="font-semibold">Play Games</span>
                 </Button>
                 
                 {/* NEW badge */}
