@@ -301,6 +301,17 @@ export class AudioManager {
     try {
       this.customGameOverAudio = new Audio('/assets/sounds/game-over.mp3');
       this.customGameOverAudio.volume = this.sfxVolume * this.masterVolume;
+      // Set up to play twice by listening for the 'ended' event
+      let playCount = 0;
+      this.customGameOverAudio.addEventListener('ended', () => {
+        playCount++;
+        if (playCount < 2) {
+          this.customGameOverAudio!.currentTime = 0;
+          this.customGameOverAudio!.play().catch(console.warn);
+        } else {
+          playCount = 0; // Reset for next time
+        }
+      });
     } catch (error) {
       console.warn('Could not load custom game over sound:', error);
     }
@@ -313,10 +324,12 @@ export class AudioManager {
       if (this.customGameOverAudio) {
         this.customGameOverAudio.currentTime = 0;
         this.customGameOverAudio.volume = this.sfxVolume * this.masterVolume;
+        // Play will automatically repeat twice due to the event listener setup
         await this.customGameOverAudio.play();
       } else {
-        // Fallback to generated sound
+        // Fallback to generated sound - play twice manually
         await this.playSound('gameOver');
+        setTimeout(() => this.playSound('gameOver'), 500);
       }
     } catch (error) {
       console.warn('Could not play game over sound:', error);
