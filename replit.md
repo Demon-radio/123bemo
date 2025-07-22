@@ -173,3 +173,5 @@ All games include:
 ✓ **Updated YouTube Link**: Changed to new channel URL as requested (https://www.youtube.com/@Bemora-site)
 ✓ **Points System Integration**: Added comprehensive points tracking with database storage for all games
 ✓ **Custom Game Over Sound**: Integrated user-provided game over sound that plays twice in all games when players lose
+✓ **Hero Section Update**: Changed button text from "Play All Games" to "BMO Tools" as requested
+✓ **BMO Maze Game Remake**: Completely rebuilt maze game with 10 challenging levels, time limits, and proper scoring system

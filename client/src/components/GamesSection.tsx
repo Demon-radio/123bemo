@@ -9,7 +9,7 @@ import { BattleGame } from "./BattleGame";
 import { BmoAdventureGame } from "./BmoAdventureGame";
 import { BmoRpgGame } from "./BmoRpgGame";
 import { BmoTicTacToeGame } from "./BmoTicTacToeGame";
-import { BmoMazeGame } from "./BmoMazeGame";
+import BmoMazeGameNew from "./BmoMazeGameNew";
 import { Gamepad2, Brain, Swords, MonitorPlay, Joystick, Grid3X3, Map } from "lucide-react";
 
 export function GamesSection() {
@@ -151,9 +151,9 @@ export function GamesSection() {
               <div className="bg-muted/50 rounded-lg p-6 border border-border text-center">
                 <h3 className="text-xl font-bold mb-4">BMO Maze Escape</h3>
                 <p className="text-muted-foreground mb-6">
-                  Help BMO escape through 5 different randomly generated mazes! Navigate carefully and find the exit door.
+                  Help BMO escape through 10 challenging mazes with time limits! Navigate carefully and find the exit door to earn maximum points.
                 </p>
-                <BmoMazeGame />
+                <BmoMazeGameNew />
               </div>
             </TabsContent>
           </Tabs>
