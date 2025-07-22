@@ -4,6 +4,9 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import { X, Gamepad2, RotateCcw } from "lucide-react";
 import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
 import { AudioManager } from "@/lib/audioManager";
+import { submitGameSession, type GameResult } from "@/lib/pointsSystem";
+import { PlayerPointsDisplay } from "./PlayerPointsDisplay";
+import { useToast } from "@/hooks/use-toast";
 
 // BMO Maze Game with 5 random maps
 // BMO needs to escape from different mazes
@@ -134,10 +137,14 @@ export function BmoMazeGame() {
     moves: 0
   });
   
+  const [playerName, setPlayerName] = useState("");
+  const [showPointsDialog, setShowPointsDialog] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameLoopRef = useRef<number>();
   const startTimeRef = useRef<number>();
   const audioManager = AudioManager.getInstance();
+  const { toast } = useToast();
   
   // BMO image from attached assets
   const bmoImageRef = useRef<HTMLImageElement>();
@@ -159,6 +166,37 @@ export function BmoMazeGame() {
     
     return () => stopGameLoop();
   }, [isOpen]);
+  
+  // Submit game result to points system
+  const submitGameResult = async (finalScore: number) => {
+    if (!playerName.trim()) return;
+    
+    try {
+      const sessionDuration = sessionStartTime ? Math.floor((Date.now() - sessionStartTime) / 1000) : gameState.timeElapsed;
+      
+      const gameResult: GameResult = {
+        playerName,
+        gameType: 'maze',
+        score: finalScore,
+        levelReached: gameState.level,
+        sessionDuration,
+        completed: gameState.gameCompleted
+      };
+      
+      const pointsResult = await submitGameSession(gameResult);
+      
+      if (pointsResult.success) {
+        toast({
+          title: "تم حفظ النقاط!",
+          description: `حصلت على ${pointsResult.pointsEarned} نقطة! نتيجتك النهائية: ${finalScore}`,
+        });
+        
+        setShowPointsDialog(true);
+      }
+    } catch (error) {
+      console.error('Error submitting maze game result:', error);
+    }
+  };
   
   useEffect(() => {
     if (gameState.gameStarted) {
@@ -217,6 +255,11 @@ export function BmoMazeGame() {
                 newState.gameCompleted = true;
                 newState.score = prev.score + (1000 - prev.moves * 10);
                 trackGameComplete("BMO Maze Game", newState.score);
+                
+                // Submit to points system if player name is provided
+                if (playerName.trim()) {
+                  setTimeout(() => submitGameResult(newState.score), 1000);
+                }
               }
             }
             
@@ -432,13 +475,29 @@ export function BmoMazeGame() {
           {/* Game area */}
           <div className="p-4 flex flex-col items-center">
             {!gameState.gameStarted ? (
-              <div className="text-center">
-                <h3 className="text-2xl font-bold mb-4">Help BMO Escape!</h3>
+              <div className="text-center max-w-md mx-auto">
+                <h3 className="text-2xl font-bold mb-4">ساعد BMO في الهروب!</h3>
                 <p className="mb-6 text-muted-foreground">
-                  Navigate BMO through 5 different mazes to help him escape!
+                  اقود BMO عبر 5 متاهات مختلفة لمساعدته على الهروب!
                 </p>
-                <Button onClick={startGame} className="bg-cyan-500 hover:bg-cyan-600">
-                  Start Adventure
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">اسمك أو لقبك</label>
+                    <input
+                      type="text"
+                      value={playerName}
+                      onChange={(e) => setPlayerName(e.target.value)}
+                      placeholder="ادخل اسمك"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                    />
+                  </div>
+                </div>
+                <Button 
+                  onClick={startGame} 
+                  className="bg-cyan-500 hover:bg-cyan-600"
+                  disabled={!playerName.trim()}
+                >
+                  ابدأ المغامرة
                 </Button>
               </div>
             ) : (
@@ -541,6 +600,15 @@ export function BmoMazeGame() {
           </div>
         </DialogContent>
       </Dialog>
+      
+      {/* Points dialog */}
+      {showPointsDialog && (
+        <PlayerPointsDisplay
+          isOpen={showPointsDialog}
+          onClose={() => setShowPointsDialog(false)}
+          playerName={playerName}
+        />
+      )}
     </>
   );
 }

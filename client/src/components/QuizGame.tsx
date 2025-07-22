@@ -11,6 +11,8 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
 import { AudioManager } from "@/lib/audioManager";
+import { submitGameSession, type GameResult } from "@/lib/pointsSystem";
+import { PlayerPointsDisplay } from "./PlayerPointsDisplay";
 
 // Import Adventure Time character images
 import BMO from "@assets/image_1746719364511.png";
@@ -213,6 +215,8 @@ export function QuizGame() {
   const [playerEmail, setPlayerEmail] = useState("");
   const [topPlayers, setTopPlayers] = useState<Array<{name: string, score: number}>>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPointsDialog, setShowPointsDialog] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState<number>(0);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const audioManager = AudioManager.getInstance();
@@ -319,10 +323,72 @@ export function QuizGame() {
     }
     
     setGameState("question");
+    setSessionStartTime(Date.now());
     
     // Track game start with quiz type
     trackGameStart(`Adventure Time Quiz (${quizType === "website" ? "Website" : "Characters"})`);
     trackEvent("quiz_started", "games", `Quiz Started: ${quizType}`, questions.length);
+  };
+
+  // Submit score with points system
+  const submitScoreWithPoints = async () => {
+    if (!playerName.trim()) {
+      toast({
+        title: "اسم مطلوب",
+        description: "يرجى إدخال اسمك لحفظ النتيجة",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Calculate session duration
+      const sessionDuration = sessionStartTime ? Math.floor((Date.now() - sessionStartTime) / 1000) : 0;
+      
+      // Submit to points system
+      const gameResult: GameResult = {
+        playerName,
+        gameType: 'quiz',
+        score: score * 1000, // Convert to points (each correct answer = 1000 points)
+        levelReached: currentQuestion + 1,
+        sessionDuration,
+        completed: true
+      };
+      
+      const pointsResult = await submitGameSession(gameResult);
+      
+      if (pointsResult.success) {
+        toast({
+          title: "تم حفظ النقاط!",
+          description: `حصلت على ${pointsResult.pointsEarned} نقطة! نتيجتك: ${score}/${questions.length}`,
+        });
+        
+        // Show points dialog
+        setShowPointsDialog(true);
+      } else {
+        // Fallback to old score submission
+        await submitScore();
+      }
+      
+      // Refresh top players
+      fetchTopPlayers();
+      
+      // Track game completion
+      trackGameComplete(`Adventure Time Quiz (${quizType === "website" ? "Website" : "Characters"})`, score);
+      trackEvent("quiz_completed", "games", `Quiz Completed: ${quizType}`, score);
+      
+    } catch (error) {
+      console.error("Error submitting score:", error);
+      toast({
+        title: "خطأ في الشبكة",
+        description: "فشل في حفظ النتيجة بسبب خطأ في الشبكة.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Check answer and move to next question
@@ -655,11 +721,11 @@ export function QuizGame() {
                   
                   <div className="flex gap-2 flex-wrap justify-center">
                     <Button 
-                      onClick={submitScore}
+                      onClick={submitScoreWithPoints}
                       className="bg-secondary hover:bg-secondary/90"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Saving..." : "Save Score"}
+                      {isSubmitting ? "جاري الحفظ..." : "احفظ النتيجة"}
                     </Button>
                     <Button 
                       onClick={() => {
@@ -686,6 +752,15 @@ export function QuizGame() {
           </div>
         </DialogContent>
       </Dialog>
+      
+      {/* Points dialog */}
+      {showPointsDialog && (
+        <PlayerPointsDisplay
+          isOpen={showPointsDialog}
+          onClose={() => setShowPointsDialog(false)}
+          playerName={playerName}
+        />
+      )}
     </>
   );
 }

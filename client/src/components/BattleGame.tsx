@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { AudioManager } from "@/lib/audioManager";
+import { submitGameSession, type GameResult } from "@/lib/pointsSystem";
+import { PlayerPointsDisplay } from "./PlayerPointsDisplay";
 
 // Adventure Time battle questions
 const battleQuestions = [
@@ -108,6 +110,8 @@ export function BattleGame() {
   const [roundExplanation, setRoundExplanation] = useState("");
   const [gameHistory, setGameHistory] = useState<Array<{round: number, playerAnswer: string, aiAnswer: string, correct: string, result: string}>>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPointsDialog, setShowPointsDialog] = useState(false);
+  const [sessionStartTime, setSessionStartTime] = useState<number>(0);
   const [winMessage, setWinMessage] = useState("");
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -183,6 +187,7 @@ export function BattleGame() {
     setRoundResult(null);
     setRoundExplanation("");
     setGameHistory([]);
+    setSessionStartTime(0);
   };
 
   // Get AI answer - sometimes correct, sometimes wrong
@@ -261,7 +266,62 @@ export function BattleGame() {
     }
     
     setGameState("battle");
+    setSessionStartTime(Date.now());
     startNewRound();
+  };
+  
+  // Submit score with points system
+  const submitScoreWithPoints = async () => {
+    if (!playerName.trim()) {
+      toast({
+        title: "اسم مطلوب",
+        description: "يرجى إدخال اسمك لحفظ النتيجة",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Calculate session duration
+      const sessionDuration = sessionStartTime ? Math.floor((Date.now() - sessionStartTime) / 1000) : 0;
+      
+      // Submit to points system
+      const gameResult: GameResult = {
+        playerName,
+        gameType: 'battle',
+        score: playerScore * 1500, // Convert to points (each win = 1500 points)
+        levelReached: roundNumber,
+        sessionDuration,
+        completed: true
+      };
+      
+      const pointsResult = await submitGameSession(gameResult);
+      
+      if (pointsResult.success) {
+        toast({
+          title: "تم حفظ النقاط!",
+          description: `حصلت على ${pointsResult.pointsEarned} نقطة! نتيجتك: ${playerScore} انتصار`,
+        });
+        
+        // Show points dialog
+        setShowPointsDialog(true);
+      } else {
+        // Fallback to old score submission
+        await submitScore();
+      }
+      
+    } catch (error) {
+      console.error("Error submitting battle score:", error);
+      toast({
+        title: "خطأ في الشبكة",
+        description: "فشل في حفظ النتيجة بسبب خطأ في الشبكة.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Start a new round
@@ -642,11 +702,11 @@ export function BattleGame() {
                   
                   <div className="flex gap-2 flex-wrap justify-center">
                     <Button 
-                      onClick={submitScore}
+                      onClick={submitScoreWithPoints}
                       className="bg-orange-600 hover:bg-orange-700"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Saving..." : "Save Score"}
+                      {isSubmitting ? "جاري الحفظ..." : "احفظ النتيجة"}
                     </Button>
                     <Button 
                       onClick={resetGame}
@@ -661,6 +721,15 @@ export function BattleGame() {
           </div>
         </DialogContent>
       </Dialog>
+      
+      {/* Points dialog */}
+      {showPointsDialog && (
+        <PlayerPointsDisplay
+          isOpen={showPointsDialog}
+          onClose={() => setShowPointsDialog(false)}
+          playerName={playerName}
+        />
+      )}
     </>
   );
 }

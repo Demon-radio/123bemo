@@ -45,12 +45,51 @@ export const gamePlayers = pgTable("game_players", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email"),
-  game_type: text("game_type").notNull(), // "catch" or "quiz"
+  game_type: text("game_type").notNull(), // "quiz", "battle", "bmo", "rpg", "tictactoe", "maze"
   score: integer("score").notNull(),
+  level_reached: integer("level_reached").default(1),
+  time_played: integer("time_played").default(0), // in seconds
+  achievements: text("achievements").default("[]"), // JSON array of achievement IDs
+  created_at: timestamp("created_at").defaultNow(),
+});
+
+// Player Points System
+export const playerPoints = pgTable("player_points", {
+  id: serial("id").primaryKey(),
+  player_name: text("player_name").notNull(),
+  email: text("email"),
+  total_points: integer("total_points").default(0),
+  games_played: integer("games_played").default(0),
+  achievements_earned: integer("achievements_earned").default(0),
+  last_played: timestamp("last_played").defaultNow(),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
+// Game Sessions for tracking detailed gameplay
+export const gameSessions = pgTable("game_sessions", {
+  id: serial("id").primaryKey(),
+  player_name: text("player_name").notNull(),
+  game_type: text("game_type").notNull(),
+  score: integer("score").notNull(),
+  points_earned: integer("points_earned").notNull(),
+  session_duration: integer("session_duration"), // in seconds
+  level_reached: integer("level_reached").default(1),
+  completed: boolean("completed").default(false),
   created_at: timestamp("created_at").defaultNow(),
 });
 
 export const insertGamePlayerSchema = createInsertSchema(gamePlayers).omit({
+  id: true,
+  created_at: true,
+});
+
+export const insertPlayerPointsSchema = createInsertSchema(playerPoints).omit({
+  id: true,
+  created_at: true,
+  last_played: true,
+});
+
+export const insertGameSessionSchema = createInsertSchema(gameSessions).omit({
   id: true,
   created_at: true,
 });
@@ -67,3 +106,9 @@ export type Content = typeof content.$inferSelect;
 
 export type InsertGamePlayer = z.infer<typeof insertGamePlayerSchema>;
 export type GamePlayer = typeof gamePlayers.$inferSelect;
+
+export type InsertPlayerPoints = z.infer<typeof insertPlayerPointsSchema>;
+export type PlayerPoints = typeof playerPoints.$inferSelect;
+
+export type InsertGameSession = z.infer<typeof insertGameSessionSchema>;
+export type GameSession = typeof gameSessions.$inferSelect;
