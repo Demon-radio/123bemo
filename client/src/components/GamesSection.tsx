@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MobileGameMenu } from "./MobileGameMenu";
 import { DifficultySelector } from "./DifficultySelector";
-import { CatchBemoGame } from "./CatchBemoGame";
+
 import { QuizGame } from "./QuizGame";
 import { BattleGame } from "./BattleGame";
 import { BmoAdventureGame } from "./BmoAdventureGame";
@@ -13,14 +13,14 @@ import { BmoMazeGame } from "./BmoMazeGame";
 import { Gamepad2, Brain, Swords, MonitorPlay, Joystick, Grid3X3, Map } from "lucide-react";
 
 export function GamesSection() {
-  const [activeTab, setActiveTab] = useState("catch-game");
+  const [activeTab, setActiveTab] = useState("quiz-game");
 
   return (
     <section id="games" className="py-12 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-12">
           <h2 className="text-3xl md:text-4xl font-heading text-center md:text-left mb-4 md:mb-0">
-            <span className="gradient-text">BEMORA Games</span>
+            <span className="gradient-text">BMO Games</span>
           </h2>
           <div className="flex items-center gap-4">
             <DifficultySelector />
@@ -45,15 +45,7 @@ export function GamesSection() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 mb-8">
-              <TabsTrigger 
-                value="catch-game"
-                className="data-[state=active]:bg-primary data-[state=active]:text-white flex items-center gap-2 justify-center"
-              >
-                <Gamepad2 className="h-6 w-6" />
-                <span className="hidden sm:inline">Catch BEMORA</span>
-                <span className="sm:hidden">Catch</span>
-              </TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 mb-8">
               <TabsTrigger 
                 value="quiz-game"
                 className="data-[state=active]:bg-secondary data-[state=active]:text-white flex items-center gap-2 justify-center"
@@ -103,20 +95,11 @@ export function GamesSection() {
                 <span className="sm:hidden">Maze</span>
               </TabsTrigger>
             </TabsList>
-            
-            <TabsContent value="catch-game" className="mt-0">
-              <div className="bg-muted/50 rounded-lg p-6 border border-border text-center">
-                <h3 className="text-xl font-bold mb-4">Catch BEMORA Game</h3>
-                <p className="text-muted-foreground mb-6">
-                  Test your reflexes! Try to catch the BEMORA logo as many times as you can before the time runs out.
-                </p>
-                <CatchBemoGame />
-              </div>
-            </TabsContent>
+
             
             <TabsContent value="quiz-game" className="mt-0">
               <div className="bg-muted/50 rounded-lg p-6 border border-border text-center">
-                <h3 className="text-xl font-bold mb-4">BEMORA Quiz Challenge</h3>
+                <h3 className="text-xl font-bold mb-4">BMO Quiz Challenge</h3>
                 <p className="text-muted-foreground mb-6">
                   Test your knowledge about BEMORA and Adventure Time! Answer the questions correctly and show how big of a fan you are.
                 </p>

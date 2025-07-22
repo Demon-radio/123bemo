@@ -762,6 +762,9 @@ export function BmoRpgGame() {
   
   // Handle enemy defeat
   const defeatedEnemy = (enemy: Enemy) => {
+    // Play enemy defeat sound
+    audioManager.playSound("explosion");
+    
     // Mark the enemy as dying to play death animation
     enemy.isDying = true;
     enemy.deathFrame = 0;
@@ -800,6 +803,7 @@ export function BmoRpgGame() {
     
     if (player.experience >= expNeeded) {
       // Level up!
+      audioManager.playSound("levelUp");
       player.level++;
       player.experience -= expNeeded;
       

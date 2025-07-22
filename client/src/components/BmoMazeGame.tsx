@@ -191,7 +191,7 @@ export function BmoMazeGame() {
         }
         
         // Check if move is valid (not hitting a wall)
-        if (gameState.currentMaze[newY][newX] === 0) {
+        if (gameState.currentMaze[newX][newY] === 0) {
           audioManager.playSound("mazeMove");
           
           setGameState(prev => {
@@ -288,8 +288,8 @@ export function BmoMazeGame() {
     }
     
     // Draw exit
-    const exitX = gameState.exitPosition.y * CELL_SIZE;
-    const exitY = gameState.exitPosition.x * CELL_SIZE;
+    const exitX = gameState.exitPosition.x * CELL_SIZE;
+    const exitY = gameState.exitPosition.y * CELL_SIZE;
     ctx.fillStyle = '#fbbf24';
     ctx.fillRect(exitX + 2, exitY + 2, CELL_SIZE - 4, CELL_SIZE - 4);
     ctx.fillStyle = '#f59e0b';
@@ -298,8 +298,8 @@ export function BmoMazeGame() {
     ctx.fillText('🚪', exitX + CELL_SIZE/2, exitY + CELL_SIZE/2 + 4);
     
     // Draw BMO
-    const bmoX = gameState.bmoPosition.y * CELL_SIZE;
-    const bmoY = gameState.bmoPosition.x * CELL_SIZE;
+    const bmoX = gameState.bmoPosition.x * CELL_SIZE;
+    const bmoY = gameState.bmoPosition.y * CELL_SIZE;
     
     if (bmoImageRef.current) {
       ctx.drawImage(bmoImageRef.current, bmoX + 1, bmoY + 1, CELL_SIZE - 2, CELL_SIZE - 2);
