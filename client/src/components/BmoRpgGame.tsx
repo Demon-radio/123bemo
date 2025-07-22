@@ -2139,8 +2139,8 @@ export function BmoRpgGame() {
               <button 
                 className="bg-green-500 text-white p-2 rounded touch-manipulation"
                 onTouchStart={() => {
-                  if (gameStateRef.current.healthPotions > 0) {
-                    gameStateRef.current.healthPotions--;
+                  // Use health potion - heal player by 50 HP
+                  if (gameStateRef.current.player.health < gameStateRef.current.player.maxHealth) {
                     gameStateRef.current.player.health = Math.min(gameStateRef.current.player.maxHealth, gameStateRef.current.player.health + 50);
                   }
                 }}

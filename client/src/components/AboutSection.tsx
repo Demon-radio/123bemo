@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
 import { RobotLogo } from "@/components/RobotLogo";
 import bemoraPng from "@assets/file_00000000b38462439ee014f225bec5b0.png";
+import { useTranslations } from "@/components/LanguageToggle";
 
 export function AboutSection() {
+  const t = useTranslations();
+  
   const stats = [
-    { value: "150+", label: "Videos" },
-    { value: "15K+", label: "Followers" },
-    { value: "3+", label: "Years" },
-    { value: "4", label: "Platforms" },
+    { value: "150+", label: t.videos || "Videos" },
+    { value: "15K+", label: t.followers || "Followers" },
+    { value: "3+", label: t.years || "Years" },
+    { value: "4", label: t.platforms || "Platforms" },
   ];
 
   return (
@@ -54,21 +57,20 @@ export function AboutSection() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-heading mb-6">
-              <span className="text-primary">About</span>{" "}
-              <span className="text-secondary">BEMORA</span>
+              <span className="text-primary">{t.aboutTitle}</span>
             </h2>
 
             <div className="space-y-4 text-lg">
               <p>
-                Welcome to my digital universe! I'm the creator behind BEMORA, passionate about technology, gaming, and creating engaging content that connects with audiences across multiple platforms.
+                {t.aboutDescription1 || "Welcome to my digital universe! I'm the creator behind BEMORA, passionate about technology, gaming, and creating engaging content that connects with audiences across multiple platforms."}
               </p>
 
               <p>
-                What began as a hobby has evolved into a dedicated journey of content creation, where I share my experiences, insights, and entertainment with a growing community of followers.
+                {t.aboutDescription2 || "What began as a hobby has evolved into a dedicated journey of content creation, where I share my experiences, insights, and entertainment with a growing community of followers."}
               </p>
 
               <p>
-                My mission is to create content that not only entertains but also informs and inspires. Whether you're here for tech reviews, gaming streams, or just to connect with like-minded individuals, BEMORA is your digital home.
+                {t.aboutDescription3 || "My mission is to create content that not only entertains but also informs and inspires. Whether you're here for tech reviews, gaming streams, or just to connect with like-minded individuals, BEMORA is your digital home."}
               </p>
             </div>
 

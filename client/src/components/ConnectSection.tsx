@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { FaXTwitter, FaFacebookF, FaWhatsapp, FaYoutube } from "react-icons/fa6";
+import { useTranslations } from "@/components/LanguageToggle";
 
 export function ConnectSection() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const t = useTranslations();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,19 +48,17 @@ export function ConnectSection() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-heading mb-6">
-              <span className="text-primary">Join the</span>{" "}
-              <span className="text-secondary">BEMORA</span>{" "}
-              <span className="text-primary">Community</span>
+              <span className="text-primary">{t.connectTitle}</span>
             </h2>
             <p className="text-lg mb-4">
-              Stay updated with my latest content and connect with me on your favorite platforms.
+              {t.connectDescription || "Stay updated with my latest content and connect with me on your favorite platforms."}
             </p>
             <div className="mb-8">
               <Button 
                 onClick={() => window.open(contactLink, "_blank")}
                 className="bg-secondary hover:bg-secondary/90 text-white font-semibold px-6 py-3"
               >
-                Contact Me
+{t.contactMe || "Contact Me"}
               </Button>
             </div>
           </motion.div>

@@ -39,6 +39,15 @@ interface LanguageContent {
     games: string;
     about: string;
     connect: string;
+    connectDescription?: string;
+    contactMe?: string;
+    aboutDescription1?: string;
+    aboutDescription2?: string;
+    aboutDescription3?: string;
+    videos?: string;
+    followers?: string;
+    years?: string;
+    platforms?: string;
   };
 }
 
@@ -52,14 +61,23 @@ const translations: LanguageContent = {
     gamesTitle: "BEMORA Games",
     aboutTitle: "About BEMORA",
     contentTitle: "Latest Content",
-    connectTitle: "Connect",
+    connectTitle: "Connect with BEMORA",
     footerText: "BEMORA - Content Creator & Gaming Enthusiast",
     watchPromo: "Watch Promo",
     home: "Home",
     content: "Content",
     games: "Games",
     about: "About",
-    connect: "Connect"
+    connect: "Connect",
+    connectDescription: "Stay updated with my latest content and connect with me on your favorite platforms.",
+    contactMe: "Contact Me",
+    aboutDescription1: "Welcome to my digital universe! I'm the creator behind BEMORA, passionate about technology, gaming, and creating engaging content that connects with audiences across multiple platforms.",
+    aboutDescription2: "What began as a hobby has evolved into a dedicated journey of content creation, where I share my experiences, insights, and entertainment with a growing community of followers.",
+    aboutDescription3: "My mission is to create content that not only entertains but also informs and inspires. Whether you're here for tech reviews, gaming streams, or just to connect with like-minded individuals, BEMORA is your digital home.",
+    videos: "Videos",
+    followers: "Followers",
+    years: "Years",
+    platforms: "Platforms"
   },
   ar: {
     heroTitle: "مرحباً بكم في بيمورا",

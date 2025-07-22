@@ -1,0 +1,45 @@
+
+Warning: React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: object. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check your code at AchievementSystem.tsx:309.
+AchievementSystem@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/src/components/AchievementSystem.tsx:142:34
+div
+Home
+Route@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f7065bad:323:13
+Switch@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f7065bad:379:14
+App
+Provider@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-PLT6GTVM.js?v=f7065bad:38:47
+TooltipProvider@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=f7065bad:68:7
+QueryClientProvider@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f7065bad:2804:27
+t@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630
+value@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766
+8988/value/this.asyncTimer<@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400
+[Vercel Web Analytics] Debug mode is enabled by default in development. No requests will be sent to the server.
+[Vercel Web Analytics] [pageview] https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/ 
+Object {o: "https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/", sv: "0.1.3", sdkn: "@vercel/analytics/react", sdkv: "1.5.0", ts: 1753201799594, …}
+Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn&#x27;t have a dependency array, or one of the dependencies changes on every render.
+CatchBemoGame@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/src/components/CatchBemoGame.tsx:29:39
+div
+div
+Primitive</Node<@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-GCLFTVUM.js?v=f7065bad:42:44
+Presence@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-TFABGAPC.js?v=f7065bad:80:33
+TabsContent<@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=f7065bad:174:75
+_c5@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/src/components/ui/tabs.tsx:72:9
+div
+Primitive</Node<@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-GCLFTVUM.js?v=f7065bad:42:44
+Provider@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-PLT6GTVM.js?v=f7065bad:38:47
+Tabs<@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=f7065bad:60:9
+div
+MotionComponent@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/framer-motion.js?v=f7065bad:945:40
+div
+section
+GamesSection@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/src/components/GamesSection.tsx:33:45
+div
+Home
+Route@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f7065bad:323:13
+Switch@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=f7065bad:379:14
+App
+Provider@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-PLT6GTVM.js?v=f7065bad:38:47
+TooltipProvider@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=f7065bad:68:7
+QueryClientProvider@https://9b41e3b9-2c22-4f5a-89b5-22eb46adc5ea-00-d6cd8t621rcx.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=f7065bad:2804:27

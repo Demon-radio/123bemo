@@ -167,7 +167,7 @@ export function CatchBemoGame() {
     if (gameState === "playing") {
       checkCollisions();
     }
-  }, [fallingItems, basketPosition, gameState]);
+  }, [fallingItems, basketPosition, gameState, score]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (gameState !== "playing" || !gameAreaRef.current) return;

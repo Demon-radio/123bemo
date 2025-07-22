@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -291,7 +291,7 @@ export function AchievementSystem({ gameId, onAchievementUnlocked }: Achievement
           
           <div className="space-y-4 mt-6">
             {achievements.map((achievement) => {
-              const IconComponent = achievement.icon || Star;
+              const IconComponent = achievement.icon;
               const progressPercentage = (achievement.currentProgress / achievement.requirement) * 100;
               
               return (
@@ -306,7 +306,7 @@ export function AchievementSystem({ gameId, onAchievementUnlocked }: Achievement
                 >
                   <div className="flex items-start gap-4">
                     <div className={`p-2 rounded-full ${achievement.unlocked ? "bg-yellow-500" : "bg-muted"}`}>
-                      <IconComponent 
+                      <Star 
                         className={`h-5 w-5 ${achievement.unlocked ? "text-white" : "text-muted-foreground"}`} 
                       />
                     </div>
