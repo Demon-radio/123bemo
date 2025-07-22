@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Volume2, VolumeX, Music, Gamepad2 } from "lucide-react";
+import { AudioManager } from "@/lib/audioManager";
 
 interface AudioSettings {
   masterVolume: number;
@@ -23,6 +24,7 @@ export function AudioSettings() {
     soundEffectsVolume: 80
   });
 
+  const audioManager = AudioManager.getInstance();
   const backgroundMusicRef = useRef<HTMLAudioElement | null>(null);
 
   // Load settings from localStorage on mount
@@ -46,25 +48,30 @@ export function AudioSettings() {
     window.dispatchEvent(new CustomEvent("audioSettingsChange", { detail: settings }));
   }, [settings]);
 
-  // Initialize background music
+  // Initialize audio manager and background music
   useEffect(() => {
-    // Create a simple background music using Web Audio API for demo
-    // In a real implementation, you'd load actual audio files
-    if (settings.musicEnabled && !backgroundMusicRef.current) {
-      createBackgroundMusic();
-    } else if (!settings.musicEnabled && backgroundMusicRef.current) {
-      backgroundMusicRef.current.pause();
-      backgroundMusicRef.current = null;
+    audioManager.enableAudio();
+    audioManager.initSounds();
+    
+    if (settings.musicEnabled) {
+      audioManager.startBackgroundMusic();
+    } else {
+      audioManager.stopBackgroundMusic();
     }
-  }, [settings.musicEnabled]);
+    
+    if (!settings.soundEffectsEnabled) {
+      audioManager.mute();
+    } else {
+      audioManager.unmute();
+    }
+  }, [settings.musicEnabled, settings.soundEffectsEnabled]);
 
-  // Update music volume
+  // Update volumes
   useEffect(() => {
-    if (backgroundMusicRef.current) {
-      const volume = (settings.masterVolume / 100) * (settings.musicVolume / 100);
-      backgroundMusicRef.current.volume = volume;
-    }
-  }, [settings.masterVolume, settings.musicVolume]);
+    audioManager.setMasterVolume(settings.masterVolume / 100);
+    audioManager.setMusicVolume(settings.musicVolume / 100);
+    audioManager.setSfxVolume(settings.soundEffectsVolume / 100);
+  }, [settings.masterVolume, settings.musicVolume, settings.soundEffectsVolume]);
 
   const createBackgroundMusic = () => {
     // For demo purposes, we'll use a simple tone generator

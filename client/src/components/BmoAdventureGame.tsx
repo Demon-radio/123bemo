@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
+import { AudioManager } from "@/lib/audioManager";
 import BMOImage from "@assets/image_1746719364511.png";
 import FinnVictoryImage from "/assets/images/rpg/finn-victory1.svg";
 import FinnJakeVictoryImage from "/assets/images/rpg/finn-jake-victory.svg";
@@ -151,6 +152,7 @@ export function BmoAdventureGame() {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const audioManager = AudioManager.getInstance();
 
   // Reset game when dialog closes
   useEffect(() => {

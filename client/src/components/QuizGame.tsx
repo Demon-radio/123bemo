@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
+import { AudioManager } from "@/lib/audioManager";
 
 // Import Adventure Time character images
 import BMO from "@assets/image_1746719364511.png";
@@ -214,6 +215,7 @@ export function QuizGame() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const audioManager = AudioManager.getInstance();
 
   // Select random questions when quiz type changes
   useEffect(() => {
@@ -333,6 +335,7 @@ export function QuizGame() {
     if (isCorrect) {
       setScore(score + 1);
       setAnswerFeedback("correct");
+      audioManager.playSound("quizCorrect");
       
       // Track correct answer
       trackEvent(
@@ -343,6 +346,7 @@ export function QuizGame() {
       );
     } else {
       setAnswerFeedback("incorrect");
+      audioManager.playSound("quizWrong");
       
       // Track incorrect answer with details
       trackEvent(

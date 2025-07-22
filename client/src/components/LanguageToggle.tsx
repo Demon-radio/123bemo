@@ -34,6 +34,11 @@ interface LanguageContent {
     connectTitle: string;
     footerText: string;
     watchPromo: string;
+    home: string;
+    content: string;
+    games: string;
+    about: string;
+    connect: string;
   };
 }
 
@@ -49,7 +54,12 @@ const translations: LanguageContent = {
     contentTitle: "Latest Content",
     connectTitle: "Connect",
     footerText: "BEMORA - Content Creator & Gaming Enthusiast",
-    watchPromo: "Watch Promo"
+    watchPromo: "Watch Promo",
+    home: "Home",
+    content: "Content",
+    games: "Games",
+    about: "About",
+    connect: "Connect"
   },
   ar: {
     heroTitle: "مرحباً بكم في بيمورا",
@@ -62,7 +72,12 @@ const translations: LanguageContent = {
     contentTitle: "أحدث المحتوى",
     connectTitle: "تواصل",
     footerText: "بيمورا - منشئ محتوى وعاشق للألعاب",
-    watchPromo: "شاهد العرض"
+    watchPromo: "شاهد العرض",
+    home: "الرئيسية",
+    content: "المحتوى",
+    games: "الألعاب",
+    about: "حول",
+    connect: "تواصل"
   },
   es: {
     heroTitle: "Bienvenido a BEMORA",
@@ -75,7 +90,12 @@ const translations: LanguageContent = {
     contentTitle: "Contenido Reciente",
     connectTitle: "Conectar",
     footerText: "BEMORA - Creador de Contenido y Entusiasta de Juegos",
-    watchPromo: "Ver Promoción"
+    watchPromo: "Ver Promoción",
+    home: "Inicio",
+    content: "Contenido",
+    games: "Juegos",
+    about: "Acerca",
+    connect: "Conectar"
   },
   fr: {
     heroTitle: "Bienvenue chez BEMORA",
@@ -88,7 +108,12 @@ const translations: LanguageContent = {
     contentTitle: "Contenu Récent",
     connectTitle: "Connecter",
     footerText: "BEMORA - Créateur de Contenu et Passionné de Jeux",
-    watchPromo: "Regarder la Promo"
+    watchPromo: "Regarder la Promo",
+    home: "Accueil",
+    content: "Contenu",
+    games: "Jeux",
+    about: "À propos",
+    connect: "Connecter"
   },
   de: {
     heroTitle: "Willkommen bei BEMORA",
@@ -101,7 +126,12 @@ const translations: LanguageContent = {
     contentTitle: "Neueste Inhalte",
     connectTitle: "Verbinden",
     footerText: "BEMORA - Content Creator & Gaming-Enthusiast",
-    watchPromo: "Promo Ansehen"
+    watchPromo: "Promo Ansehen",
+    home: "Startseite",
+    content: "Inhalte",
+    games: "Spiele",
+    about: "Über",
+    connect: "Verbinden"
   },
   ja: {
     heroTitle: "BEMORAへようこそ",
@@ -114,7 +144,12 @@ const translations: LanguageContent = {
     contentTitle: "最新コンテンツ",
     connectTitle: "接続",
     footerText: "BEMORA - コンテンツクリエイター＆ゲーム愛好家",
-    watchPromo: "プロモを見る"
+    watchPromo: "プロモを見る",
+    home: "ホーム",
+    content: "コンテンツ",
+    games: "ゲーム",
+    about: "について",
+    connect: "接続"
   },
   ko: {
     heroTitle: "BEMORA에 오신 것을 환영합니다",
@@ -127,7 +162,12 @@ const translations: LanguageContent = {
     contentTitle: "최신 콘텐츠",
     connectTitle: "연결",
     footerText: "BEMORA - 콘텐츠 크리에이터 & 게임 애호가",
-    watchPromo: "프로모 시청"
+    watchPromo: "프로모 시청",
+    home: "홈",
+    content: "콘텐츠",
+    games: "게임",
+    about: "소개",
+    connect: "연결"
   },
   zh: {
     heroTitle: "欢迎来到BEMORA",
@@ -140,7 +180,12 @@ const translations: LanguageContent = {
     contentTitle: "最新内容",
     connectTitle: "连接",
     footerText: "BEMORA - 内容创作者和游戏爱好者",
-    watchPromo: "观看宣传片"
+    watchPromo: "观看宣传片",
+    home: "首页",
+    content: "内容",
+    games: "游戏",
+    about: "关于",
+    connect: "连接"
   }
 };
 

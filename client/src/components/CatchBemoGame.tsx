@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Gamepad, Play, RotateCcw, Trophy } from "lucide-react";
 import { RobotLogo } from "@/components/RobotLogo";
 import { trackGameStart, trackGameComplete } from "@/lib/analytics";
+import { AudioManager } from "@/lib/audioManager";
 
 interface FallingItem {
   id: number;
@@ -27,6 +28,8 @@ export function CatchBemoGame() {
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const gameLoopRef = useRef<number>();
   const nextItemId = useRef(0);
+  
+  const audioManager = AudioManager.getInstance();
 
   // Game settings
   const GAME_DURATION = 30; // seconds
@@ -53,6 +56,7 @@ export function CatchBemoGame() {
     setFallingItems([]);
     nextItemId.current = 0;
     
+    audioManager.playSound("gameStart");
     trackGameStart("Catch BEMORA");
     startGameLoop();
   };
@@ -111,10 +115,13 @@ export function CatchBemoGame() {
       cancelAnimationFrame(gameLoopRef.current);
     }
 
+    audioManager.playSound("gameOver");
+
     // Update high score
     if (score > highScore) {
       setHighScore(score);
       localStorage.setItem("catchBemoHighScore", score.toString());
+      audioManager.playSound("levelUp"); // Play special sound for new high score
     }
 
     trackGameComplete("Catch BEMORA", score);
@@ -137,8 +144,10 @@ export function CatchBemoGame() {
             // Collision detected!
             if (item.type === "logo") {
               scoreChange += 10;
+              audioManager.playSound("coin");
             } else if (item.type === "bomb") {
               scoreChange -= 5;
+              audioManager.playSound("explosion");
             }
             return; // Don't add to remaining items
           }

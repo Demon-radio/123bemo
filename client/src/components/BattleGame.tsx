@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { motion, AnimatePresence } from "framer-motion";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { AudioManager } from "@/lib/audioManager";
 
 // Adventure Time battle questions
 const battleQuestions = [
@@ -110,6 +111,7 @@ export function BattleGame() {
   const [winMessage, setWinMessage] = useState("");
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const audioManager = AudioManager.getInstance();
 
   // Timer effect
   useEffect(() => {

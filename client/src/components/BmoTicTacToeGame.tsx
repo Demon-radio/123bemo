@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { motion, AnimatePresence } from "framer-motion";
 import { Grid3X3, RotateCcw, User, Bot } from "lucide-react";
 import { trackGameStart, trackGameComplete } from "@/lib/analytics";
+import { AudioManager } from "@/lib/audioManager";
 
 type Player = "X" | "O" | null;
 type GameMode = "player" | "bot";
@@ -24,6 +25,8 @@ export function BmoTicTacToeGame() {
 
   // BMO face animation state
   const [bmoExpression, setBmoExpression] = useState<"normal" | "happy" | "sad" | "thinking">("normal");
+  
+  const audioManager = AudioManager.getInstance();
 
   const winningCombinations = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
@@ -124,6 +127,8 @@ export function BmoTicTacToeGame() {
   const handleCellClick = (index: number) => {
     if (board[index] || winner || isThinking) return;
 
+    audioManager.playSound("bmoBeep");
+
     const newBoard = [...board];
     newBoard[index] = currentPlayer;
     setBoard(newBoard);
@@ -136,10 +141,13 @@ export function BmoTicTacToeGame() {
       // Update scores
       if (gameResult === "X") {
         setPlayerXWins(prev => prev + 1);
+        audioManager.playSound("bmoSuccess");
       } else if (gameResult === "O") {
         setPlayerOWins(prev => prev + 1);
+        audioManager.playSound("bmoError");
       } else if (gameResult === "tie") {
         setTies(prev => prev + 1);
+        audioManager.playSound("notification");
       }
 
       // Track game completion

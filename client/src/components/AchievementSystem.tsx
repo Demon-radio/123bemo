@@ -291,7 +291,7 @@ export function AchievementSystem({ gameId, onAchievementUnlocked }: Achievement
           
           <div className="space-y-4 mt-6">
             {achievements.map((achievement) => {
-              const IconComponent = achievement.icon;
+              const IconComponent = achievement.icon || Star;
               const progressPercentage = (achievement.currentProgress / achievement.requirement) * 100;
               
               return (

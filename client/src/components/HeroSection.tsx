@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Play, X, Gamepad } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { CatchBemoGame } from "@/components/CatchBemoGame";
+import { useTranslations } from "@/components/LanguageToggle";
 
 export function HeroSection() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const t = useTranslations();
   
   const scrollToSection = (sectionId: string) => () => {
     const element = document.getElementById(sectionId);
@@ -22,7 +24,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20"
     >
       <div className="absolute inset-0 z-0">
         <div className="w-full h-full opacity-20">
@@ -31,7 +33,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 z-10 flex flex-col md:flex-row items-center justify-between py-16">
+      <div className="container mx-auto px-4 z-10 flex flex-col md:flex-row items-center justify-between py-8">
         <motion.div 
           className="md:w-1/2 text-center md:text-left mb-10 md:mb-0"
           initial={{ opacity: 0, x: -50 }}
@@ -39,10 +41,10 @@ export function HeroSection() {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-4xl md:text-6xl font-heading font-bold mb-4">
-            Welcome to <span className="text-secondary">BEMORA</span>
+            {t.heroTitle}
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-foreground opacity-90">
-            Creating <span className="text-primary">engaging content</span> across social media platforms
+            {t.heroSubtitle}
           </p>
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             <Button 
@@ -50,7 +52,7 @@ export function HeroSection() {
               onClick={scrollToSection("content")}
               className="bg-primary text-background hover:bg-primary/90 transition-all transform hover:scale-105"
             >
-              Explore Content
+              {t.exploreContent}
             </Button>
             <Button 
               size="lg" 
@@ -59,7 +61,7 @@ export function HeroSection() {
               className="border-primary text-primary hover:bg-primary/10 transition-all transform hover:scale-105"
             >
               <Gamepad className="mr-2 h-5 w-5" />
-              Play Games
+              {t.playGames}
             </Button>
             <Button 
               size="lg" 
@@ -67,7 +69,7 @@ export function HeroSection() {
               onClick={scrollToSection("connect")}
               className="border-secondary text-secondary hover:bg-secondary/10 transition-all transform hover:scale-105"
             >
-              Connect With Me
+              {t.connectWithMe}
             </Button>
           </div>
         </motion.div>
@@ -100,7 +102,7 @@ export function HeroSection() {
                 <div className="absolute inset-0.5 bg-background rounded-[0.7rem] z-10"></div>
                 <div className="relative flex items-center gap-2 px-8 py-3 text-white z-20 group-hover:text-white transition-colors">
                   <Play className="h-6 w-6 fill-primary group-hover:fill-white transition-colors" /> 
-                  <span className="font-semibold text-primary group-hover:text-white transition-colors">Watch Promo</span>
+                  <span className="font-semibold text-primary group-hover:text-white transition-colors">{t.watchPromo}</span>
                 </div>
               </button>
               

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { X, Gamepad2, RotateCcw } from "lucide-react";
 import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
+import { AudioManager } from "@/lib/audioManager";
 
 // BMO Maze Game with 5 random maps
 // BMO needs to escape from different mazes
@@ -136,6 +137,7 @@ export function BmoMazeGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameLoopRef = useRef<number>();
   const startTimeRef = useRef<number>();
+  const audioManager = AudioManager.getInstance();
   
   // BMO image from attached assets
   const bmoImageRef = useRef<HTMLImageElement>();
@@ -190,6 +192,8 @@ export function BmoMazeGame() {
         
         // Check if move is valid (not hitting a wall)
         if (gameState.currentMaze[newX][newY] === 0) {
+          audioManager.playSound("mazeMove");
+          
           setGameState(prev => {
             const newState = {
               ...prev,
@@ -201,6 +205,7 @@ export function BmoMazeGame() {
             if (newX === prev.exitPosition.x && newY === prev.exitPosition.y) {
               if (prev.level < 5) {
                 // Next level
+                audioManager.playSound("levelUp");
                 newState.level = prev.level + 1;
                 newState.score = prev.score + (1000 - prev.moves * 10);
                 newState.currentMaze = generateMaze(prev.level);
@@ -208,6 +213,7 @@ export function BmoMazeGame() {
                 newState.moves = 0;
               } else {
                 // Game completed
+                audioManager.playSound("mazeWin");
                 newState.gameCompleted = true;
                 newState.score = prev.score + (1000 - prev.moves * 10);
                 trackGameComplete("BMO Maze Game", newState.score);

@@ -16,7 +16,7 @@ export function GamesSection() {
   const [activeTab, setActiveTab] = useState("catch-game");
 
   return (
-    <section id="games" className="py-16 relative overflow-hidden">
+    <section id="games" className="py-12 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between mb-12">
           <h2 className="text-3xl md:text-4xl font-heading text-center md:text-left mb-4 md:mb-0">

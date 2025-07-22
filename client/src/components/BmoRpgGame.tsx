@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import { X, Gamepad2, Info } from "lucide-react";
 import BMOImage from "@assets/image_1746719364511.png";
 import { trackEvent, trackGameStart, trackGameComplete } from "@/lib/analytics";
+import { AudioManager } from "@/lib/audioManager";
 
 // Adventure Time RPG Game
 // -----------------------
@@ -165,6 +166,7 @@ export function BmoRpgGame() {
   const lastTimeRef = useRef<number>(0);
   const loadedAssetsRef = useRef<Record<string, HTMLImageElement>>({});
   const audioRef = useRef<Record<string, HTMLAudioElement>>({});
+  const audioManager = AudioManager.getInstance();
   
   // Game state
   const gameStateRef = useRef<GameState>({
@@ -2136,7 +2138,12 @@ export function BmoRpgGame() {
               </button>
               <button 
                 className="bg-green-500 text-white p-2 rounded touch-manipulation"
-                onTouchStart={() => useHealthPotion()}
+                onTouchStart={() => {
+                  if (gameStateRef.current.healthPotions > 0) {
+                    gameStateRef.current.healthPotions--;
+                    gameStateRef.current.player.health = Math.min(gameStateRef.current.player.maxHealth, gameStateRef.current.player.health + 50);
+                  }
+                }}
               >
                 🧪
               </button>

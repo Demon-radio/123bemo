@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { RobotLogo } from "@/components/RobotLogo";
-import { LanguageToggle } from "@/components/LanguageToggle";
+import { LanguageToggle, useTranslations } from "@/components/LanguageToggle";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ import { useMediaQuery } from "@/hooks/use-mobile";
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const t = useTranslations();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -28,11 +29,11 @@ export function NavBar() {
   };
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "Content", href: "#content" },
-    { name: "Games", href: "#games" },
-    { name: "About", href: "#about" },
-    { name: "Connect", href: "#connect" },
+    { name: t.home, href: "#home" },
+    { name: t.content, href: "#content" },
+    { name: t.games, href: "#games" },
+    { name: t.about, href: "#about" },
+    { name: t.connect, href: "#connect" },
   ];
 
   return (

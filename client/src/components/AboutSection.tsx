@@ -11,7 +11,7 @@ export function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-16 bg-muted relative overflow-hidden">
+    <section id="about" className="py-12 bg-muted relative overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="w-full h-full opacity-10">
           <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-primary filter blur-[100px]"></div>
