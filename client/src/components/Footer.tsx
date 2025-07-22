@@ -2,8 +2,10 @@ import { RobotLogo } from "@/components/RobotLogo";
 import { Link } from "wouter";
 import { FaXTwitter, FaFacebookF, FaWhatsapp, FaYoutube, FaLinkedin } from "react-icons/fa6";
 import { Heart } from "lucide-react";
+import { useTranslations } from "@/components/LanguageToggle";
 
 export function Footer() {
+  const t = useTranslations();
   const scrollToSection = (sectionId: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const element = document.getElementById(sectionId);
@@ -16,12 +18,11 @@ export function Footer() {
   };
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "Content", href: "#content" },
-    { name: "Games", href: "#games" },
-    { name: "Social", href: "#social" },
-    { name: "About", href: "#about" },
-    { name: "Connect", href: "#connect" },
+    { name: t.home, href: "#home" },
+    { name: t.content, href: "#content" },
+    { name: t.games, href: "#games" },
+    { name: t.about, href: "#about" },
+    { name: t.connect, href: "#connect" },
   ];
 
   const socialLinks = [
@@ -71,15 +72,7 @@ export function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} BEMORA. All rights reserved.</p>
           <p className="mt-2">
-            Designed with <Heart className="inline h-4 w-4 text-secondary" /> by{" "}
-            <a 
-              href="https://wa.me/201500302461?text=I%20want%20to%20share%20my%20rating%20about%20BMO%20website%20and%20it%27s%205%20stars" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:text-secondary transition-colors"
-            >
-              Mostafa
-            </a>
+            {t.footerText}
           </p>
         </div>
       </div>
