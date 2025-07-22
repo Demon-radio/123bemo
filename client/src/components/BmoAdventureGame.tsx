@@ -546,6 +546,8 @@ export function BmoAdventureGame() {
   const handleGameOver = () => {
     setBattleLog([...battleLog, "BMO: Oh no! You were defeated!", "BMO: Game over!"]);
     setGameState("gameover");
+    // Play custom game over sound
+    audioManager.playGameOverSound();
     
     // Track game completion with final score
     trackGameComplete("BMO Adventure Game", score);

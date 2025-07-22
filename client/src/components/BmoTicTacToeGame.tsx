@@ -365,7 +365,11 @@ export function BmoTicTacToeGame() {
                       <h3 className="text-lg font-bold">
                         {winner === "tie" ? "It's a Tie!" : 
                          winner === "X" ? "Player X Wins!" : 
-                         gameMode === "bot" ? "BMO Wins!" : "Player O Wins!"}
+                         gameMode === "bot" ? (() => {
+                           // Play game over sound when BMO (AI) wins
+                           audioManager.playGameOverSound();
+                           return "BMO Wins!";
+                         })() : "Player O Wins!"}
                       </h3>
                       <p className="text-sm text-muted-foreground">
                         {winner === "tie" ? "Good game!" : 

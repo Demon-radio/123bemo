@@ -437,6 +437,9 @@ export function QuizGame() {
     } else {
       setGameState("result");
       
+      // Play custom game over sound when quiz ends (regardless of score)
+      audioManager.playGameOverSound();
+      
       // Track game completion with final score and quiz type
       trackGameComplete(`Adventure Time Quiz (${quizType === "website" ? "Website" : "Characters"})`, score);
       

@@ -115,7 +115,7 @@ export function CatchBemoGame() {
       cancelAnimationFrame(gameLoopRef.current);
     }
 
-    audioManager.playSound("gameOver");
+    audioManager.playGameOverSound(); // Play custom game over sound
 
     // Update high score
     if (score > highScore) {

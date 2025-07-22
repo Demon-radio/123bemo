@@ -289,6 +289,39 @@ export class AudioManager {
     Object.entries(sounds).forEach(([name, buffer]) => {
       this.sounds.set(name, buffer);
     });
+    
+    // Initialize custom game over sound
+    this.initCustomGameOverSound();
+  }
+  
+  // Custom audio for uploaded game over sound
+  private customGameOverAudio: HTMLAudioElement | null = null;
+  
+  private initCustomGameOverSound() {
+    try {
+      this.customGameOverAudio = new Audio('/assets/sounds/game-over.mp3');
+      this.customGameOverAudio.volume = this.sfxVolume * this.masterVolume;
+    } catch (error) {
+      console.warn('Could not load custom game over sound:', error);
+    }
+  }
+  
+  public async playGameOverSound(): Promise<void> {
+    if (this.muted) return;
+    
+    try {
+      if (this.customGameOverAudio) {
+        this.customGameOverAudio.currentTime = 0;
+        this.customGameOverAudio.volume = this.sfxVolume * this.masterVolume;
+        await this.customGameOverAudio.play();
+      } else {
+        // Fallback to generated sound
+        await this.playSound('gameOver');
+      }
+    } catch (error) {
+      console.warn('Could not play game over sound:', error);
+      // Silent fallback
+    }
   }
 
   public async playSound(soundName: string, volume: number = 1): Promise<void> {

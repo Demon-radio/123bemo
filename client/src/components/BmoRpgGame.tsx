@@ -1145,6 +1145,8 @@ export function BmoRpgGame() {
     // Check for game over
     if (player.health <= 0) {
       gameStateRef.current.gameOver = true;
+      // Play custom game over sound
+      audioManager.playGameOverSound();
     }
   };
   

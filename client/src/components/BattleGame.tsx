@@ -154,6 +154,8 @@ export function BattleGame() {
     
     if (aiAnswer === correctAnswer) {
       setAiScore(aiScore + 1);
+      // Play game over sound when AI wins by timeout
+      audioManager.playGameOverSound();
     }
     
     setRoundResult(result);
